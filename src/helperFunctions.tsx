@@ -1,5 +1,4 @@
 import React from "react";
-import {useNavigate} from "react-router-dom";
 
 export const isValidEmail = (email: string): boolean => {
     return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)
@@ -14,6 +13,8 @@ export const validateUsername = (username: string | undefined, setterFunction: R
     if (username?.length === 0) return setterFunction('Username cannot be blank')
     if (username && username?.length < 4) return setterFunction('Username should be at least 4 characters long')
     if (username && username?.length > 20) return setterFunction('Username should be maximum 20 characters long')
+
+    setterFunction(null)
 }
 
 export const validateEmail = (email: string | undefined, setterFunction: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -23,6 +24,8 @@ export const validateEmail = (email: string | undefined, setterFunction: React.D
             return setterFunction('Email is not valid')
         }
     }
+
+    setterFunction(null)
 }
 
 export const validatePassword = (password: string | undefined, setterFunction: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -36,6 +39,8 @@ export const validatePassword = (password: string | undefined, setterFunction: R
 
     if (password && password?.length < 4) return setterFunction('Password should be at least 6 characters long')
     if (password && password?.length > 20) return setterFunction('Password should be maximum 20 characters long')
+
+    setterFunction(null)
 }
 
 export const validatePassword2 = (password: string | undefined, password2: string | undefined, setterFunction: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -44,6 +49,6 @@ export const validatePassword2 = (password: string | undefined, password2: strin
     if (password2 && password2?.length < 4) return setterFunction('Password should be at least 6 characters long')
     if (password2 && password2?.length > 20) return setterFunction('Password should be maximum 20 characters long')
     if (password !== password2) return setterFunction('Passwords should match')
-}
 
-export const navigate = useNavigate()
+    setterFunction(null)
+}

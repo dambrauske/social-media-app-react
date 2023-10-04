@@ -33,7 +33,7 @@ export const userSlice = createSlice({
             setImage: (state, action: PayloadAction<string>) => {
                 state.image = action.payload
             },
-            setAutologin: (state, action: PayloadAction<boolean>) => {
+            setAutoLogin: (state, action: PayloadAction<boolean>) => {
                 state.autoLogin = action.payload
                 localStorage.setItem('autoLogin', action.payload.toString());
             },
@@ -43,7 +43,7 @@ export const userSlice = createSlice({
 export const {
     setToken,
     setUsername,
-    setAutologin,
+    setAutoLogin,
 } = userSlice.actions
 
 export default userSlice.reducer

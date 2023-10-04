@@ -1,6 +1,6 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {RefObject, useRef, useState} from "react";
-import {navigate, validateEmail, validatePassword, validatePassword2, validateUsername} from "../helperFunctions.tsx";
+import {validateEmail, validatePassword, validatePassword2, validateUsername} from "../helperFunctions.tsx";
 import Autologin from "../components/Autologin.tsx";
 
 type NewUser = {
@@ -10,6 +10,8 @@ type NewUser = {
 }
 
 const Register = () => {
+
+    const navigate = useNavigate()
 
         const [userNameError, setUserNameError] = useState<string | null>(null);
         const [password1Error, setPassword1Error] = useState<string | null>(null)
@@ -43,7 +45,7 @@ const Register = () => {
                 }
 
                 try {
-                    const response = await fetch('http://localhost:3001/newUser', options)
+                    const response = await fetch('http://localhost:8000/register', options)
                     const data = await response.json()
                     console.log(data)
                     // dispatch(setCurrentUser(data.data))

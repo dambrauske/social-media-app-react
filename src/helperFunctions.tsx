@@ -1,4 +1,5 @@
 import React from "react";
+import {useNavigate} from "react-router-dom";
 
 export const isValidEmail = (email: string): boolean => {
     return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)
@@ -44,3 +45,5 @@ export const validatePassword2 = (password: string | undefined, password2: strin
     if (password2 && password2?.length > 20) return setterFunction('Password should be maximum 20 characters long')
     if (password !== password2) return setterFunction('Passwords should match')
 }
+
+export const navigate = useNavigate()

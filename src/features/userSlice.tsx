@@ -2,17 +2,21 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export interface UserInitialState {
     username: string | undefined,
-    image: string | undefined,
+    image: string,
     token: string | null,
+    autoLogin: boolean,
 }
 
-const token = localStorage.getItem('token')
+const token: string | null = localStorage.getItem('token')
+const autoLogin: boolean = localStorage.getItem('autoLogin') === 'true'
+
 export const userSlice = createSlice({
         name: "user",
         initialState: {
             username: undefined,
-            image: undefined,
+            image: './assets/blank-profile-picture',
             token,
+            autoLogin: autoLogin || false,
         } as UserInitialState,
         reducers: {
             setToken: (state, action: PayloadAction<string | null>) => {
@@ -26,12 +30,20 @@ export const userSlice = createSlice({
             setUsername: (state, action: PayloadAction<string>) => {
                 state.username = action.payload
             },
+            setImage: (state, action: PayloadAction<string>) => {
+                state.image = action.payload
+            },
+            setAutologin: (state, action: PayloadAction<boolean>) => {
+                state.autoLogin = action.payload
+                localStorage.setItem('autoLogin', action.payload.toString());
+            },
         }
     }
 )
 export const {
     setToken,
     setUsername,
+    setAutologin,
 } = userSlice.actions
 
 export default userSlice.reducer

@@ -1,7 +1,9 @@
 import {Link, useNavigate} from "react-router-dom";
 import {RefObject, useRef, useState} from "react";
-import {validateEmail, validatePassword, validatePassword2, validateUsername} from "../helperFunctions.tsx";
+// import {validateEmail, validatePassword, validatePassword2, validateUsername} from "../helperFunctions.tsx";
 import Autologin from "../components/Autologin.tsx";
+import {useAppDispatch} from "../hooks.tsx";
+import {setImage, setToken, setUsername} from "../features/userSlice.tsx";
 
 type NewUser = {
     username: string | undefined,
@@ -11,7 +13,8 @@ type NewUser = {
 
 const Register = () => {
 
-    const navigate = useNavigate()
+        const navigate = useNavigate()
+        const dispatch = useAppDispatch()
 
         const [userNameError, setUserNameError] = useState<string | null>(null);
         const [password1Error, setPassword1Error] = useState<string | null>(null)
@@ -23,7 +26,7 @@ const Register = () => {
         const password1Ref: RefObject<HTMLInputElement> = useRef(null)
         const password2Ref: RefObject<HTMLInputElement> = useRef(null)
 
-    const register = async () => {
+        const register = async () => {
             if (!userNameError && !password1Error && !password2Error && !emailError) {
 
                 const username = usernameRef.current?.value
@@ -48,25 +51,30 @@ const Register = () => {
                     const response = await fetch('http://localhost:8000/register', options)
                     const data = await response.json()
                     console.log(data)
-                    // dispatch(setCurrentUser(data.data))
-                    navigate('/home')
+                    dispatch(setUsername(data.data.username))
+                    dispatch(setImage(data.data.image))
+                    dispatch(setToken(data.data.token))
+                    navigate('/profile')
                 } catch (error) {
                     console.log(error)
                 }
-
-
             }
-    }
+        }
 
-    return (
+        const navigateToLogin = () => {
+            navigate('/')
+            localStorage.clear()
+        }
+
+
+        return (
             <div className="bg-cover bg-slate-50 h-screen flex justify-center items-center">
                 <div className="flex flex-col gap-4 bg-slate-50 p-4 pt-10 rounded-xl w-96 items-center shadow-2xl">
                     <div className="flex flex-col p-4 rounded justify-center items-center">
                         <input
                             className="border bg-slate-50 border-slate-400 placeholder-slate-300 p-1 rounded-l outline-none"
                             ref={usernameRef}
-                            onBlur={() => validateUsername(usernameRef.current?.value, setUserNameError)}
-                            required={true}
+                            // onBlur={() => validateUsername(usernameRef.current?.value, setUserNameError)}
                             type="text" placeholder="username"/>
                         <div className="h-5">
                             {userNameError &&
@@ -76,8 +84,7 @@ const Register = () => {
                         <input
                             className="border bg-slate-50 border-slate-400 placeholder-slate-300 p-1 rounded-l outline-none"
                             ref={emailRef}
-                            onBlur={() => validateEmail(emailRef.current?.value, setEmailError)}
-                            required={true}
+                            // onBlur={() => validateEmail(emailRef.current?.value, setEmailError)}
                             type="email" placeholder="email"/>
                         <div className="h-5">
                             {emailError &&
@@ -87,8 +94,7 @@ const Register = () => {
                         <input
                             className="border border-slate-400 bg-slate-50 placeholder-slate-300 p-1 rounded-l outline-none"
                             ref={password1Ref}
-                            onBlur={() => validatePassword(password1Ref.current?.value, setPassword1Error)}
-                            required={true}
+                            // onBlur={() => validatePassword(password1Ref.current?.value, setPassword1Error)}
                             type="password" placeholder="password"/>
                         <div className="h-5">
                             {password1Error &&
@@ -98,8 +104,7 @@ const Register = () => {
                         <input
                             className="border border-slate-400 bg-slate-50 placeholder-slate-300 p-1 rounded-l outline-none"
                             ref={password2Ref}
-                            onBlur={() => validatePassword2(password1Ref.current?.value, password2Ref.current?.value, setPassword2Error)}
-                            required={true}
+                            // onBlur={() => validatePassword2(password1Ref.current?.value, password2Ref.current?.value, setPassword2Error)}
                             type="password" placeholder="repeat password"/>
                         <div className="h-5">
                             {password2Error &&
@@ -107,7 +112,7 @@ const Register = () => {
                             }
                         </div>
 
-                       <Autologin/>
+                        <Autologin/>
 
                         <div className="flex flex-col gap-4 mt-4">
                             <button
@@ -117,7 +122,10 @@ const Register = () => {
                             </button>
                             <div className="flex flex-col items-center gap-2">
                                 <div>Already have an account?</div>
-                                <Link to="/" className="text-blue-500 font-bold">Login</Link>
+                                <div
+                                    onClick={navigateToLogin}
+                                    className="text-blue-500 font-bold cursor-pointer">Login
+                                </div>
                             </div>
                         </div>
 

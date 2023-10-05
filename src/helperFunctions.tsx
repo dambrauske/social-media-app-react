@@ -1,11 +1,20 @@
 import React from "react";
 
-export const isValidEmail = (email: string): boolean => {
+const isValidEmail = (email: string): boolean => {
     return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)
 }
 
-export const hasUppercaseLetter = (string: string): boolean => {
+const hasUppercaseLetter = (string: string): boolean => {
     return /[A-Z]/.test(string);
+}
+
+const isValidUrl = (url: string) => {
+    try {
+        new URL(url)
+        return true
+    } catch (err) {
+        return false
+    }
 }
 
 export const validateUsername = (username: string | undefined, setterFunction: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -50,5 +59,20 @@ export const validatePassword2 = (password: string | undefined, password2: strin
     if (password2 && password2?.length > 20) return setterFunction('Password should be maximum 20 characters long')
     if (password !== password2) return setterFunction('Passwords should match')
 
+    setterFunction(null)
+}
+
+export const validateBio = (bio: string | undefined, setterFunction: React.Dispatch<React.SetStateAction<string | null>>) => {
+    if (bio && bio.length > 150) return setterFunction('Bio cannot be longer than 150 characters')
+
+    setterFunction(null)
+}
+
+export const validateImage = (image: string | undefined, setterFunction: React.Dispatch<React.SetStateAction<string | null>>) =>
+{
+    if (image?.length === 0) return setterFunction('Image field cannot be blank')
+    if (!isValidUrl) {
+        return setterFunction('Image address is not valid')
+    }
     setterFunction(null)
 }

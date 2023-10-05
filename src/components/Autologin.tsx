@@ -8,7 +8,9 @@ const Autologin = () => {
     const autoLogin = useAppSelector(state => state.user.autoLogin)
 
     const handleAutologin = () => {
-        dispatch(setAutoLogin(!autoLogin))
+        const newAutoLogin = !autoLogin
+        localStorage.setItem('autoLogin', newAutoLogin.toString())
+        dispatch(setAutoLogin(newAutoLogin))
     }
 
     return (

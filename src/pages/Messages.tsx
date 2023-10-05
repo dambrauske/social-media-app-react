@@ -1,5 +1,5 @@
 
-const Home = () => {
+const Messages = () => {
     return (
         <div>
 
@@ -7,4 +7,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Messages;

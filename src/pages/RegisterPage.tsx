@@ -11,7 +11,7 @@ type NewUser = {
     password: string | undefined,
 }
 
-const Register = () => {
+const RegisterPage = () => {
 
         const navigate = useNavigate()
         const dispatch = useAppDispatch()
@@ -137,4 +137,4 @@ const Register = () => {
     }
 ;
 
-export default Register;
+export default RegisterPage;

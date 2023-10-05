@@ -1,12 +1,12 @@
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {RefObject, useRef, useState} from "react";
 import {validatePassword, validateUsername} from "../helperFunctions.tsx";
 import Autologin from "../components/Autologin.tsx";
 import {useAppDispatch} from "../hooks.tsx";
-import {setImage, setToken, setUsername} from "../features/userSlice.tsx";
+import {setBio, setImage, setToken, setUsername} from "../features/userSlice.tsx";
 
 
-const Login = () => {
+const LoginPage = () => {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
@@ -42,13 +42,12 @@ const Login = () => {
                 console.log(data)
                 dispatch(setUsername(data.data.username))
                 dispatch(setImage(data.data.image))
+                dispatch(setBio(data.data.bio))
                 dispatch(setToken(data.data.token))
                 navigate('/profile')
             } catch (error) {
                 console.log(error)
             }
-
-
         }
     }
 
@@ -105,4 +104,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginPage;

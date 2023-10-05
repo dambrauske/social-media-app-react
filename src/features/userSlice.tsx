@@ -1,11 +1,22 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
+export interface Post {
+    _id: string,
+    username: string,
+    userId: string,
+    date: string,
+    image: string,
+    title: string,
+    comments: [string],
+    likes: [string],
+}
 export interface UserInitialState {
     username: string | undefined,
     image: string | undefined,
     bio: string | undefined,
     token: string | null,
     autoLogin: boolean,
+    userPosts: [Post] | undefined,
 }
 
 const token: string | null = localStorage.getItem('token')
@@ -19,6 +30,7 @@ export const userSlice = createSlice({
             token,
             bio: undefined,
             autoLogin,
+            userPosts: undefined,
         } as UserInitialState,
         reducers: {
             setToken: (state, action: PayloadAction<string | null>) => {
@@ -35,6 +47,9 @@ export const userSlice = createSlice({
             setImage: (state, action: PayloadAction<string>) => {
                 state.image = action.payload
             },
+            setUserPosts: (state, action: PayloadAction<[Post]>) => {
+                state.userPosts = action.payload
+            },
             setAutoLogin: (state, action: PayloadAction<boolean>) => {
                 state.autoLogin = action.payload
                 localStorage.setItem('autoLogin', action.payload.toString());
@@ -48,6 +63,7 @@ export const {
     setAutoLogin,
     setImage,
     setBio,
+    setUserPosts,
 } = userSlice.actions
 
 export default userSlice.reducer

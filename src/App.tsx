@@ -1,14 +1,14 @@
 import './App.css'
 import {Route, Routes, useNavigate} from "react-router-dom";
-import Login from "./pages/Login.tsx";
-import Register from "./pages/Register.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
+import RegisterPage from "./pages/RegisterPage.tsx";
 import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "./hooks.tsx";
-import {setImage, setUsername} from "./features/userSlice.tsx";
-import Posts from "./pages/Posts.tsx";
-import Users from "./pages/Users.tsx";
-import Profile from "./pages/Profile.tsx";
-import Messages from "./pages/Messages.tsx";
+import {setBio, setImage, setUsername} from "./features/userSlice.tsx";
+import PostsPage from "./pages/PostsPage.tsx";
+import UsersPage from "./pages/UsersPage.tsx";
+import ProfilePage from "./pages/ProfilePage.tsx";
+import MessagesPage from "./pages/MessagesPage.tsx";
 
 function App() {
 
@@ -43,6 +43,7 @@ function App() {
                 .then(data => {
                     dispatch(setImage(data.data.image))
                     dispatch(setUsername(data.data.username))
+                    dispatch(setBio(data.data.bio))
                 })
 
         } else {
@@ -54,12 +55,12 @@ function App() {
   return (
     <div className="font-poppins">
       <Routes>
-        <Route path='/' element={<Login/>}/>
-        <Route path='/profile' element={<Profile/>}/>
-        <Route path='/register' element={<Register/>}/>
-        <Route path='/posts' element={<Posts/>}/>
-        <Route path='/users' element={<Users/>}/>
-        <Route path='/messages' element={<Messages/>}/>
+        <Route path='/' element={<LoginPage/>}/>
+        <Route path='/profile' element={<ProfilePage/>}/>
+        <Route path='/register' element={<RegisterPage/>}/>
+        <Route path='/posts' element={<PostsPage/>}/>
+        <Route path='/users' element={<UsersPage/>}/>
+        <Route path='/messages' element={<MessagesPage/>}/>
       </Routes>
     </div>
   )

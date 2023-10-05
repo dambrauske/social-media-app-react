@@ -32,7 +32,6 @@ const AllPosts = () => {
         fetch('http://localhost:8000/posts', options)
             .then(res => res.json())
             .then(data => {
-                console.log('all posts', data)
                 dispatch(setAllPosts(data.data))
             })
 

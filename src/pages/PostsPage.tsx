@@ -63,7 +63,7 @@ const PostsPage = () => {
     return (
         <div>
             <Navbar/>
-            <div className="p-4">
+            <div className="p-4 bg-slate-50">
                 <div className="bg-slate-200 p-2 rounded flex flex-col w-1/3 gap-2">
                     <div>Create post</div>
                     <input

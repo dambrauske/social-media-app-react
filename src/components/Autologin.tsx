@@ -1,16 +1,15 @@
 import {useDispatch} from "react-redux";
-import {useAppSelector} from "../hooks.tsx";
 import {setAutoLogin} from "../features/userSlice.tsx";
 
 const Autologin = () => {
 
     const dispatch = useDispatch()
-    const autoLogin = useAppSelector(state => state.user.autoLogin)
 
     const handleAutologin = () => {
-        const newAutoLogin = !autoLogin
-        localStorage.setItem('autoLogin', newAutoLogin.toString())
-        dispatch(setAutoLogin(newAutoLogin))
+        const currentAutoLogin = localStorage.getItem('autoLogin')
+        const newAutoLogin = currentAutoLogin === 'true' ? 'false' : 'true'
+        localStorage.setItem('autoLogin', newAutoLogin)
+        dispatch(setAutoLogin(newAutoLogin === 'true'))
     }
 
     return (

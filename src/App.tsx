@@ -9,13 +9,13 @@ import PostsPage from "./pages/PostsPage.tsx";
 import UsersPage from "./pages/UsersPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import MessagesPage from "./pages/MessagesPage.tsx";
+import SinglePostPage from "./pages/SinglePostPage.tsx";
 
 function App() {
 
     const autoLogin = useAppSelector(state => state.user.autoLogin)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-
 
     useEffect(() => {
 
@@ -52,18 +52,19 @@ function App() {
 
     }, [])
 
-  return (
-    <div className="font-poppins">
-      <Routes>
-        <Route path='/' element={<LoginPage/>}/>
-        <Route path='/profile' element={<ProfilePage/>}/>
-        <Route path='/register' element={<RegisterPage/>}/>
-        <Route path='/posts' element={<PostsPage/>}/>
-        <Route path='/users' element={<UsersPage/>}/>
-        <Route path='/messages' element={<MessagesPage/>}/>
-      </Routes>
-    </div>
-  )
+    return (
+        <div className="font-poppins">
+            <Routes>
+                <Route path='/' element={<LoginPage/>}/>
+                <Route path='/profile' element={<ProfilePage/>}/>
+                <Route path='/register' element={<RegisterPage/>}/>
+                <Route path='/posts' element={<PostsPage/>}/>
+                <Route path='/users' element={<UsersPage/>}/>
+                <Route path='/messages' element={<MessagesPage/>}/>
+                <Route path="/post/:postId" element={<SinglePostPage/>}/>
+            </Routes>
+        </div>
+    )
 }
 
 export default App

@@ -46,7 +46,10 @@ const PostCard = ({ post }: Props) => {
 
     }, [])
 
-
+    const showPostSettings = (e: Event) => {
+        setShowPostSettingsModal(!showPostSettingsModal)
+        e.stopPropagation()
+    }
 
     return (
 
@@ -71,7 +74,7 @@ const PostCard = ({ post }: Props) => {
 
             {post.username === username ?
                 <div
-                    onClick={() => setShowPostSettingsModal(!showPostSettingsModal)}
+                    onClick={showPostSettings}
                     className="absolute top-0 right-0 h-6 w-6 bg-slate-200  rounded-full flex justify-center items-center cursor-pointer">
                     <i className="fas fa-ellipsis-h"></i>
                 </div>

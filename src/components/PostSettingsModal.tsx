@@ -1,6 +1,7 @@
-import {Post, setUserPosts} from "../features/userSlice.tsx";
-import {setAllPosts, setPostUpdateModal} from "../features/postsSlice.tsx";
-import {useAppDispatch} from "../hooks.tsx";
+import {Post} from "../features/userSlice.tsx";
+import { MouseEvent } from "react";
+import {useAppDispatch, useAppSelector} from "../hooks.tsx";
+import {deleteSinglePost} from "../features/postsSlice.tsx";
 
 type PostSettingsModalProps = {
     post: Post,
@@ -10,42 +11,22 @@ type PostSettingsModalProps = {
 const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModalProps) => {
 
     const dispatch = useAppDispatch()
-    const deletePost = async (postId: string) => {
+    const token = useAppSelector(state => state.user.token)
 
-        const options: RequestInit = {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify({postId}),
-        }
-
-        const token = localStorage.getItem('token')
-
-        if (token !== null) {
-            options.headers = {
-                ...options.headers,
-                "authorization": token,
-            }
-        }
-
-        try {
-            const response = await fetch('http://localhost:8000/deletePost', options)
-            const data = await response.json()
-            console.log(data)
-            dispatch(setUserPosts(data.data.userPosts))
-            dispatch(setAllPosts(data.data.allPosts))
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const update = () => {
-        console.log('update clicked')
-        dispatch(setPostUpdateModal(true))
+    const cancel = (e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
         setShowPostSettingsModal(false)
     }
+    const deletePost = async (token: string | null, postId: string | null, e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
+        dispatch(deleteSinglePost({token, postId}))
+    }
+
+    // const update = () => {
+    //     console.log('update clicked')
+    //     dispatch(setPostUpdateModal(true))
+    //     setShowPostSettingsModal(false)
+    // }
 
     return (
 
@@ -54,7 +35,7 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
                 className="w-28 h-min bg-slate-100 rounded border flex flex-col border-slate-200 absolute top-5 right-5 text-xs z-50">
 
                 <button
-                    onClick={() => deletePost(post._id)}
+                    onClick={(e) => deletePost(token, post._id, e)}
                     className="hover:bg-slate-200 p-1">delete
                 </button>
 
@@ -64,7 +45,7 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
                 {/*</button>*/}
 
                 <button
-                    onClick={() => setShowPostSettingsModal(false)}
+                    onClick={(e) => cancel(e)}
                     className="hover:bg-slate-200 p-1">cancel
                 </button>
             </div>

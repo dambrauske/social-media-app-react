@@ -95,7 +95,7 @@ const RegisterPage = () => {
                             className="border border-slate-400 bg-slate-50 placeholder-slate-300 p-1 rounded-l outline-none"
                             ref={password1Ref}
                             // onBlur={() => validatePassword(password1Ref.current?.value, setPassword1Error)}
-                            type="password" placeholder="password"/>
+                            type="text" placeholder="password"/>
                         <div className="h-5">
                             {password1Error &&
                                 <div className="text-xs text-red-600">{password1Error}</div>
@@ -105,7 +105,7 @@ const RegisterPage = () => {
                             className="border border-slate-400 bg-slate-50 placeholder-slate-300 p-1 rounded-l outline-none"
                             ref={password2Ref}
                             // onBlur={() => validatePassword2(password1Ref.current?.value, password2Ref.current?.value, setPassword2Error)}
-                            type="password" placeholder="repeat password"/>
+                            type="text" placeholder="repeat password"/>
                         <div className="h-5">
                             {password2Error &&
                                 <div className="text-xs text-red-600">{password2Error}</div>

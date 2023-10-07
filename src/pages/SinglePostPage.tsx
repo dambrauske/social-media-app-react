@@ -1,34 +1,14 @@
 import LikesAndComments from "../components/LikesAndComments.tsx";
 import PostSettingsModal from "../components/PostSettingsModal.tsx";
-import {useParams} from "react-router-dom";
+import {Post} from "../features/userSlice.tsx";
+import {useAppSelector} from "../hooks.tsx";
 
-const SinglePostPage = () => {
+type SinglePostPageProps = {
+    post: Post,
+};
+const SinglePostPage = ({post}: SinglePostPageProps) => {
 
-    const { postId } = useParams()
-
-        const options: RequestInit = {
-            method: "GET",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: null,
-        }
-
-        const token = localStorage.getItem('token')
-
-        if (token !== null) {
-            options.headers = {
-                ...options.headers,
-                "authorization": token,
-            }
-        }
-
-        fetch('http://localhost:8000/post' + postId, options)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-            })
-
+    const username = useAppSelector(state => state.user.username)
 
 
     return (
@@ -43,7 +23,7 @@ const SinglePostPage = () => {
                 <div className="flex justify-between p-2">
                     <div className="flex items-center gap-2">
                         <div className="w-12 h-12">
-                            <img className="w-full h-full rounded-full" src={userImage} alt=""/>
+                            {/*<img className="w-full h-full rounded-full" src={userImage} alt=""/>*/}
                         </div>
                         <div className="font-bold text-xl">{post.username}:</div>
                     </div>
@@ -52,23 +32,23 @@ const SinglePostPage = () => {
 
                 <div className="p-2">{post.title}</div>
 
-                {post.username === username ?
-                    <div
-                        onClick={() => setShowPostSettingsModal(!showPostSettingsModal)}
-                        className="absolute top-0 right-0 h-6 w-6 bg-slate-200  rounded-full flex justify-center items-center cursor-pointer">
-                        <i className="fas fa-ellipsis-h"></i>
-                    </div>
-                    :
-                    null
-                }
+                {/*{post.username === username ?*/}
+                {/*    <div*/}
+                {/*        onClick={() => setShowPostSettingsModal(!showPostSettingsModal)}*/}
+                {/*        className="absolute top-0 right-0 h-6 w-6 bg-slate-200  rounded-full flex justify-center items-center cursor-pointer">*/}
+                {/*        <i className="fas fa-ellipsis-h"></i>*/}
+                {/*    </div>*/}
+                {/*    :*/}
+                {/*    null*/}
+                {/*}*/}
 
-                {
-                    showPostSettingsModal &&
-                    <PostSettingsModal
-                        post={post}
-                        setShowPostSettingsModal={setShowPostSettingsModal}
-                    />
-                }
+                {/*{*/}
+                {/*    showPostSettingsModal &&*/}
+                {/*    <PostSettingsModal*/}
+                {/*        post={post}*/}
+                {/*        setShowPostSettingsModal={setShowPostSettingsModal}*/}
+                {/*    />*/}
+                {/*}*/}
 
             </div>
 

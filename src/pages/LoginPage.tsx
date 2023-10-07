@@ -75,7 +75,7 @@ const LoginPage = () => {
                         className="border border-slate-400 bg-slate-50 placeholder-slate-300 p-1 rounded-l outline-none"
                         ref={passwordRef}
                         // onBlur={() => validatePassword(usernameRef.current?.value, setPasswordError)}
-                        type="password" placeholder="password"/>
+                        type="text" placeholder="password"/>
                     <div className="h-5">
                         {passwordError &&
                             <div className="text-xs text-red-600">{passwordError}</div>

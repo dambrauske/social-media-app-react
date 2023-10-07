@@ -1,61 +1,30 @@
 import {validateBio} from "../helperFunctions.tsx";
 import {RefObject, useRef, useState} from "react";
-import {useAppDispatch} from "../hooks.tsx";
-import {setBio} from "../features/userSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../hooks.tsx";
+import {updateUserBio} from "../features/userSlice.tsx";
 
 const UpdateBio = () => {
 
     const dispatch = useAppDispatch()
+    const token = useAppSelector(state => state.user.token)
+    const bioRef: RefObject<HTMLInputElement> = useRef(null)
+    const [bioError, setBioError] = useState<string | null>(null);
+    const [bioSuccessMessage, setBioSuccessMessage] = useState<string | null>(null)
 
-
-    const updateBio = async () => {
+    const updateBio = async (token: string | null, updatedBio: string | null) => {
         setBioSuccessMessage(null)
-        const updatedBio: string | undefined = bioRef.current?.value || ''
+        dispatch(updateUserBio({token, updatedBio}))
 
-        console.log('updatedBio', updatedBio)
+        setBioSuccessMessage('Bio updated successfully')
 
-        const options: RequestInit = {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify({updatedBio}),
-        }
-
-        const token = localStorage.getItem('token')
-
-        if (token !== null) {
-            options.headers = {
-                ...options.headers,
-                "authorization": token,
-            }
-        }
-
-
-        try {
-            const response = await fetch('http://localhost:8000/updateBio', options)
-            const data = await response.json()
-            console.log(data)
-            dispatch(setBio(data.data))
-            setBioSuccessMessage('Bio updated successfully')
-
-            setTimeout(() => {
-                setBioSuccessMessage(null)
-            }, 1000)
-
-        } catch (error) {
-            console.log(error)
-        }
+        setTimeout(() => {
+            setBioSuccessMessage(null)
+        }, 1000)
 
         if (bioRef.current) {
             bioRef.current.value = ''
         }
     }
-
-
-    const bioRef: RefObject<HTMLInputElement> = useRef(null)
-    const [bioError, setBioError] = useState<string | null>(null);
-    const [bioSuccessMessage, setBioSuccessMessage] = useState<string | null>(null)
 
     return (
         <div className="flex flex-col gap-2">
@@ -74,7 +43,7 @@ const UpdateBio = () => {
                 }
             </div>
             <div
-                onClick={updateBio}
+                onClick={() => updateBio(token, bioRef.current?.value ?? null)}
                 className="cursor-pointer bg-slate-400">update bio
             </div>
         </div>

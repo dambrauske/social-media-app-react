@@ -1,5 +1,8 @@
 import {validateImage, validateTitle} from "../helperFunctions.tsx";
 import {RefObject, useRef, useState} from "react";
+import {useAppDispatch, useAppSelector} from "../hooks.tsx";
+import {Post, setUserPosts} from "../features/userSlice.tsx";
+import {addPost} from "../features/postsSlice.tsx";
 
 const AddNewPost = () => {
 
@@ -8,45 +11,25 @@ const AddNewPost = () => {
     const [imageError, setImageError] = useState<string | null>(null);
     const [titleError, setTitleError] = useState<string | null>(null);
     const [postSuccessMessage, setPostSuccessMessage] = useState<string | null>(null)
+    const dispatch = useAppDispatch()
+    const allPosts = useAppSelector(state => state.posts.posts)
+    const currentUserUsername = useAppSelector(state => state.user.username)
+    const token = useAppSelector(state => state.user.token)
 
-    const addPost = async () => {
+    const createPost = async (token: string | null,image: string | null, title: string | null) => {
 
         setPostSuccessMessage(null)
 
-        const image = imageRef.current?.value
-        const title = titleRef.current?.value
+        dispatch(addPost({token, image, title}))
+        const userPosts: Post[] | undefined = allPosts?.filter(post => post.username === currentUserUsername)
+        dispatch(setUserPosts(userPosts))
+        console.log('user posts:', userPosts)
 
-        const options: RequestInit = {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify({image, title}),
-        }
+        setPostSuccessMessage('Post added successfully')
+        setTimeout(() => {
+            setPostSuccessMessage(null)
+        }, 1000)
 
-        const token = localStorage.getItem('token')
-
-        if (token !== null) {
-            options.headers = {
-                ...options.headers,
-                "authorization": token,
-            }
-        }
-
-
-        try {
-            const response = await fetch('http://localhost:8000/addPost', options)
-            const data = await response.json()
-            console.log(data)
-            setPostSuccessMessage('Post added successfully')
-
-            setTimeout(() => {
-                setPostSuccessMessage(null)
-            }, 1000)
-
-        } catch (error) {
-            console.log(error)
-        }
 
         if (imageRef.current) {
             imageRef.current.value = ''
@@ -54,8 +37,6 @@ const AddNewPost = () => {
         if (titleRef.current) {
             titleRef.current.value = ''
         }
-
-
     }
 
     return (
@@ -87,7 +68,7 @@ const AddNewPost = () => {
 
             </div>
             <button
-                onClick={addPost}
+                onClick={() => createPost(token, imageRef.current?.value ?? null, titleRef.current?.value ?? null)}
                 className="bg-slate-300 p-1">create post
             </button>
         </div>

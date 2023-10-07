@@ -10,9 +10,6 @@ const UpdatePassword = () => {
     const [newPasswordError, setNewPasswordError] = useState<string | null>(null)
     const [passwordSuccessMessage, setPasswordSuccessMessage] = useState<string | null>(null)
 
-
-
-
     const updatePassword = async () => {
 
         setPasswordSuccessMessage(null)

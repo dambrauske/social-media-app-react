@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {Post, setUserPosts} from "../features/userSlice.tsx";
+import {getUserPosts, Post} from "../features/userSlice.tsx";
 import {fetchAllPosts} from "../features/postsSlice.tsx";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import PostCard from "./PostCard.tsx";
@@ -8,16 +8,13 @@ const AllPosts = () => {
 
     const dispatch = useAppDispatch()
     const allPosts = useAppSelector(state => state.posts.posts)
-    const currentUserUsername = useAppSelector(state => state.user.username)
+    const username = useAppSelector(state => state.user.username)
     const token = useAppSelector(state => state.user.token)
 
 
     useEffect(() => {
         dispatch(fetchAllPosts(token))
-        const userPosts: Post[] | undefined = allPosts?.filter(post => post.username === currentUserUsername)
-        dispatch(setUserPosts(userPosts))
-        console.log('user posts:', userPosts)
-
+        dispatch(getUserPosts({token, username}))
     }, [])
 
     return (

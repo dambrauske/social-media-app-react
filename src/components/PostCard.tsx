@@ -3,7 +3,6 @@ import {useAppSelector} from "../hooks.tsx";
 import {useEffect, useState} from "react";
 import LikesAndComments from "./LikesAndComments.tsx";
 import PostSettingsModal from "./PostSettingsModal.tsx";
-import SinglePostModal from "./SinglePostModal.tsx";
 import {useNavigate} from "react-router-dom";
 
 type Props = {

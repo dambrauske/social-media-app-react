@@ -1,10 +1,20 @@
-import {useAppSelector} from "../hooks.tsx";
-import {Post} from "../features/userSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../hooks.tsx";
+import {getUserPosts, Post} from "../features/userSlice.tsx";
 import PostCard from "./PostCard.tsx";
+import {useEffect} from "react";
 
 const UserPosts = () => {
 
+    const dispatch = useAppDispatch()
     const userPosts = useAppSelector(state => state.user.userPosts)
+    const username = useAppSelector(state => state.user.username)
+    const token = useAppSelector(state => state.user.token)
+
+
+    useEffect(() => {
+        dispatch(getUserPosts({token, username}))
+    }, [])
+
 
     return (
         <div className="flex flex-wrap gap-4">

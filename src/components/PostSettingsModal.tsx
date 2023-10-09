@@ -20,6 +20,7 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
     const deletePost = async (token: string | null, postId: string | null, e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
         dispatch(deleteSinglePost({token, postId}))
+        setShowPostSettingsModal(false)
     }
 
     // const update = () => {

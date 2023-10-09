@@ -75,6 +75,30 @@ export const updateUserBio = createAsyncThunk('posts/updateBio', async ({token, 
     return response?.data
 })
 
+export const getUserPosts = createAsyncThunk('user/getUserPosts', async ({token, username}: {
+    token: string | null, username: string | undefined
+}) => {
+
+    if (token === null) {
+        throw new Error('Token not available')
+    }
+
+    const options: RequestInit = {
+        method: "GET",
+        headers: {
+            "content-type": "application/json",
+            "authorization": token,
+        },
+    };
+
+    const response = await fetch('http://localhost:8000/posts', options)
+        .then(res => res.json())
+
+    console.log('all posts:', response.data)
+    const allPosts = response?.data as Post[]
+    return allPosts.filter(post => post.username === username)
+})
+
 export const userSlice = createSlice({
         name: "user",
         initialState: {
@@ -111,6 +135,7 @@ export const userSlice = createSlice({
         }, extraReducers: (builder) => {
 
             // IMAGE
+
             builder.addCase(updateUserImage.pending, (state) => {
                 state.loadingState = 'loading'
             })
@@ -138,6 +163,22 @@ export const userSlice = createSlice({
             builder.addCase(updateUserBio.rejected, (state, action) => {
                 state.loadingState = 'error'
                 state.bio = undefined
+                state.loadingMessage = action.error.message
+            })
+
+            // POSTS
+
+            builder.addCase(getUserPosts.pending, (state) => {
+                state.loadingState = 'loading'
+            })
+            builder.addCase(getUserPosts.fulfilled, (state, action: PayloadAction<Post[]>) => {
+                state.loadingState = 'idle';
+                state.userPosts = action.payload
+                state.loadingMessage = ''
+            })
+            builder.addCase(getUserPosts.rejected, (state, action) => {
+                state.loadingState = 'error'
+                state.userPosts = undefined
                 state.loadingMessage = action.error.message
             })
         },

@@ -28,7 +28,7 @@ export const fetchAllPosts = createAsyncThunk('posts/fetchAllPosts', async (toke
     console.log('all posts:', response.data)
     return response?.data as Post[]
 })
-export const fetchSinglePost = createAsyncThunk('posts/fetchSinglePost', async ({ token, postId }: { token: string | null, postId: string | null }) => {
+export const fetchSinglePost = createAsyncThunk('posts/fetchSinglePost', async ({ token, postId }: { token: string | null, postId: string | undefined }) => {
 
     if (token === null) {
         throw new Error('Token not available')
@@ -42,10 +42,10 @@ export const fetchSinglePost = createAsyncThunk('posts/fetchSinglePost', async (
         },
     };
 
-    const response = await fetch('http://localhost:8000/post' + postId, options)
+    const response = await fetch('http://localhost:8000/post/' + postId, options)
         .then(res => res.json())
 
-    console.log('post:', response.data)
+    console.log('response', response.data)
     return response?.data as Post
 })
 export const deleteSinglePost = createAsyncThunk('posts/deleteSinglePost', async ({ token, postId }: { token: string | null, postId: string | null }) => {

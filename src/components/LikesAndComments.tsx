@@ -9,7 +9,7 @@ type Props = {
     post: Post
 }
 
-const LikesAndComments = ({post} : Props) => {
+const LikesAndComments = ({post}: Props) => {
 
     const navigate = useNavigate()
     const token = useAppSelector(state => state.user.token)
@@ -45,11 +45,7 @@ const LikesAndComments = ({post} : Props) => {
             <div
                 onClick={(e) => likePost(token, post._id, e)}
                 className="flex items-center gap-2">
-                {likedByUser ?
-                    <i className="fas fa-heart"></i>
-                    :
-                    <i className="far fa-heart cursor-pointer"></i>
-                }
+                <i className="far fa-heart cursor-pointer"></i>
                 {post?.likes && post.likes.length > 0 ?
                     <div>{post.likes.length}</div>
                     :
@@ -60,7 +56,7 @@ const LikesAndComments = ({post} : Props) => {
                 onClick={() => navigate(`/post/${post._id}`)}
                 className="flex items-center gap-2">
                 <i className="far fa-comment-dots"></i>
-                {post?.comments && post.comments.length > 0  ?
+                {post?.comments && post.comments.length > 0 ?
                     <div>{post.comments.length}</div>
                     :
                     <div>0</div>}

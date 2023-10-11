@@ -4,7 +4,6 @@ import AddNewPost from "../components/AddNewPost.tsx";
 
 const PostsPage = () => {
 
-
     return (
         <div>
             <Navbar/>

@@ -2,8 +2,10 @@ import LikesAndComments from "../components/LikesAndComments.tsx";
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {useEffect} from "react";
-import {fetchSinglePost} from "../features/postsSlice.tsx";
-import Comment from "../components/Comment.tsx";
+import {setComments, setSelectedPost, setSinglePost} from "../features/postsSlice.tsx";
+import Comments from "../components/Comments.tsx";
+import Navbar from "../components/Navbar.tsx";
+import socket from "../socket.tsx";
 
 
 const SinglePostPage = () => {
@@ -13,13 +15,30 @@ const SinglePostPage = () => {
     const token = useAppSelector(state => state.user.token)
     const post = useAppSelector(state => state.posts.singlePost)
 
+    console.log('post', post)
+
     useEffect(() => {
-        dispatch(fetchSinglePost({token, postId}))
+        dispatch(setSelectedPost(postId))
+        if (token === null) {
+            throw new Error('Token not available')
+        }
+
+        socket().emit('fetchSinglePost', ({token, postId}))
+        socket().on('fetchedSinglePost', (data) => {
+            console.log('fetchedSinglePost', data)
+            dispatch(setSinglePost(data.post))
+            dispatch(setComments(data.postComments))
+        })
+
+        return () => {
+            socket().off('fetchedSinglePost');
+        }
     }, [])
 
     return (
-
-        <div className="bg-slate-50 p-4 flex min-h-screen justify-center">
+        <div>
+            <Navbar/>
+            <div className="bg-slate-50 p-4 flex min-h-screen justify-center">
 
                 <div className="flex p-2 rounded bg-white gap-2 relative">
                     <div>
@@ -29,15 +48,15 @@ const SinglePostPage = () => {
                     </div>
 
                     <div className="flex flex-col p-2 w-72 gap-4">
-                            <div className="flex flex-col items-start gap-2">
-                                <div className="font-bold text-xl">{post?.username}</div>
-                                <div>{post?.title}</div>
-                            </div>
+                        <div className="flex flex-col items-start gap-2">
+                            <div className="font-bold text-xl">{post?.user.username}</div>
+                            <div>{post?.title}</div>
+                        </div>
                         <div className="self-end">
                             <LikesAndComments/>
                         </div>
                         <hr/>
-                        <Comment/>
+                        <Comments/>
                     </div>
 
 
@@ -61,7 +80,10 @@ const SinglePostPage = () => {
 
                 </div>
 
+            </div>
         </div>
+
+
 
     );
 };

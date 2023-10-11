@@ -16,34 +16,6 @@ const PostCard = ({ post }: Props) => {
     const [showPostSettingsModal, setShowPostSettingsModal] = useState<boolean>(false)
     const navigate = useNavigate()
 
-    useEffect(() => {
-
-        const userId = post.userId
-
-        const options: RequestInit = {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify({userId}),
-        }
-
-        const token = localStorage.getItem('token')
-
-        if (token !== null) {
-            options.headers = {
-                ...options.headers,
-                "authorization": token,
-            }
-        }
-
-        fetch('http://localhost:8000/getUser', options)
-            .then(res => res.json())
-            .then(data => {
-                setUserImage(data.data.image)
-            })
-
-    }, [])
 
     const showPostSettings = (e: Event) => {
         setShowPostSettingsModal(!showPostSettingsModal)
@@ -62,11 +34,13 @@ const PostCard = ({ post }: Props) => {
             <div className="flex justify-between p-2">
                 <div className="flex items-center gap-2">
                     <div className="w-12 h-12">
-                        <img className="w-full h-full rounded-full" src={userImage} alt=""/>
+                        <img className="w-full h-full rounded-full" src={post.user.image} alt=""/>
                     </div>
-                    <div className="font-bold text-xl">{post.username}:</div>
+                    <div className="font-bold text-xl">{post.user.username}:</div>
                 </div>
-                <LikesAndComments/>
+                <LikesAndComments
+                post={post}
+                />
             </div>
 
             <div className="p-2">{post.title}</div>

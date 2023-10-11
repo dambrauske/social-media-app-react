@@ -1,7 +1,6 @@
 import {Post} from "../features/userSlice.tsx";
 import { MouseEvent } from "react";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import {deleteSinglePost} from "../features/postsSlice.tsx";
 
 type PostSettingsModalProps = {
     post: Post,
@@ -19,15 +18,15 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
     }
     const deletePost = async (token: string | null, postId: string | null, e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
-        dispatch(deleteSinglePost({token, postId}))
+        // dispatch(deleteSinglePost({token, postId}))
         setShowPostSettingsModal(false)
     }
 
-    // const update = () => {
-    //     console.log('update clicked')
-    //     dispatch(setPostUpdateModal(true))
-    //     setShowPostSettingsModal(false)
-    // }
+    const update = () => {
+        console.log('update clicked')
+        // dispatch(setShowPostSettingsModal(true))
+        setShowPostSettingsModal(false)
+    }
 
     return (
 

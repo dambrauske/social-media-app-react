@@ -2,7 +2,8 @@ import {validateImage, validateTitle} from "../helperFunctions.tsx";
 import {RefObject, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {Post, setUserPosts} from "../features/userSlice.tsx";
-import {addPost} from "../features/postsSlice.tsx";
+import {addPost, setAllPosts} from "../features/postsSlice.tsx";
+import socket from "../socket.tsx";
 
 const AddNewPost = () => {
 
@@ -20,10 +21,17 @@ const AddNewPost = () => {
 
         setPostSuccessMessage(null)
 
-        dispatch(addPost({token, image, title}))
-        const userPosts: Post[] | undefined = allPosts?.filter(post => post.username === currentUserUsername)
-        dispatch(setUserPosts(userPosts))
-        console.log('user posts:', userPosts)
+        if (token === null) {
+            throw new Error('Token not available')
+        }
+
+        socket().emit('addPost', ({token, image, title}))
+        socket().on('sendAllPosts', (data: Post[]) => {
+            console.log('sendAllPosts', data)
+            dispatch(setAllPosts(data))
+            const userPosts = data.filter(post => post.username === currentUserUsername)
+            dispatch(setUserPosts(userPosts))
+        })
 
         setPostSuccessMessage('Post added successfully')
         setTimeout(() => {

@@ -1,18 +1,6 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
-import {UserInitialState} from "./userSlice.tsx";
-import {fetchAllPosts} from "./postsSlice.tsx";
-
-interface User {
-    username: string | undefined,
-    image: string | undefined,
-    bio: string | undefined,
-}
-
-interface UsersInitialState {
-    users: User[] | undefined,
-    loadingState: 'idle' | 'loading' | 'error',
-    loadingMessage: string | undefined,
-}
+import {User, UserInitialState, UsersInitialState} from "../interfaces.tsx";
+import {updateUserImage} from "./userSlice.tsx";
 
 export const fetchAllUsers = createAsyncThunk('users/fetchAllUsers', async (token: string | null) => {
 
@@ -52,18 +40,19 @@ export const usersSlice = createSlice({
         builder.addCase(fetchAllUsers.pending, (state) => {
             state.loadingState = 'loading'
         })
-        builder.addCase(fetchAllUsers.fulfilled, (state, action: PayloadAction<[]>) => {
+        builder.addCase(fetchAllUsers.fulfilled, (state, action: PayloadAction<User[]>) => {
             state.loadingState = 'idle';
             state.users = action.payload
             state.loadingMessage = ''
         })
-        builder.addCase(fetchAllPosts.rejected, (state, action) => {
+        builder.addCase(fetchAllUsers.rejected, (state, action) => {
             state.loadingState = 'error'
             state.users = undefined
             state.loadingMessage = action.error.message
         })
+    },
 
-    }
+
 })
 export const {
     setUsers

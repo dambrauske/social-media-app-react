@@ -1,26 +1,5 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
-
-export interface Post {
-    _id: string,
-    username: string,
-    userId: string,
-    date: string,
-    image: string,
-    title: string,
-    comments: [string],
-    likes: [string],
-}
-
-export interface UserInitialState {
-    username: string | undefined,
-    image: string | undefined,
-    bio: string | undefined,
-    token: string | null,
-    autoLogin: boolean,
-    userPosts: Post[] | undefined,
-    loadingState: 'idle' | 'loading' | 'error',
-    loadingMessage: string | undefined,
-}
+import {Post, UserInitialState} from "../interfaces.tsx";
 
 const token: string | null = localStorage.getItem('token')
 const autoLogin: boolean = Boolean(localStorage.getItem('autoLogin'))

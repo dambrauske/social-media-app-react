@@ -3,7 +3,7 @@ import {RefObject, useRef, useState} from "react";
 import {validatePassword, validateUsername} from "../helperFunctions.tsx";
 import Autologin from "../components/Autologin.tsx";
 import {useAppDispatch} from "../hooks.tsx";
-import {setBio, setImage, setToken, setUsername} from "../features/userSlice.tsx";
+import {setBio, setImage, setToken, setUser, setUsername} from "../features/userSlice.tsx";
 
 
 const LoginPage = () => {
@@ -40,9 +40,7 @@ const LoginPage = () => {
                 const response = await fetch('http://localhost:8000/login', options)
                 const data = await response.json()
                 console.log(data)
-                dispatch(setUsername(data.data.username))
-                dispatch(setImage(data.data.image))
-                dispatch(setBio(data.data.bio))
+                dispatch(setUser(data.data.user))
                 dispatch(setToken(data.data.token))
                 navigate('/profile')
             } catch (error) {

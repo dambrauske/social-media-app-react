@@ -4,7 +4,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "./hooks.tsx";
-import {setBio, setImage, setUsername} from "./features/userSlice.tsx";
+import {setBio, setUser} from "./features/userSlice.tsx";
 import PostsPage from "./pages/PostsPage.tsx";
 import UsersPage from "./pages/UsersPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
@@ -47,14 +47,13 @@ function App() {
             fetch('http://localhost:8000/user', options)
                 .then(res => res.json())
                 .then(data => {
-                    dispatch(setImage(data.data.image))
-                    dispatch(setUsername(data.data.username))
-                    dispatch(setBio(data.data.bio))
+                    dispatch(setUser(data.data.user))
                 })
 
         } else {
             navigate('/')
         }
+
 
     }, [])
 

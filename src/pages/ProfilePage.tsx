@@ -6,9 +6,8 @@ import UserPosts from "../components/UserPosts.tsx";
 
 const ProfilePage = () => {
 
-    const username = useAppSelector(state => state.user.username)
-    const image = useAppSelector(state => state.user.image)
-    const bio = useAppSelector(state => state.user.bio)
+    const user = useAppSelector(state => state.user.user)
+    const bio = useAppSelector(state => state.user.user?.bio)
 
 
     return (
@@ -20,9 +19,9 @@ const ProfilePage = () => {
 
                     <div className="flex flex-col items-center gap-2">
                         <div className="w-52 h-52">
-                            <img className="w-full h-full object-cover rounded-full" src={image} alt=""/>
+                            <img className="w-full h-full object-cover rounded-full" src={user?.image} alt=""/>
                         </div>
-                        <div className="font-bold text-lg tracking-wider">{username}</div>
+                        <div className="font-bold text-lg tracking-wider">{user?.username}</div>
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -35,10 +34,6 @@ const ProfilePage = () => {
                                 </div>
                             }
 
-                        </div>
-                        <div className="flex gap-4">
-                            <div>Posts: 2</div>
-                            <div>Likes: 2</div>
                         </div>
                         <UpdateProfile/>
                     </div>

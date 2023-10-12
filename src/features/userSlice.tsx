@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
-import {Post, UserInitialState} from "../interfaces.tsx";
+import {Post, User, UserInitialState} from "../interfaces.tsx";
 
 const token: string | null = localStorage.getItem('token')
 const autoLogin: boolean = Boolean(localStorage.getItem('autoLogin'))
@@ -54,39 +54,13 @@ export const updateUserBio = createAsyncThunk('posts/updateBio', async ({token, 
     return response?.data
 })
 
-export const getUserPosts = createAsyncThunk('user/getUserPosts', async ({token, username}: {
-    token: string | null, username: string | undefined
-}) => {
-
-    if (token === null) {
-        throw new Error('Token not available')
-    }
-
-    const options: RequestInit = {
-        method: "GET",
-        headers: {
-            "content-type": "application/json",
-            "authorization": token,
-        },
-    };
-
-    const response = await fetch('http://localhost:8000/posts', options)
-        .then(res => res.json())
-
-    console.log('all posts:', response.data)
-    const allPosts = response?.data as Post[]
-    return allPosts.filter(post => post.username === username)
-})
 
 export const userSlice = createSlice({
         name: "user",
         initialState: {
-            username: undefined,
-            image: undefined,
+            user: undefined,
             token,
-            bio: undefined,
             autoLogin,
-            userPosts: undefined,
             loadingState: 'idle',
             loadingMessage: ''
         } as UserInitialState,
@@ -95,17 +69,8 @@ export const userSlice = createSlice({
                 state.token = action.payload
                 localStorage.setItem('token', state.token);
             },
-            setUsername: (state, action: PayloadAction<string>) => {
-                state.username = action.payload
-            },
-            setBio: (state, action: PayloadAction<string>) => {
-                state.bio = action.payload
-            },
-            setImage: (state, action: PayloadAction<string>) => {
-                state.image = action.payload
-            },
-            setUserPosts: (state, action: PayloadAction<Post[] | undefined>) => {
-                state.userPosts = action.payload
+            setUser: (state, action: PayloadAction<User>) => {
+                state.user = action.payload
             },
             setAutoLogin: (state, action: PayloadAction<boolean>) => {
                 state.autoLogin = action.payload
@@ -120,12 +85,16 @@ export const userSlice = createSlice({
             })
             builder.addCase(updateUserImage.fulfilled, (state, action: PayloadAction<string>) => {
                 state.loadingState = 'idle';
-                state.image = action.payload
+                if (state.user) {
+                    state.user.image = action.payload;
+                }
                 state.loadingMessage = ''
             })
             builder.addCase(updateUserImage.rejected, (state, action) => {
                 state.loadingState = 'error'
-                state.image = undefined
+                if (state.user) {
+                    state.user.image = '';
+                }
                 state.loadingMessage = action.error.message
             })
 
@@ -136,28 +105,16 @@ export const userSlice = createSlice({
             })
             builder.addCase(updateUserBio.fulfilled, (state, action: PayloadAction<string>) => {
                 state.loadingState = 'idle';
-                state.bio = action.payload
+                if (state.user) {
+                    state.user.bio = action.payload
+                }
                 state.loadingMessage = ''
             })
             builder.addCase(updateUserBio.rejected, (state, action) => {
                 state.loadingState = 'error'
-                state.bio = undefined
-                state.loadingMessage = action.error.message
-            })
-
-            // POSTS
-
-            builder.addCase(getUserPosts.pending, (state) => {
-                state.loadingState = 'loading'
-            })
-            builder.addCase(getUserPosts.fulfilled, (state, action: PayloadAction<Post[]>) => {
-                state.loadingState = 'idle';
-                state.userPosts = action.payload
-                state.loadingMessage = ''
-            })
-            builder.addCase(getUserPosts.rejected, (state, action) => {
-                state.loadingState = 'error'
-                state.userPosts = undefined
+                if (state.user) {
+                    state.user.bio = ''
+                }
                 state.loadingMessage = action.error.message
             })
         },
@@ -165,11 +122,8 @@ export const userSlice = createSlice({
 )
 export const {
     setToken,
-    setUsername,
+    setUser,
     setAutoLogin,
-    setImage,
-    setBio,
-    setUserPosts,
 } = userSlice.actions
 
 export default userSlice.reducer

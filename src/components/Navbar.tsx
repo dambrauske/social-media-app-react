@@ -3,8 +3,7 @@ import {useNavigate} from "react-router-dom";
 
 const Navbar = () => {
 
-    const username = useAppSelector(state => state.user.username)
-    const image = useAppSelector(state => state.user.image)
+    const user = useAppSelector(state => state.user.user)
     const navigate = useNavigate()
 
 
@@ -20,10 +19,10 @@ const Navbar = () => {
                     onClick={() => navigate('/profile')}
                     className="flex gap-2 items-center cursor-pointer rounded">
                     <div className="w-10 h-10">
-                        <img className="w-full h-full object-cover rounded-full" src={image} alt=""/>
+                        <img className="w-full h-full object-cover rounded-full" src={user?.image} alt=""/>
                     </div>
                     <div className="flex flex-col items-start">
-                        <div>{username}</div>
+                        <div>{user?.username}</div>
                     </div>
                 </div>
                 <div

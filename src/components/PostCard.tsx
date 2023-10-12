@@ -1,6 +1,6 @@
 import {Post} from "../features/userSlice.tsx";
 import {useAppSelector} from "../hooks.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import LikesAndComments from "./LikesAndComments.tsx";
 import PostSettingsModal from "./PostSettingsModal.tsx";
 import {useNavigate} from "react-router-dom";
@@ -11,11 +11,11 @@ type Props = {
 
 const PostCard = ({ post }: Props) => {
 
-    const username = useAppSelector(state => state.user.username)
-    const [userImage, setUserImage] = useState<string | undefined>(undefined)
+    const user = useAppSelector(state => state.user.user)
     const [showPostSettingsModal, setShowPostSettingsModal] = useState<boolean>(false)
     const navigate = useNavigate()
 
+    const username = user?.username
 
     const showPostSettings = (e: Event) => {
         setShowPostSettingsModal(!showPostSettingsModal)

@@ -2,7 +2,7 @@ import LikesAndComments from "../components/LikesAndComments.tsx";
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {useEffect} from "react";
-import {setComments, setSelectedPost, setSinglePost} from "../features/postsSlice.tsx";
+import {setComments, setSinglePost} from "../features/postsSlice.tsx";
 import Comments from "../components/Comments.tsx";
 import Navbar from "../components/Navbar.tsx";
 import socket from "../socket.tsx";
@@ -11,14 +11,17 @@ import socket from "../socket.tsx";
 const SinglePostPage = () => {
     const { postId } = useParams()
 
+
+    const allPosts = useAppSelector(state => state.posts.posts)
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
     const post = useAppSelector(state => state.posts.singlePost)
+    const user = useAppSelector(state => state.user.username)
 
-    console.log('post', post)
+    console.log('post in single post page', post)
+
 
     useEffect(() => {
-        dispatch(setSelectedPost(postId))
         if (token === null) {
             throw new Error('Token not available')
         }
@@ -33,7 +36,7 @@ const SinglePostPage = () => {
         return () => {
             socket().off('fetchedSinglePost');
         }
-    }, [])
+    }, [allPosts])
 
     return (
         <div>
@@ -53,7 +56,8 @@ const SinglePostPage = () => {
                             <div>{post?.title}</div>
                         </div>
                         <div className="self-end">
-                            <LikesAndComments/>
+                            <LikesAndComments
+                            post={post}/>
                         </div>
                         <hr/>
                         <Comments/>

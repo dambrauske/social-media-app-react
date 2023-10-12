@@ -7,7 +7,7 @@ const PostsPage = () => {
     return (
         <div>
             <Navbar/>
-            <div className="p-4 bg-slate-50">
+            <div className="p-4 bg-slate-50 flex flex-col items-center justify-center">
                 <AddNewPost/>
                 <AllPosts/>
             </div>

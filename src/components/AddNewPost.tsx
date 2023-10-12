@@ -1,9 +1,9 @@
 import {validateImage, validateTitle} from "../helperFunctions.tsx";
 import {RefObject, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import {Post, setUserPosts} from "../features/userSlice.tsx";
-import {addPost, setAllPosts} from "../features/postsSlice.tsx";
+import {setAllPosts, setUserPosts} from "../features/postsSlice.tsx";
 import socket from "../socket.tsx";
+import {Post} from "../interfaces.tsx";
 
 const AddNewPost = () => {
 
@@ -29,7 +29,7 @@ const AddNewPost = () => {
         socket().on('sendAllPosts', (data: Post[]) => {
             console.log('sendAllPosts', data)
             dispatch(setAllPosts(data))
-            const userPosts = data.filter(post => post.username === currentUserUsername)
+            const userPosts = data.filter(post => post.user.username === currentUserUsername)
             dispatch(setUserPosts(userPosts))
         })
 
@@ -77,7 +77,7 @@ const AddNewPost = () => {
             </div>
             <button
                 onClick={() => createPost(token, imageRef.current?.value ?? null, titleRef.current?.value ?? null)}
-                className="bg-slate-300 p-1">create post
+                className="bg-slate-300 p-1 rounded">create post
             </button>
         </div>
     );

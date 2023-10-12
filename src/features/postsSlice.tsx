@@ -5,6 +5,7 @@ export const postsSlice: Slice<PostsInitialState> = createSlice({
         name: "posts",
         initialState: {
             posts: undefined,
+            userPosts: undefined,
             singlePost: undefined,
             selectedPost: undefined,
             comments: undefined,
@@ -17,8 +18,21 @@ export const postsSlice: Slice<PostsInitialState> = createSlice({
             setSelectedPost: (state, action: PayloadAction<Post>) => {
                 state.selectedPost = action.payload
             },
+            updateSinglePost: (state, action: PayloadAction<Post>) => {
+                const updatedPost = action.payload
+                const postId = updatedPost._id
+                if (state.posts) {
+                    const postIndex = state.posts.findIndex(post => post._id === postId)
+                    if (postIndex !== -1) {
+                        state.posts[postIndex] = updatedPost
+                    }
+                }
+            },
             setSinglePost: (state, action: PayloadAction<Post>) => {
                 state.singlePost = action.payload
+            },
+            setUserPosts: (state, action: PayloadAction<Post[] | undefined>) => {
+                state.userPosts = action.payload
             },
             setComments: (state, action: PayloadAction<Comment[]>) => {
                 state.comments = [...action.payload].sort((objA, objB) => {
@@ -39,6 +53,8 @@ export const {
     setSelectedPost,
     setComments,
     setSinglePost,
+    updateSinglePost,
+    setUserPosts,
 } = postsSlice.actions
 
 export default postsSlice.reducer

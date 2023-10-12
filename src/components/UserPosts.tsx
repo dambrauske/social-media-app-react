@@ -1,20 +1,35 @@
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import {getUserPosts, Post} from "../features/userSlice.tsx";
 import PostCard from "./PostCard.tsx";
+import {Post} from "../interfaces.tsx";
 import {useEffect} from "react";
+import socket from "../socket.tsx";
+import {setUserPosts} from "../features/postsSlice.tsx";
 
 const UserPosts = () => {
 
+    const userPosts = useAppSelector(state => state.posts.userPosts)
+    const allPosts = useAppSelector(state => state.posts.posts)
     const dispatch = useAppDispatch()
-    const userPosts = useAppSelector(state => state.user.userPosts)
-    const username = useAppSelector(state => state.user.username)
+    const username = useAppSelector(state => state.user?.user?.username)
     const token = useAppSelector(state => state.user.token)
 
-
     useEffect(() => {
-        dispatch(getUserPosts({token, username}))
-    }, [])
+        if (token === null) {
+            throw new Error('Token not available')
+        }
 
+        socket().emit('getPosts', ({token}))
+        socket().on('Posts', (data: Post[]) => {
+            const userPosts = data.filter(post => post.user.username === username)
+            console.log('userPosts',userPosts)
+            dispatch(setUserPosts(userPosts))
+        })
+
+        return () => {
+            socket().off('Posts')
+        }
+
+    }, [allPosts])
 
     return (
         <div className="flex flex-wrap gap-4">

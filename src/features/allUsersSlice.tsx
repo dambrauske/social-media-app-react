@@ -19,7 +19,6 @@ export const fetchAllUsers = createAsyncThunk('users/fetchAllUsers', async (toke
     const response = await fetch('http://localhost:8000/users', options)
         .then(res => res.json())
 
-    console.log('all users:', response.data)
     return response?.data
 })
 

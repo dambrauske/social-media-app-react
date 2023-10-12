@@ -1,7 +1,6 @@
 export interface Post {
     _id: string,
-    username: string,
-    userId: string,
+    user: string | User,
     date: string,
     image: string,
     title: string,
@@ -31,18 +30,16 @@ export interface Like {
 }
 
 export interface UserInitialState {
-    username: string | undefined,
-    image: string | undefined,
-    bio: string | undefined,
+    user: undefined | User,
     token: string | null,
     autoLogin: boolean,
-    userPosts: Post[] | undefined,
     loadingState: 'idle' | 'loading' | 'error',
     loadingMessage: string | undefined,
 }
 
 export interface PostsInitialState {
     posts: Post[] | undefined,
+    userPosts: Post[] | undefined,
     singlePost: Post | undefined,
     selectedPost: Post | undefined,
     comments: Comment [] | undefined,

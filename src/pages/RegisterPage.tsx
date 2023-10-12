@@ -3,7 +3,7 @@ import {RefObject, useRef, useState} from "react";
 // import {validateEmail, validatePassword, validatePassword2, validateUsername} from "../helperFunctions.tsx";
 import Autologin from "../components/Autologin.tsx";
 import {useAppDispatch} from "../hooks.tsx";
-import {setImage, setToken, setUsername} from "../features/userSlice.tsx";
+import {setImage, setToken, setUser, setUsername} from "../features/userSlice.tsx";
 
 type NewUser = {
     username: string | undefined,
@@ -51,8 +51,7 @@ const RegisterPage = () => {
                     const response = await fetch('http://localhost:8000/register', options)
                     const data = await response.json()
                     console.log(data)
-                    dispatch(setUsername(data.data.username))
-                    dispatch(setImage(data.data.image))
+                    dispatch(setUser(data.data.user))
                     dispatch(setToken(data.data.token))
                     navigate('/profile')
                 } catch (error) {

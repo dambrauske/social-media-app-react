@@ -16,7 +16,8 @@ const SinglePostPage = () => {
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
     const post = useAppSelector(state => state.posts.singlePost)
-    const user = useAppSelector(state => state.user.username)
+    const user = useAppSelector(state => state.user?.user)
+    const comments = useAppSelector(state => state.posts.comments)
 
     console.log('post in single post page', post)
 
@@ -32,6 +33,7 @@ const SinglePostPage = () => {
             dispatch(setSinglePost(data.post))
             dispatch(setComments(data.postComments))
         })
+
 
         return () => {
             socket().off('fetchedSinglePost');
@@ -50,7 +52,7 @@ const SinglePostPage = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col p-2 w-72 gap-4">
+                    <div className="flex flex-col p-2 w-80 gap-4">
                         <div className="flex flex-col items-start gap-2">
                             <div className="font-bold text-xl">{post?.user.username}</div>
                             <div>{post?.title}</div>

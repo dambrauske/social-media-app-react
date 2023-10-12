@@ -1,4 +1,4 @@
-import {Comment} from "../features/postsSlice.tsx";
+import {Comment} from "../interfaces.tsx";
 
 
 type Props = {
@@ -7,18 +7,23 @@ type Props = {
 
 const CommentSingle = ({comment} : Props ) => {
 
-
     return (
-        <div className="p-2 flex gap-2 rounded">
-            <div className="w-10 h-10">
-                <img className="w-full h-full rounded-full" src={comment.user.image} alt=""/>
+        <div className="p-2 gap-1 flex border w-full">
+
+            <div className="w-1/6 flex justify-center">
+                <img className="w-10 h-10 rounded-full object-cover" src={comment.user.image} alt=""/>
             </div>
 
-            <div className="flex flex-col">
-                <div>{comment.username}</div>
-                <div>{comment.comment}</div>
+            <div className="w-5/6 flex flex-col bg-slate-300 rounded-2xl p-2">
+                <div className="text-xs font-bold tracking-wider">
+                    {comment.user.username}
+                </div>
+                <div className="w-full overflow-hidden">
+                    <div className="text-sm break-words">
+                        {comment.comment}
+                    </div>
+                </div>
             </div>
-
         </div>
     );
 };

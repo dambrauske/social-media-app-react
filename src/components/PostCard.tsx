@@ -1,9 +1,9 @@
-import {Post} from "../features/userSlice.tsx";
 import {useAppSelector} from "../hooks.tsx";
 import {MouseEvent, useState} from "react";
 import LikesAndComments from "./LikesAndComments.tsx";
 import PostSettingsModal from "./PostSettingsModal.tsx";
 import {useNavigate} from "react-router-dom";
+import {Post} from "../interfaces.tsx";
 
 type Props = {
     post: Post

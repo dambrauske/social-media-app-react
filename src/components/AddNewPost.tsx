@@ -13,8 +13,7 @@ const AddNewPost = () => {
     const [titleError, setTitleError] = useState<string | null>(null);
     const [postSuccessMessage, setPostSuccessMessage] = useState<string | null>(null)
     const dispatch = useAppDispatch()
-    const allPosts = useAppSelector(state => state.posts.posts)
-    const currentUserUsername = useAppSelector(state => state.user.username)
+    const currentUserUsername = useAppSelector(state => state.user?.user?.username)
     const token = useAppSelector(state => state.user.token)
 
     const createPost = async (token: string | null,image: string | null, title: string | null) => {

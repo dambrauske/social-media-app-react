@@ -6,17 +6,21 @@ import {useAppSelector} from "../hooks.tsx";
 const Comments = () => {
 
     const comments = useAppSelector(state => state.posts.comments)
+    console.log('comments', comments)
 
 
     return (
-        <div className="flex flex-col bg-slate-200">
+        <div className="flex flex-col bg-slate-200 rounded h-screen">
             <Comment/>
-            {comments && comments.map((comment, i) => (
-                <CommentSingle
-                key={i}
-                comment={comment}
-                />
-            ))}
+            <div className="overflow-y-auto custom-scrollbar rounded">
+                {comments && comments.map((comment, i) => (
+                    <CommentSingle
+                        key={i}
+                        comment={comment}
+                    />
+                ))}
+            </div>
+
 
         </div>
     );

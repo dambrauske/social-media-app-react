@@ -24,7 +24,7 @@ const PostCard = ({ post }: Props) => {
 
         <div
             onClick={() => navigate(`/post/${post._id}`)}
-            className="flex flex-col p-2 rounded bg-white gap-2 w-96 relative">
+            className="flex flex-col p-2 rounded bg-white gap-2 relative">
             <div className="w-full h-60">
                 <img className="w-full h-full object-cover rounded" src={post.image} alt=""/>
             </div>

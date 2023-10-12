@@ -33,7 +33,7 @@ const AllPosts = () => {
 
 
     return (
-            <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+            <div className="p-4 gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
 
                 {allPosts && allPosts.map((post: Post, i: number) => (
                     <PostCard

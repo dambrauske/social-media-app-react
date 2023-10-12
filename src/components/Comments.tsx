@@ -10,7 +10,7 @@ const Comments = () => {
 
 
     return (
-        <div className="flex flex-col bg-slate-200 rounded h-screen">
+        <div className="flex flex-col bg-slate-200 rounded h-[25rem]">
             <Comment/>
             <div className="overflow-y-auto custom-scrollbar rounded">
                 {comments && comments.map((comment, i) => (

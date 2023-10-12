@@ -14,8 +14,8 @@ const ProfilePage = () => {
         <div>
             <Navbar/>
 
-            <div className="flex justify-center p-4">
-                <div className="p-4 gap-4 flex flex-col items-start w-ful w-1/2">
+            <div className="flex flex-col md:flex-row gap-4 p-4">
+                <div className="p-2 gap-4 flex flex-col items-start w-1/4">
 
                     <div className="flex flex-col items-center gap-2">
                         <div className="w-52 h-52">
@@ -35,14 +35,13 @@ const ProfilePage = () => {
                             }
 
                         </div>
-                        <UpdateProfile/>
+                            <UpdateProfile/>
                     </div>
                 </div>
+            <div className="flex justify-center w-full">
 
-                <div className="w-1/2">
-                    <UserPosts/>
-
-                </div>
+                <UserPosts/>
+            </div>
 
             </div>
         </div>

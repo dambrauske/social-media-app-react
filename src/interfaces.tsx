@@ -25,8 +25,9 @@ export interface Comment {
 }
 
 export interface Like {
-    user: User,
+    user: string,
     post: Post,
+    _id: string,
 }
 
 export interface UserInitialState {

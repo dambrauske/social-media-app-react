@@ -1,6 +1,6 @@
 import {Post} from "../features/userSlice.tsx";
 import {useAppSelector} from "../hooks.tsx";
-import {useState} from "react";
+import {MouseEvent, useState} from "react";
 import LikesAndComments from "./LikesAndComments.tsx";
 import PostSettingsModal from "./PostSettingsModal.tsx";
 import {useNavigate} from "react-router-dom";
@@ -11,13 +11,11 @@ type Props = {
 
 const PostCard = ({ post }: Props) => {
 
-    const user = useAppSelector(state => state.user.user)
+    const username = useAppSelector(state => state.user?.user?.username)
     const [showPostSettingsModal, setShowPostSettingsModal] = useState<boolean>(false)
     const navigate = useNavigate()
 
-    const username = user?.username
-
-    const showPostSettings = (e: Event) => {
+    const showPostSettings = (e: MouseEvent<HTMLDivElement>) => {
         setShowPostSettingsModal(!showPostSettingsModal)
         e.stopPropagation()
     }
@@ -45,9 +43,9 @@ const PostCard = ({ post }: Props) => {
 
             <div className="p-2">{post.title}</div>
 
-            {post.username === username ?
+            {post.user.username === username ?
                 <div
-                    onClick={showPostSettings}
+                    onClick={(e)=> showPostSettings(e)}
                     className="absolute top-0 right-0 h-6 w-6 bg-slate-200  rounded-full flex justify-center items-center cursor-pointer">
                     <i className="fas fa-ellipsis-h"></i>
                 </div>

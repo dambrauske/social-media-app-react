@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {MouseEvent} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import socket from "../socket.tsx";
-import { updateSinglePost} from "../features/postsSlice.tsx";
+import {updateSinglePost} from "../features/postsSlice.tsx";
 
 type Props = {
     post: Post
@@ -13,6 +13,7 @@ const LikesAndComments = ({post}: Props) => {
 
     const navigate = useNavigate()
     const token = useAppSelector(state => state.user.token)
+    const userId = useAppSelector(state => state.user?.user.id)
     const dispatch = useAppDispatch()
 
     const likePost = (token: string | null, postId: string | null, e: MouseEvent<HTMLDivElement>) => {
@@ -28,13 +29,29 @@ const LikesAndComments = ({post}: Props) => {
         }
     }
 
+
+    const isPostLikedByUser = () => {
+        const liked = post?.likes.some(like => like.user === userId);
+        console.log('Is liked by user:', liked);
+        return liked;
+    }
+
     return (
         <div className="flex items-center gap-6 text-slate-500">
 
             <div
                 onClick={(e) => likePost(token, post._id, e)}
                 className="flex items-center gap-2">
-                <i className="far fa-heart cursor-pointer"></i>
+                {
+                    isPostLikedByUser() ?
+
+                        <i className="fas fa-heart cursor-pointer"></i>
+                        :
+                        <i className="far fa-heart cursor-pointer"></i>
+
+                }
+
+
                 {post?.likes && post.likes.length > 0 ?
                     <div>{post.likes.length}</div>
                     :

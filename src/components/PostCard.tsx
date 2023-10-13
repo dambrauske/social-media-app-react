@@ -9,7 +9,7 @@ type Props = {
     post: Post
 }
 
-const PostCard = ({ post }: Props) => {
+const PostCard = ({post}: Props) => {
 
     const username = useAppSelector(state => state.user?.user?.username)
     const [showPostSettingsModal, setShowPostSettingsModal] = useState<boolean>(false)
@@ -34,18 +34,24 @@ const PostCard = ({ post }: Props) => {
                     <div className="w-12 h-12">
                         <img className="w-full h-full rounded-full" src={post.user.image} alt=""/>
                     </div>
-                    <div className="font-bold text-xl">{post.user.username}:</div>
+                    <div>
+                        <div className="font-bold text-xl">{post.user.username}:</div>
+                        <div className="text-xs text-slate-400">{post.date}</div>
+                    </div>
                 </div>
                 <LikesAndComments
-                post={post}
+                    post={post}
                 />
             </div>
 
-            <div className="p-2">{post.title}</div>
+            <div className="w-full overflow-hidden">
+                <div className="p-2 break-words">{post.title}</div>
+            </div>
+
 
             {post.user.username === username ?
                 <div
-                    onClick={(e)=> showPostSettings(e)}
+                    onClick={(e) => showPostSettings(e)}
                     className="absolute top-0 right-0 h-6 w-6 bg-slate-200  rounded-full flex justify-center items-center cursor-pointer">
                     <i className="fas fa-ellipsis-h"></i>
                 </div>

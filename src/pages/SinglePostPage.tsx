@@ -9,15 +9,13 @@ import socket from "../socket.tsx";
 
 
 const SinglePostPage = () => {
-    const { postId } = useParams()
-
+    const {postId} = useParams()
 
     const allPosts = useAppSelector(state => state.posts.posts)
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
     const post = useAppSelector(state => state.posts.singlePost)
-    const user = useAppSelector(state => state.user?.user)
-    const comments = useAppSelector(state => state.posts.comments)
+
 
     console.log('post in single post page', post)
 
@@ -55,11 +53,13 @@ const SinglePostPage = () => {
                     <div className="flex flex-col p-2 w-80 gap-4">
                         <div className="flex flex-col items-start gap-2">
                             <div className="font-bold text-xl">{post?.user.username}</div>
-                            <div>{post?.title}</div>
+                            <div className="w-full overflow-hidden">
+                                <div className="p-2 break-words">{post?.title}</div>
+                            </div>
                         </div>
                         <div className="self-end">
                             <LikesAndComments
-                            post={post}/>
+                                post={post}/>
                         </div>
                         <hr/>
                         <Comments/>
@@ -88,7 +88,6 @@ const SinglePostPage = () => {
 
             </div>
         </div>
-
 
 
     );

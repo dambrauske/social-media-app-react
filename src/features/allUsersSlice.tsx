@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
-import {User, UserInitialState, UsersInitialState} from "../interfaces.tsx";
-import {updateUserImage} from "./userSlice.tsx";
+import {Post, User, UsersInitialState} from "../interfaces.tsx";
+import {postsSlice} from "./postsSlice.tsx";
 
 export const fetchAllUsers = createAsyncThunk('users/fetchAllUsers', async (token: string | null) => {
 
@@ -26,13 +26,14 @@ export const usersSlice = createSlice({
     name: "users",
     initialState: {
         users: [],
+        selectedUser: undefined,
         loadingState: 'idle',
         loadingMessage: '',
     } as UsersInitialState,
     reducers: {
-        setUsers: (state, action: PayloadAction<UserInitialState[]>) => {
-            state.users = action.payload
-        },
+        setSelectedUser: (state, action: PayloadAction<User>) => {
+            state.selectedUser = action.payload
+        }
     },
     extraReducers: (builder) => {
 
@@ -53,8 +54,9 @@ export const usersSlice = createSlice({
 
 
 })
+
 export const {
-    setUsers
+    setSelectedUser,
 } = usersSlice.actions
 
 export default usersSlice.reducer

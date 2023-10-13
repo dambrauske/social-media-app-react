@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {RefObject, useEffect, useRef} from "react";
-import {setComments, setSinglePost} from "../features/postsSlice.tsx";
+import {setComments, setSelectedPost, setSinglePost} from "../features/postsSlice.tsx";
 import socket from "../socket.tsx";
 
 const Comment = () => {
@@ -22,11 +22,25 @@ const Comment = () => {
                 throw new Error('Token not available')
             }
             socket().emit('addComment', ({token, postId, text}))
-            socket().emit('fetchSinglePost', ({token, postId}))
+
+            socket().on('post', (data) => {
+                console.log('post', data)
+                dispatch(setSinglePost(data))
+            })
 
         }
+
+        // socket().on('fetchedSinglePost', (data) => {
+        //     console.log('fetchedSinglePost', data)
+        //     dispatch(setSinglePost(data.post))
+        // })
         if (commentRef.current) {
             commentRef.current.value = ''
+        }
+
+        return () => {
+            socket().off('postComments')
+            socket().off('fetchedSinglePost')
         }
 
 
@@ -34,20 +48,7 @@ const Comment = () => {
 
     useEffect(() => {
 
-        socket().on('postComments', (data) => {
-            console.log('postComments', data)
-            dispatch(setComments(data))
-        })
 
-        socket().on('fetchedSinglePost', (data) => {
-            console.log('fetchedSinglePost', data)
-            dispatch(setSinglePost(data.post))
-        })
-
-        return () => {
-            socket().off('postComments')
-            socket().off('fetchedSinglePost')
-        }
     }, [])
 
     return (

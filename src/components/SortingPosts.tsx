@@ -82,24 +82,67 @@ const SortingPosts = () => {
 
         return (
             <div className="flex gap-4 w-full justify-end rounded p-2">
-                <div className="p-1 text-slate-400">
+
+                <div className="p-1 text-slate-400 mr-4">
                     sort by:
                 </div>
+
                 <div
                     onClick={() => sortPostsByCriteria('comments', commentsSortingOrder, allPosts)}
-                    className={`cursor-pointer hover:bg-slate-200 rounded p-1 ${sortCriteria === 'comments' ? 'bg-slate-200' : 'bg-slate:100'}`}>
-                    comments
+                    className={`flex gap-2 cursor-pointer hover:bg-slate-200 rounded p-1 ${sortCriteria === 'comments' ? 'bg-slate-200' : 'bg-slate:100'} ${sortCriteria === 'comments' ? 'text-black' : 'text-slate-400'}`}>
+                    <div>
+                        comments
+                    </div>
+                    <div className="flex flex-col items-center justify-center w-4">
+                        {
+                            sortCriteria === 'comments' && commentsSortingOrder === 'ascending' &&
+                            <i className="fas fa-sort-up"></i>
+                        }
+                        {
+                            sortCriteria === 'comments' && commentsSortingOrder === 'descending' &&
+                            <i className="fas fa-sort-down"></i>
+                        }
+                    </div>
                 </div>
+
+
                 <div
-                    onClick={() => sortPostsByCriteria('likes', likesSortingOrder, allPosts)}
-                    className={`cursor-pointer hover:bg-slate-200 rounded p-1 ${sortCriteria === 'likes' ? 'bg-slate-200' : 'bg-slate:100'}`}>
-                    likes
+                    onClick={() => sortPostsByCriteria('likes', commentsSortingOrder, allPosts)}
+                    className={`flex gap-2 cursor-pointer hover:bg-slate-200 rounded p-1 ${sortCriteria === 'likes' ? 'bg-slate-200' : 'bg-slate:100'} ${sortCriteria === 'likes' ? 'text-black' : 'text-slate-400'}`}>
+                    <div>
+                        likes
+                    </div>
+                    <div className="flex flex-col items-center justify-center w-4">
+                        {
+                            sortCriteria === 'likes' && likesSortingOrder === 'ascending' &&
+                            <i className="fas fa-sort-up"></i>
+                        }
+                        {
+                            sortCriteria === 'likes' && likesSortingOrder === 'descending' &&
+                            <i className="fas fa-sort-down"></i>
+                        }
+                    </div>
                 </div>
+
+
                 <div
                     onClick={() => sortPostsByCriteria('date', dateSortingOrder, allPosts)}
-                    className={`cursor-pointer hover:bg-slate-200 rounded p-1 ${sortCriteria === 'date' ? 'bg-slate-200' : 'bg-slate:100'}`}>
-                    date
+                    className={`flex gap-2 cursor-pointer hover:bg-slate-200 rounded p-1 ${sortCriteria === 'date' ? 'bg-slate-200' : 'bg-slate:100'} ${sortCriteria === 'date' ? 'text-black' : 'text-slate-400'}`}>
+                    <div>
+                        date
+                    </div>
+                    <div className="flex flex-col items-center justify-center w-4">
+                        {
+                            sortCriteria === 'date' && dateSortingOrder === 'ascending' &&
+                            <i className="fas fa-sort-up"></i>
+                        }
+                        {
+                            sortCriteria === 'date' && dateSortingOrder === 'descending' &&
+                            <i className="fas fa-sort-down"></i>
+                        }
+                    </div>
                 </div>
+
             </div>
         );
     }

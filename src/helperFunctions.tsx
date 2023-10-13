@@ -70,7 +70,7 @@ export const validateBio = (bio: string | undefined, setterFunction: React.Dispa
 
 export const validateTitle = (title: string | undefined, setterFunction: React.Dispatch<React.SetStateAction<string | null>>) => {
     if (title?.length === 0) return setterFunction('Title cannot be blank')
-    if (title && title.length > 100) return setterFunction('Title cannot be longer than 100 characters')
+    if (title && title.length > 50) return setterFunction('Title cannot be longer than 50 characters')
 
     setterFunction(null)
 }

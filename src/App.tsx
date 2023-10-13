@@ -7,10 +7,11 @@ import {useAppDispatch, useAppSelector} from "./hooks.tsx";
 import {setBio, setUser} from "./features/userSlice.tsx";
 import PostsPage from "./pages/PostsPage.tsx";
 import UsersPage from "./pages/UsersPage.tsx";
-import ProfilePage from "./pages/ProfilePage.tsx";
+import UserPage from "./pages/UserPage.tsx";
 import MessagesPage from "./pages/MessagesPage.tsx";
 import SinglePostPage from "./pages/SinglePostPage.tsx";
 import getSocket from './socket.tsx';
+import ProfilePage from "./pages/ProfilePage.tsx";
 
 function App() {
 
@@ -61,12 +62,13 @@ function App() {
         <div className="font-poppins">
             <Routes>
                 <Route path='/' element={<LoginPage/>}/>
-                <Route path='/profile' element={<ProfilePage/>}/>
+                <Route path='/profile' element={<UserPage/>}/>
                 <Route path='/register' element={<RegisterPage/>}/>
                 <Route path='/posts' element={<PostsPage/>}/>
                 <Route path='/users' element={<UsersPage/>}/>
                 <Route path='/messages' element={<MessagesPage/>}/>
                 <Route path="/post/:postId" element={<SinglePostPage/>}/>
+                <Route path="/user/:userId" element={<ProfilePage/>}/>
             </Routes>
         </div>
     )

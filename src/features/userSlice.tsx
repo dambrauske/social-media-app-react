@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
-import {Post, User, UserInitialState} from "../interfaces.tsx";
+import {User, UserInitialState} from "../interfaces.tsx";
 
 const token: string | null = localStorage.getItem('token')
 const autoLogin: boolean = Boolean(localStorage.getItem('autoLogin'))

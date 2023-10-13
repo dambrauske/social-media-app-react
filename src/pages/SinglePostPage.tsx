@@ -11,13 +11,14 @@ import socket from "../socket.tsx";
 const SinglePostPage = () => {
     const {postId} = useParams()
 
-    const allPosts = useAppSelector(state => state.posts.posts)
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
     const post = useAppSelector(state => state.posts.singlePost)
 
 
     console.log('post in single post page', post)
+    console.log('postId', postId)
+    console.log('token', token)
 
 
     useEffect(() => {
@@ -25,18 +26,17 @@ const SinglePostPage = () => {
             throw new Error('Token not available')
         }
 
-        socket().emit('fetchSinglePost', ({token, postId}))
-        socket().on('fetchedSinglePost', (data) => {
-            console.log('fetchedSinglePost', data)
-            dispatch(setSinglePost(data.post))
-            dispatch(setComments(data.postComments))
+        socket().emit('getSinglePost', ({token, postId}))
+        socket().on('singlePost', (data) => {
+            console.log('singlePost', data)
+            dispatch(setSinglePost(data))
         })
 
 
-        return () => {
-            socket().off('fetchedSinglePost');
-        }
-    }, [allPosts])
+        // return () => {
+        //     socket().off('singlePost');
+        // }
+    }, [])
 
     return (
         <div>

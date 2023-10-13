@@ -42,13 +42,15 @@ export interface PostsInitialState {
     posts: Post[] | undefined,
     userPosts: Post[] | undefined,
     singlePost: Post | undefined,
-    selectedPost: Post | undefined,
+    // selectedPost: Post | undefined,
+    selectedUserPosts: Post[] | undefined,
     comments: Comment [] | undefined,
     postUpdateModal: boolean,
 }
 
 export interface UsersInitialState {
     users: User[] | undefined,
+    selectedUser: User | undefined,
     loadingState: 'idle' | 'loading' | 'error',
     loadingMessage: string | undefined,
 }

@@ -7,6 +7,8 @@ type Props = {
 
 const CommentSingle = ({comment} : Props ) => {
 
+    console.log('comment', comment)
+
     return (
         <div className="p-2 gap-1 flex border w-full">
 

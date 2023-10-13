@@ -8,7 +8,7 @@ const UsersPage = () => {
 
     const dispatch = useAppDispatch()
     const users = useAppSelector(state => state.users.users)
-    const username = useAppSelector(state => state.user.username)
+    const username = useAppSelector(state => state.user?.user?.username)
     const usersExceptCurrent = users?.filter(user => user.username !==username)
     const token = useAppSelector(state => state.user.token)
 
@@ -20,7 +20,7 @@ useEffect(() => {
 
 
     return (
-        <div>
+        <div className="min-h-screen bg-slate-50">
             <Navbar/>
             <div className="flex flex-wrap gap-4 p-4 justify-center">
                 {users && usersExceptCurrent?.map((user,i) => (

@@ -32,7 +32,7 @@ const UserPosts = () => {
     }, [allPosts])
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
             {userPosts && userPosts.map((post: Post, i: number) => (
                 <PostCard
                 key={i}

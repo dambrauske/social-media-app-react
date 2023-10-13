@@ -1,6 +1,6 @@
 import {Post} from "../interfaces.tsx";
 import {useNavigate} from "react-router-dom";
-import {MouseEvent, useEffect, useState} from "react";
+import {MouseEvent, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import socket from "../socket.tsx";
 import {updateSinglePost} from "../features/postsSlice.tsx";
@@ -21,16 +21,19 @@ const LikesAndComments = ({post}: Props) => {
         e.stopPropagation()
         console.log('like post clicked')
         socket().emit('likePost', ({token, postId}))
-    }
-
-    useEffect(() => {
         socket().on('updatedPost', (data) => {
             console.log('updatedPost', data)
             dispatch(updateSinglePost(data))
         })
         return () => {
             socket().off('updatedPost')
+            socket().off('likePost')
         }
+
+    }
+
+    useEffect(() => {
+
     }, [])
 
 
@@ -40,15 +43,15 @@ const LikesAndComments = ({post}: Props) => {
     }
 
     return (
-        <div className="flex items-center gap-6 text-slate-500">
+        <div className="flex items-center gap-3 text-slate-500">
 
             <div
                 onClick={(e) => likePost(token, post._id, e)}
-                className="flex items-center gap-2">
+                className="flex items-center gap-1">
                 {
                     isPostLikedByUser() ?
 
-                        <i className="fas fa-heart cursor-pointer"></i>
+                        <i className="fas fa-heart cursor-pointer text-red-600"></i>
                         :
                         <i className="far fa-heart cursor-pointer"></i>
 
@@ -63,7 +66,7 @@ const LikesAndComments = ({post}: Props) => {
 
             <div
                 onClick={() => navigate(`/post/${post._id}`)}
-                className="flex items-center gap-2">
+                className="flex items-center gap-1">
                 <i className="far fa-comment-dots"></i>
                 {post?.comments && post.comments.length > 0 ?
                     <div>{post.comments.length}</div>

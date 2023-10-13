@@ -21,8 +21,8 @@ const AllPosts = () => {
         socket().emit('getPosts', ({token}))
         socket().on('Posts', (data: Post[]) => {
             dispatch(setAllPosts(data))
+            console.log('data from get posts', data)
             const userPosts = data.filter(post => post.user.username === username)
-            console.log('userPosts',userPosts)
             dispatch(setUserPosts(userPosts))
         })
 
@@ -36,7 +36,7 @@ const AllPosts = () => {
     return (
         <div className="flex items-center flex-col p-2">
             <SortingPosts/>
-            <div className="p-4 gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+            <div className="p-4 gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
 
                 {allPosts && allPosts.map((post: Post, i: number) => (
                     <PostCard

@@ -1,11 +1,11 @@
-import {Comment} from "../interfaces.tsx";
+import {Comment} from "../../interfaces.tsx";
 
 
 type Props = {
     comment: Comment,
 }
 
-const CommentSingle = ({comment} : Props ) => {
+const SingleComment = ({comment} : Props ) => {
 
     console.log('comment', comment)
 
@@ -30,4 +30,4 @@ const CommentSingle = ({comment} : Props ) => {
     );
 };
 
-export default CommentSingle;
+export default SingleComment;

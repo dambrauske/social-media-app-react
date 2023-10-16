@@ -1,7 +1,7 @@
-import {validateBio} from "../helperFunctions.tsx";
+import {validateBio} from "../../helperFunctions.tsx";
 import {RefObject, useRef, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import {updateUserBio} from "../features/userSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
+import {updateUserBio} from "../../features/userSlice.tsx";
 
 const UpdateBio = () => {
 

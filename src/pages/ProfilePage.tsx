@@ -1,14 +1,13 @@
 import Navbar from "../components/Navbar.tsx";
-import UpdateProfile from "../components/UpdateProfile.tsx";
-import UserPosts from "../components/UserPosts.tsx";
 import {useParams} from "react-router-dom";
 import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {setSelectedUser} from "../features/allUsersSlice.tsx";
 import socket from "../socket.tsx";
-import {Post, User} from "../interfaces.tsx";
+import {Post} from "../interfaces.tsx";
 import {setSelectedUserPosts} from "../features/postsSlice.tsx";
 import PostCard from "../components/PostCard.tsx";
+import SendMessageToThisUserButton from "../components/messages/SendMessageToThisUserButton.tsx";
 
 
 const ProfilePage = () => {
@@ -20,6 +19,14 @@ const ProfilePage = () => {
     const selectedUser = useAppSelector(state => state.users.selectedUser)
     const selectedUserPosts = useAppSelector(state => state.posts.selectedUserPosts)
 
+    console.log('selectedUser', selectedUser)
+    let selectedUserPostsSortedByDate
+
+    if (selectedUserPosts) {
+        selectedUserPostsSortedByDate =  [...selectedUserPosts].sort((objA, objB) => {
+            return new Date(objB.date!).getTime() - new Date(objA.date!).getTime()
+        })
+    }
 
     useEffect(() => {
 
@@ -29,6 +36,11 @@ const ProfilePage = () => {
             dispatch(setSelectedUserPosts(data.posts))
             console.log('User', data)
         })
+
+        return () => {
+            socket().off('getUserAndPosts')
+            socket().off('UserAndPosts')
+        }
 
     }, [])
 
@@ -47,6 +59,7 @@ const ProfilePage = () => {
                     </div>
 
                     <div className="flex flex-col gap-2">
+                        <SendMessageToThisUserButton/>
                         <div className="h-4">
                             {
                                 selectedUser?.bio &&
@@ -61,7 +74,7 @@ const ProfilePage = () => {
                 </div>
                 <div className="flex justify-center w-full mt-4">
                     <div className="grid gap-2 grid-cols-2 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
-                        {selectedUserPosts && selectedUserPosts.map((post: Post, i: number) => (
+                        {selectedUserPostsSortedByDate && selectedUserPostsSortedByDate.map((post: Post, i: number) => (
                             <PostCard
                                 key={i}
                                 post={post}

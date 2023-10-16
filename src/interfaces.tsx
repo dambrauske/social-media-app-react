@@ -1,6 +1,6 @@
 export interface Post {
     _id: string,
-    user: string | User,
+    user: User,
     date: string,
     image: string,
     title: string,
@@ -30,12 +30,30 @@ export interface Like {
     _id: string,
 }
 
+export interface Chat {
+    participants: User[],
+    messages: Message[],
+    createdAt: string,
+}
+
+export interface Message {
+    chat: Chat,
+    sentBy: User,
+    message: string,
+    createdAt: string,
+}
+
 export interface UserInitialState {
     user: undefined | User,
     token: string | null,
     autoLogin: boolean,
     loadingState: 'idle' | 'loading' | 'error',
     loadingMessage: string | undefined,
+}
+
+export interface ChatsInitialState {
+    chats: Chat[] | undefined,
+    selectedChat: Chat | undefined,
 }
 
 export interface PostsInitialState {

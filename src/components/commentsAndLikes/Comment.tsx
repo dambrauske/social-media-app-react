@@ -1,7 +1,7 @@
-import {useAppDispatch, useAppSelector} from "../hooks.tsx";
+import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import {RefObject, useEffect, useRef} from "react";
-import {setComments, setSelectedPost, setSinglePost} from "../features/postsSlice.tsx";
-import socket from "../socket.tsx";
+import {setComments, setSelectedPost, setSinglePost} from "../../features/postsSlice.tsx";
+import socket from "../../socket.tsx";
 
 const Comment = () => {
 
@@ -46,10 +46,7 @@ const Comment = () => {
 
     }
 
-    useEffect(() => {
 
-
-    }, [])
 
     return (
         <div className="p-2 flex gap-2 rounded bg-slate-100">

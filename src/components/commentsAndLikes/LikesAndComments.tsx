@@ -1,9 +1,9 @@
-import {Post} from "../interfaces.tsx";
+import {Post} from "../../interfaces.tsx";
 import {useNavigate} from "react-router-dom";
 import {MouseEvent, useEffect} from "react";
-import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import socket from "../socket.tsx";
-import {updateSinglePost} from "../features/postsSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
+import socket from "../../socket.tsx";
+import {updateSinglePost} from "../../features/postsSlice.tsx";
 
 type Props = {
     post: Post

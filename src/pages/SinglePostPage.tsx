@@ -1,9 +1,9 @@
-import LikesAndComments from "../components/LikesAndComments.tsx";
+import LikesAndComments from "../components/commentsAndLikes/LikesAndComments.tsx";
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {useEffect} from "react";
-import {setComments, setSinglePost} from "../features/postsSlice.tsx";
-import Comments from "../components/Comments.tsx";
+import {setSinglePost} from "../features/postsSlice.tsx";
+import Comments from "../components/commentsAndLikes/Comments.tsx";
 import Navbar from "../components/Navbar.tsx";
 import socket from "../socket.tsx";
 

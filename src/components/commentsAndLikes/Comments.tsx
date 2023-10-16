@@ -1,14 +1,19 @@
-import CommentSingle from "./CommentSingle.tsx";
+import SingleComment from "./SingleComment.tsx";
 import Comment from "./Comment.tsx";
-import {useAppSelector} from "../hooks.tsx";
+import {useAppSelector} from "../../hooks.tsx";
 
-// type Props = {
-//     post: Post
-// }
 const Comments = () => {
 
     const post = useAppSelector(state => state.posts.singlePost)
+    const postComments = post?.comments
 
+    let commentsSortedByDate
+
+    if (postComments) {
+        commentsSortedByDate =  [...postComments].sort((objA, objB) => {
+            return new Date(objB.date!).getTime() - new Date(objA.date!).getTime()
+        })
+    }
 
     console.log('post', post)
 
@@ -16,8 +21,8 @@ const Comments = () => {
         <div className="flex flex-col bg-slate-200 rounded h-[25rem]">
             <Comment/>
             <div className="overflow-y-auto custom-scrollbar rounded">
-                {post?.comments && post?.comments.map((comment, i) => (
-                    <CommentSingle
+                {commentsSortedByDate && commentsSortedByDate.map((comment, i) => (
+                    <SingleComment
                         key={i}
                         comment={comment}
                     />

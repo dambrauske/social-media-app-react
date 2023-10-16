@@ -1,5 +1,5 @@
 import {useAppSelector} from "../hooks.tsx";
-import UpdateProfile from "../components/UpdateProfile.tsx";
+import UpdateProfile from "../components/userProfileUpdates/UpdateProfile.tsx";
 import Navbar from "../components/Navbar.tsx";
 import UserPosts from "../components/UserPosts.tsx";
 

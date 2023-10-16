@@ -1,5 +1,5 @@
 import {RefObject, useRef, useState} from "react";
-import {validatePassword} from "../helperFunctions.tsx";
+import {validatePassword} from "../../helperFunctions.tsx";
 
 const UpdatePassword = () => {
 

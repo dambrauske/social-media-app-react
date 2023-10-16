@@ -1,7 +1,7 @@
-import {validateImage} from "../helperFunctions.tsx";
+import {validateImage} from "../../helperFunctions.tsx";
 import {RefObject, useRef, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import {updateUserImage} from "../features/userSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
+import {updateUserImage} from "../../features/userSlice.tsx";
 
 const UpdateImage = () => {
 

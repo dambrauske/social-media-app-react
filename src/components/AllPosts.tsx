@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import PostCard from "./PostCard.tsx";
 import socket from "../socket.tsx";
 import {Post} from "../interfaces.tsx";
-import SortingPosts from "./sortingPosts.tsx";
+import SortingPosts from "./SortingPosts.tsx";
 
 const AllPosts = () => {
 

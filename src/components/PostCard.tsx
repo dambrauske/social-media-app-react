@@ -1,6 +1,6 @@
 import {useAppSelector} from "../hooks.tsx";
 import {MouseEvent, useState} from "react";
-import LikesAndComments from "./LikesAndComments.tsx";
+import LikesAndComments from "./commentsAndLikes/LikesAndComments.tsx";
 import PostSettingsModal from "./PostSettingsModal.tsx";
 import {useNavigate} from "react-router-dom";
 import {Post} from "../interfaces.tsx";
@@ -24,7 +24,7 @@ const PostCard = ({post}: Props) => {
 
         <div
             onClick={() => navigate(`/post/${post._id}`)}
-            className="flex flex-col p-2 rounded bg-white gap-2 relative lg:w-72 shadow">
+            className="flex flex-col p-2 rounded bg-white gap-2 relative lg:w-72shadow">
             <div className="w-full h-60">
                 <img className="w-full h-full object-cover rounded" src={post.image} alt=""/>
             </div>

@@ -107,7 +107,7 @@ const SortingPosts = () => {
 
 
                 <div
-                    onClick={() => sortPostsByCriteria('likes', commentsSortingOrder, allPosts)}
+                    onClick={() => sortPostsByCriteria('likes', likesSortingOrder, allPosts)}
                     className={`flex gap-2 cursor-pointer hover:bg-slate-200 rounded p-1 ${sortCriteria === 'likes' ? 'bg-slate-200' : 'bg-slate:100'} ${sortCriteria === 'likes' ? 'text-black' : 'text-slate-400'}`}>
                     <div>
                         likes

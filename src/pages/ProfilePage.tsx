@@ -6,7 +6,7 @@ import {setSelectedUser} from "../features/allUsersSlice.tsx";
 import socket from "../socket.tsx";
 import {Post} from "../interfaces.tsx";
 import {setSelectedUserPosts} from "../features/postsSlice.tsx";
-import PostCard from "../components/PostCard.tsx";
+import PostCard from "../components/posts/PostCard.tsx";
 import SendMessageToThisUserButton from "../components/messages/SendMessageToThisUserButton.tsx";
 
 

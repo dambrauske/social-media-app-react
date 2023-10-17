@@ -1,9 +1,9 @@
-import {validateImage, validateTitle} from "../helperFunctions.tsx";
+import {validateImage, validateTitle} from "../../helperFunctions.tsx";
 import {RefObject, useRef, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import {setAllPosts, setUserPosts} from "../features/postsSlice.tsx";
-import socket from "../socket.tsx";
-import {Post} from "../interfaces.tsx";
+import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
+import {setAllPosts, setUserPosts} from "../../features/postsSlice.tsx";
+import socket from "../../socket.tsx";
+import {Post} from "../../interfaces.tsx";
 
 const AddNewPost = () => {
 

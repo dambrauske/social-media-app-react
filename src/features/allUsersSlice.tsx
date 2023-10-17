@@ -1,6 +1,5 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
-import {Post, User, UsersInitialState} from "../interfaces.tsx";
-import {postsSlice} from "./postsSlice.tsx";
+import { User, UsersInitialState} from "../interfaces.tsx";
 
 export const fetchAllUsers = createAsyncThunk('users/fetchAllUsers', async (token: string | null) => {
 
@@ -31,7 +30,7 @@ export const usersSlice = createSlice({
         loadingMessage: '',
     } as UsersInitialState,
     reducers: {
-        setSelectedUser: (state, action: PayloadAction<User>) => {
+        setSelectedUser: (state, action: PayloadAction<User | undefined>) => {
             state.selectedUser = action.payload
         }
     },

@@ -1,31 +1,34 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import {RefObject, useRef} from "react";
 import socket from "../../socket.tsx";
-import {setSelectedChat} from "../../features/chatSlice.tsx";
+import {setChats, setSelectedChat} from "../../features/chatSlice.tsx";
 
 const SendMessageField = () => {
 
+    const user = useAppSelector(state => state.user.user)
     const token = useAppSelector(state => state.user.token)
-    const messageReceiverId = useAppSelector(state => state.users?.selectedUser?._id)
+    const selectedChat = useAppSelector(state => state.chats.selectedChat)
+    const chatParticipant = selectedChat?.participants.filter(participant => participant.username !== user?.username)[0]
+    const chatParticipantId = chatParticipant?._id
     const messageRef: RefObject<HTMLTextAreaElement> = useRef(null)
+
     const dispatch = useAppDispatch()
 
     const sendMessage = () => {
         console.log('sendMessage clicked')
-        console.log(token, messageReceiverId)
         const message: string | undefined = messageRef.current?.value
         if (message && message.length > 0) {
 
             if (token === null) {
                 throw new Error('Token not available')
             }
-            socket().emit('addMessage', ({token, messageReceiverId, message}))
+            socket().emit('addMessage', ({token, chatParticipantId, message}))
 
-            socket().on('chat', (data) => {
-                console.log('chat', data)
-                dispatch(setSelectedChat(data))
+            socket().on('chatsAfterAddingMessage', (data) => {
+                dispatch(setChats(data.chats))
+                console.log('data chats', data)
+                dispatch(setSelectedChat(data.chat))
             })
-
         }
 
         if (messageRef.current) {
@@ -34,10 +37,8 @@ const SendMessageField = () => {
 
         return () => {
             socket().off('addMessage')
-            socket().off('chat')
+            socket().off('chatsAfterAddingMessage')
         }
-
-
     }
 
 
@@ -49,7 +50,7 @@ const SendMessageField = () => {
                     ref={messageRef}
                     className="w-full p-2 border rounded-lg focus:outline-none resize-none custom-scrollbar"
                     placeholder="Write a message..."
-                    rows="3"
+                    rows={3}
                 />
                 <div
                     onClick={sendMessage}

@@ -1,9 +1,9 @@
 import {useEffect} from "react";
-import {setAllPosts, setUserPosts} from "../features/postsSlice.tsx";
-import {useAppDispatch, useAppSelector} from "../hooks.tsx";
+import {setAllPosts, setUserPosts} from "../../features/postsSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import PostCard from "./PostCard.tsx";
-import socket from "../socket.tsx";
-import {Post} from "../interfaces.tsx";
+import socket from "../../socket.tsx";
+import {Post} from "../../interfaces.tsx";
 import SortingPosts from "./SortingPosts.tsx";
 
 const AllPosts = () => {

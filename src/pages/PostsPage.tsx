@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar.tsx";
-import AllPosts from "../components/AllPosts.tsx";
-import AddNewPost from "../components/AddNewPost.tsx";
+import AllPosts from "../components/posts/AllPosts.tsx";
+import AddNewPost from "../components/posts/AddNewPost.tsx";
 
 const PostsPage = () => {
 

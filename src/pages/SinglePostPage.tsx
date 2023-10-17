@@ -6,6 +6,8 @@ import {setSinglePost} from "../features/postsSlice.tsx";
 import Comments from "../components/commentsAndLikes/Comments.tsx";
 import Navbar from "../components/Navbar.tsx";
 import socket from "../socket.tsx";
+import {setSelectedUser} from "../features/allUsersSlice.tsx";
+import SendMessageToThisUserButton from "../components/messages/SendMessageToThisUserButton.tsx";
 
 
 const SinglePostPage = () => {
@@ -22,6 +24,8 @@ const SinglePostPage = () => {
 
 
     useEffect(() => {
+
+
         if (token === null) {
             throw new Error('Token not available')
         }
@@ -30,6 +34,7 @@ const SinglePostPage = () => {
         socket().on('singlePost', (data) => {
             console.log('singlePost', data)
             dispatch(setSinglePost(data))
+            dispatch(setSelectedUser(post?.user))
         })
 
 
@@ -53,6 +58,7 @@ const SinglePostPage = () => {
                     <div className="flex flex-col p-2 w-80 gap-4">
                         <div className="flex flex-col items-start gap-2">
                             <div className="font-bold text-xl">{post?.user.username}</div>
+                            <SendMessageToThisUserButton/>
                             <div className="w-full overflow-hidden">
                                 <div className="p-2 break-words">{post?.title}</div>
                             </div>

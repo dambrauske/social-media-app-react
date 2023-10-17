@@ -6,7 +6,7 @@ import socket from "../../socket.tsx";
 import {updateSinglePost} from "../../features/postsSlice.tsx";
 
 type Props = {
-    post: Post
+    post?: Post
 }
 
 const LikesAndComments = ({post}: Props) => {
@@ -17,7 +17,7 @@ const LikesAndComments = ({post}: Props) => {
     const dispatch = useAppDispatch()
 
 
-    const likePost = (token: string | null, postId: string | null, e: MouseEvent<HTMLDivElement>) => {
+    const likePost = (token: string | null, postId: string | null | undefined, e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
         console.log('like post clicked')
         socket().emit('likePost', ({token, postId}))
@@ -46,7 +46,7 @@ const LikesAndComments = ({post}: Props) => {
         <div className="flex items-center gap-3 text-slate-500">
 
             <div
-                onClick={(e) => likePost(token, post._id, e)}
+                onClick={(e) => likePost(token, post?._id, e)}
                 className="flex items-center gap-1">
                 {
                     isPostLikedByUser() ?
@@ -65,7 +65,7 @@ const LikesAndComments = ({post}: Props) => {
             </div>
 
             <div
-                onClick={() => navigate(`/post/${post._id}`)}
+                onClick={() => navigate(`/post/${post?._id}`)}
                 className="flex items-center gap-1">
                 <i className="far fa-comment-dots"></i>
                 {post?.comments && post.comments.length > 0 ?

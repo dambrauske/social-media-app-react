@@ -5,7 +5,6 @@ type Props = {
 }
 const SingleMessage = ({message}: Props) => {
 
-    console.log('message', message)
     return (
         <div className="flex items-center gap-1 p-2 w-1/2">
             <div>

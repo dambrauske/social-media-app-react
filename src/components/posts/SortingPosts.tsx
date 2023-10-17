@@ -1,7 +1,7 @@
-import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import {setAllPosts} from "../features/postsSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
+import {setAllPosts} from "../../features/postsSlice.tsx";
 import {Dispatch, SetStateAction, useState} from "react";
-import {Post} from "../interfaces.tsx";
+import {Post} from "../../interfaces.tsx";
 
 const SortingPosts = () => {
 

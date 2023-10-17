@@ -1,8 +1,8 @@
-import {Post} from "../features/userSlice.tsx";
+import {Post} from "../../features/userSlice.tsx";
 import { MouseEvent } from "react";
-import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import socket from "../socket.tsx";
-import {setAllPosts, setUserPosts} from "../features/postsSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
+import socket from "../../socket.tsx";
+import {setAllPosts, setUserPosts} from "../../features/postsSlice.tsx";
 
 type PostSettingsModalProps = {
     post: Post,

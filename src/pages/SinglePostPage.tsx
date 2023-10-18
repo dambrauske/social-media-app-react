@@ -2,7 +2,7 @@ import LikesAndComments from "../components/commentsAndLikes/LikesAndComments.ts
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {useEffect} from "react";
-import {setSinglePost} from "../features/postsSlice.tsx";
+import {setSelectedPost} from "../features/postsSlice.tsx";
 import Comments from "../components/commentsAndLikes/Comments.tsx";
 import Navbar from "../components/Navbar.tsx";
 import socket from "../socket.tsx";
@@ -12,35 +12,30 @@ import SendMessageToThisUserButton from "../components/messages/SendMessageToThi
 
 const SinglePostPage = () => {
     const {postId} = useParams()
-
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
-    const post = useAppSelector(state => state.posts.singlePost)
+    const post = useAppSelector(state => state.posts.selectedPost)
 
-
-    console.log('post in single post page', post)
-    console.log('postId', postId)
-    console.log('token', token)
-
+    console.log('selectedpost', post)
 
     useEffect(() => {
-
 
         if (token === null) {
             throw new Error('Token not available')
         }
+        dispatch(setSelectedPost(undefined))
 
         socket().emit('getSinglePost', ({token, postId}))
         socket().on('singlePost', (data) => {
             console.log('singlePost', data)
-            dispatch(setSinglePost(data))
+            dispatch(setSelectedPost(data))
             dispatch(setSelectedUser(post?.user))
         })
 
-
-        // return () => {
-        //     socket().off('singlePost');
-        // }
+        return () => {
+            socket().off('getSinglePost')
+            socket().off('singlePost')
+        }
     }, [])
 
     return (
@@ -58,7 +53,9 @@ const SinglePostPage = () => {
                     <div className="flex flex-col p-2 w-80 gap-4">
                         <div className="flex flex-col items-start gap-2">
                             <div className="font-bold text-xl">{post?.user.username}</div>
-                            <SendMessageToThisUserButton/>
+                            <SendMessageToThisUserButton
+                            user={post?.user}
+                            />
                             <div className="w-full overflow-hidden">
                                 <div className="p-2 break-words">{post?.title}</div>
                             </div>

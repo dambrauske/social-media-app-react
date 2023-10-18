@@ -20,8 +20,8 @@ const ProfilePage = () => {
     const selectedUserPosts = useAppSelector(state => state.posts.selectedUserPosts)
 
     console.log('selectedUser', selectedUser)
-    let selectedUserPostsSortedByDate
 
+    let selectedUserPostsSortedByDate
     if (selectedUserPosts) {
         selectedUserPostsSortedByDate =  [...selectedUserPosts].sort((objA, objB) => {
             return new Date(objB.date!).getTime() - new Date(objA.date!).getTime()
@@ -40,6 +40,7 @@ const ProfilePage = () => {
         return () => {
             socket().off('getUserAndPosts')
             socket().off('UserAndPosts')
+            dispatch(setSelectedUser(undefined))
         }
 
     }, [])
@@ -59,7 +60,8 @@ const ProfilePage = () => {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <SendMessageToThisUserButton/>
+                        <SendMessageToThisUserButton
+                        user={selectedUser}/>
                         <div className="h-4">
                             {
                                 selectedUser?.bio &&

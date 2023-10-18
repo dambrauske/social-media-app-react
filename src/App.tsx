@@ -4,7 +4,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "./hooks.tsx";
-import {setBio, setUser} from "./features/userSlice.tsx";
+import {setUser} from "./features/userSlice.tsx";
 import PostsPage from "./pages/PostsPage.tsx";
 import UsersPage from "./pages/UsersPage.tsx";
 import UserPage from "./pages/UserPage.tsx";
@@ -67,6 +67,7 @@ function App() {
                 <Route path='/posts' element={<PostsPage/>}/>
                 <Route path='/users' element={<UsersPage/>}/>
                 <Route path='/messages' element={<MessagesPage/>}/>
+                <Route path='/messages/:selectedUserId' element={<MessagesPage/>}/>
                 <Route path="/post/:postId" element={<SinglePostPage/>}/>
                 <Route path="/user/:userId" element={<ProfilePage/>}/>
             </Routes>

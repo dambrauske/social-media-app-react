@@ -8,8 +8,8 @@ const SendMessageField = () => {
     const user = useAppSelector(state => state.user.user)
     const token = useAppSelector(state => state.user.token)
     const selectedChat = useAppSelector(state => state.chats.selectedChat)
-    const chatParticipant = selectedChat?.participants.filter(participant => participant.username !== user?.username)[0]
-    const chatParticipantId = chatParticipant?._id
+    const selectedUser = useAppSelector(state => state.users.selectedUser)
+    const existingChatParticipant = selectedChat?.participants.filter(participant => participant.username !== user?.username)[0]
     const messageRef: RefObject<HTMLTextAreaElement> = useRef(null)
 
     const dispatch = useAppDispatch()
@@ -22,8 +22,15 @@ const SendMessageField = () => {
             if (token === null) {
                 throw new Error('Token not available')
             }
-            socket().emit('addMessage', ({token, chatParticipantId, message}))
 
+            let otherUserId
+
+            if (!existingChatParticipant) {
+                otherUserId = selectedUser?._id
+            } else {
+                otherUserId = existingChatParticipant?._id
+            }
+            socket().emit('addMessage', ({token, otherUserId, message}))
             socket().on('chatsAfterAddingMessage', (data) => {
                 dispatch(setChats(data.chats))
                 console.log('data chats', data)

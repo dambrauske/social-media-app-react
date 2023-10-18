@@ -4,7 +4,7 @@ import {useAppSelector} from "../../hooks.tsx";
 
 const Comments = () => {
 
-    const post = useAppSelector(state => state.posts.singlePost)
+    const post = useAppSelector(state => state.posts.selectedPost)
     const postComments = post?.comments
 
     let commentsSortedByDate

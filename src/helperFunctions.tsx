@@ -85,6 +85,9 @@ export const validateImage = (image: string | undefined, setterFunction: React.D
 }
 
 export const formatDateFromTimestamp = (originalTimestamp: string | undefined) => {
+    if (!originalTimestamp) {
+        return ''
+    }
     const parsedTimestamp = new Date(originalTimestamp)
 
     const year = parsedTimestamp.getFullYear()

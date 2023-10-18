@@ -1,13 +1,13 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import {RefObject, useEffect, useRef} from "react";
-import {setComments, setSelectedPost, setSinglePost} from "../../features/postsSlice.tsx";
+import {setComments, setSelectedPost} from "../../features/postsSlice.tsx";
 import socket from "../../socket.tsx";
 
 const Comment = () => {
 
     const token = useAppSelector(state => state.user.token)
     const user = useAppSelector(state => state.user.user)
-    const postId = useAppSelector(state => state.posts?.singlePost?._id)
+    const postId = useAppSelector(state => state.posts?.selectedPost?._id)
     const commentRef: RefObject<HTMLTextAreaElement> = useRef(null)
     const dispatch = useAppDispatch()
 
@@ -25,7 +25,7 @@ const Comment = () => {
 
             socket().on('post', (data) => {
                 console.log('post', data)
-                dispatch(setSinglePost(data))
+                dispatch(setSelectedPost(data))
             })
 
         }

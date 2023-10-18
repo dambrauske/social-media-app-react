@@ -59,8 +59,7 @@ export interface ChatsInitialState {
 export interface PostsInitialState {
     posts: Post[] | undefined,
     userPosts: Post[] | undefined,
-    singlePost: Post | undefined,
-    // selectedPost: Post | undefined,
+    selectedPost: Post | undefined,
     selectedUserPosts: Post[] | undefined,
     comments: Comment [] | undefined,
     postUpdateModal: boolean,

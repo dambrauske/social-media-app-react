@@ -1,17 +1,22 @@
 import {Chat} from "../../interfaces.tsx";
 import {useAppSelector} from "../../hooks.tsx";
-import {MouseEventHandler} from "react";
 import {formatDateFromTimestamp} from "../../helperFunctions.tsx";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setSelectedChat} from "../../features/chatSlice.tsx";
 
 type Props = {
     chat: Chat,
-    onClick: MouseEventHandler<HTMLDivElement>,
 }
-const SingleChat = ({chat, onClick}: Props) => {
+const SingleChat = ({chat}: Props) => {
 
     const user = useAppSelector(state => state.user.user)
-    const [chatParticipant] = chat.participants.filter(participant => participant.username !== user?.username)
+    const chatParticipant = chat.participants.filter(participant => participant.username !== user?.username)[0]
+    const recipientId = chatParticipant._id
     const messages = chat.messages
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
     let lastMessage
 
     if (messages) {
@@ -21,10 +26,14 @@ const SingleChat = ({chat, onClick}: Props) => {
         lastMessage = messagesSortedByDate[0]
     }
 
+    const selectChat = () => {
+        navigate(`/messages/${recipientId}`)
+        dispatch(setSelectedChat(chat))
+    }
 
     return (
         <div
-            onClick={onClick}
+            onClick={selectChat}
             className="flex gap-2 items-center p-2 w-full cursor-pointer">
             <div>
                 <img className="w-10 h-10 rounded-full object-cover" src={chatParticipant?.image} alt=""/>

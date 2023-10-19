@@ -11,7 +11,7 @@ const Comments = () => {
 
     if (postComments) {
         commentsSortedByDate =  [...postComments].sort((objA, objB) => {
-            return new Date(objB.date!).getTime() - new Date(objA.date!).getTime()
+            return new Date(objB.createdAt!).getTime() - new Date(objA.createdAt!).getTime()
         })
     }
 
@@ -21,9 +21,9 @@ const Comments = () => {
         <div className="flex flex-col bg-slate-200 rounded h-[25rem]">
             <Comment/>
             <div className="overflow-y-auto custom-scrollbar rounded">
-                {commentsSortedByDate && commentsSortedByDate.map((comment, i) => (
+                {commentsSortedByDate && commentsSortedByDate.map((comment) => (
                     <SingleComment
-                        key={i}
+                        key={comment._id}
                         comment={comment}
                     />
                 ))}

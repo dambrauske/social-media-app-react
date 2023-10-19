@@ -27,21 +27,21 @@ const SingleChat = ({chat}: Props) => {
     }
 
     const selectChat = () => {
-        navigate(`/messages/${recipientId}`)
         dispatch(setSelectedChat(chat))
+        navigate(`/messages/${recipientId}`)
     }
 
     return (
         <div
             onClick={selectChat}
-            className="flex gap-2 items-center p-2 w-full cursor-pointer">
-            <div>
+            className="flex gap-2 items-center p-2 cursor-pointer">
+            <div className="w-1/6 flex justify-center items-center">
                 <img className="w-10 h-10 rounded-full object-cover" src={chatParticipant?.image} alt=""/>
             </div>
-            <div className="flex flex-col  w-full">
+            <div className="flex flex-col w-5/6">
                 <div className="font-semibold">{chatParticipant?.username}</div>
                 <div>
-                    <div className="text-sm">{lastMessage?.message}</div>
+                    <div className="text-sm whitespace-nowrap overflow-ellipsis overflow-hidden">{lastMessage?.message}</div>
                     <div className="text-xs text-slate-400 text-right">{formatDateFromTimestamp(lastMessage?.createdAt)}</div>
                 </div>
             </div>

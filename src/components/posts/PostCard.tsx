@@ -36,7 +36,7 @@ const PostCard = ({post}: Props) => {
                     </div>
                     <div>
                         <div className="font-bold text-xl">{post.user.username}:</div>
-                        <div className="text-xs text-slate-400">{post.date}</div>
+                        <div className="text-xs text-slate-400">{post.createdAt}</div>
                     </div>
                 </div>
                 <LikesAndComments

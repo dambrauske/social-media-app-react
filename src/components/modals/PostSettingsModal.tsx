@@ -44,7 +44,7 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
                 className="w-28 h-min bg-slate-100 rounded border flex flex-col border-slate-200 absolute top-5 right-5 text-xs z-50">
 
                 <button
-                    onClick={(e) => deletePost(token, post._id, e)}
+                    onClick={(e) => deletePost(token, post.id, e)}
                     className="hover:bg-slate-200 p-1">delete
                 </button>
 

@@ -11,7 +11,6 @@ const UpdateImage = () => {
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
 
-
     const updateImage = async (token: string | null, newImage: string | null) => {
         setImageSuccessMessage(null)
         dispatch(updateUserImage({token, newImage}))

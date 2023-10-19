@@ -1,7 +1,7 @@
 export interface Post {
     _id: string,
     user: User,
-    date: string,
+    createdAt: string,
     image: string,
     title: string,
     comments: Comment [],
@@ -18,9 +18,10 @@ export interface User {
 }
 
 export interface Comment {
+    _id: string,
     user: User,
     post: Post,
-    date: string | undefined,
+    createdAt: string,
     comment: string | undefined,
 }
 
@@ -31,13 +32,16 @@ export interface Like {
 }
 
 export interface Chat {
+    _id: string,
     participants: User[],
     messages: Message[],
     createdAt: string,
 }
 
 export interface Message {
+    _id: string,
     chat: Chat,
+    participants: User[]
     sentBy: User,
     message: string,
     createdAt: string,

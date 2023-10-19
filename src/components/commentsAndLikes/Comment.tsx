@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
-import {RefObject, useEffect, useRef} from "react";
-import {setComments, setSelectedPost} from "../../features/postsSlice.tsx";
+import {RefObject,  useRef} from "react";
+import {setSelectedPost} from "../../features/postsSlice.tsx";
 import socket from "../../socket.tsx";
 
 const Comment = () => {
@@ -30,10 +30,6 @@ const Comment = () => {
 
         }
 
-        // socket().on('fetchedSinglePost', (data) => {
-        //     console.log('fetchedSinglePost', data)
-        //     dispatch(setSinglePost(data.post))
-        // })
         if (commentRef.current) {
             commentRef.current.value = ''
         }
@@ -51,7 +47,7 @@ const Comment = () => {
     return (
         <div className="p-2 flex gap-2 rounded bg-slate-100">
             <div className="w-10 h-10">
-                <img className="w-full h-full rounded-full" src={user.image} alt=""/>
+                <img className="w-full h-full rounded-full" src={user?.image} alt=""/>
             </div>
 
             <div className="flex">
@@ -59,7 +55,7 @@ const Comment = () => {
                     ref={commentRef}
                     className="w-full p-2 border rounded-lg focus:outline-none resize-none custom-scrollbar"
                     placeholder="Write a comment..."
-                    rows="2"
+                    rows={2}
                 />
                 <div
                     onClick={comment}

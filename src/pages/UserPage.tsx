@@ -3,11 +3,11 @@ import UpdateProfile from "../components/userProfileUpdates/UpdateProfile.tsx";
 import Navbar from "../components/Navbar.tsx";
 import UserPosts from "../components/posts/UserPosts.tsx";
 
-
 const UserPage = () => {
 
     const user = useAppSelector(state => state.user.user)
     const bio = useAppSelector(state => state.user.user?.bio)
+
 
     return (
         <div className="min-h-screen bg-slate-50">

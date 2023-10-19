@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction, Slice} from "@reduxjs/toolkit";
-import {Post, PostsInitialState} from "../interfaces.tsx";
+import {Post, PostsInitialState, Comment} from "../interfaces.tsx";
 
 export const postsSlice: Slice<PostsInitialState> = createSlice({
         name: "posts",

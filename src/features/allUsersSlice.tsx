@@ -50,8 +50,6 @@ export const usersSlice = createSlice({
             state.loadingMessage = action.error.message
         })
     },
-
-
 })
 
 export const {

@@ -7,17 +7,15 @@ import {useAppSelector} from "../hooks.tsx";
 const MessagesPage = () => {
 
     const {selectedUserId} = useParams()
-    const p = useParams()
-    const selectedUser = useAppSelector(state => state.users.selectedUser)
     const selectedChat = useAppSelector(state => state.chats.selectedChat)
-    console.log('params', p)
-    console.log('selectedUser', selectedUser)
 
+    console.log('selectedUserId', selectedUserId)
+    console.log('selectedChat', selectedChat)
 
     return (
-        <div>
+        <div className="min-h-screen bg-slate-300">
             <Navbar/>
-            <div className="flex">
+            <div className="flex h-full">
                 <Chats/>
 
                 {selectedChat || selectedUserId ?

@@ -23,9 +23,9 @@ useEffect(() => {
         <div className="min-h-screen bg-slate-50">
             <Navbar/>
             <div className="flex flex-wrap gap-4 p-4 justify-center">
-                {users && usersExceptCurrent?.map((user,i) => (
+                {users && usersExceptCurrent?.map((user) => (
                     <UserCard
-                        key={i}
+                        key={user._id}
                         user={user}
                     />
                 ))}

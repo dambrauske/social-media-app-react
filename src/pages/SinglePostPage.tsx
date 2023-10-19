@@ -1,7 +1,7 @@
 import LikesAndComments from "../components/commentsAndLikes/LikesAndComments.tsx";
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {setSelectedPost} from "../features/postsSlice.tsx";
 import Comments from "../components/commentsAndLikes/Comments.tsx";
 import Navbar from "../components/Navbar.tsx";
@@ -11,12 +11,18 @@ import SendMessageToThisUserButton from "../components/messages/SendMessageToThi
 
 
 const SinglePostPage = () => {
+
     const {postId} = useParams()
+
+    console.log('postId', postId)
+
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
     const post = useAppSelector(state => state.posts.selectedPost)
+    const [isLoading, setIsLoading] = useState(true)
 
-    console.log('selectedpost', post)
+
+    console.log('selectedPost', post)
 
     useEffect(() => {
 
@@ -24,12 +30,14 @@ const SinglePostPage = () => {
             throw new Error('Token not available')
         }
         dispatch(setSelectedPost(undefined))
+        dispatch(setSelectedUser(undefined))
 
         socket().emit('getSinglePost', ({token, postId}))
         socket().on('singlePost', (data) => {
             console.log('singlePost', data)
             dispatch(setSelectedPost(data))
             dispatch(setSelectedUser(post?.user))
+            setIsLoading(false)
         })
 
         return () => {
@@ -37,6 +45,8 @@ const SinglePostPage = () => {
             socket().off('singlePost')
         }
     }, [])
+
+    if (isLoading) return null
 
     return (
         <div>

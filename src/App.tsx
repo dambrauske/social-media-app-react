@@ -10,7 +10,6 @@ import UsersPage from "./pages/UsersPage.tsx";
 import UserPage from "./pages/UserPage.tsx";
 import MessagesPage from "./pages/MessagesPage.tsx";
 import SinglePostPage from "./pages/SinglePostPage.tsx";
-import getSocket from './socket.tsx';
 import ProfilePage from "./pages/ProfilePage.tsx";
 
 function App() {
@@ -18,11 +17,6 @@ function App() {
     const autoLogin = useAppSelector(state => state.user.autoLogin)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const socket = getSocket()
-
-    socket.on("hello", (arg) => {
-        console.log(arg); // world
-    })
 
     useEffect(() => {
 

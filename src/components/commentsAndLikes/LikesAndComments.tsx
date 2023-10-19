@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {MouseEvent, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import socket from "../../socket.tsx";
-import {updateSinglePost} from "../../features/postsSlice.tsx";
+import {setSelectedPost, updateSinglePost} from "../../features/postsSlice.tsx";
 
 type Props = {
     post?: Post
@@ -13,17 +13,19 @@ const LikesAndComments = ({post}: Props) => {
 
     const navigate = useNavigate()
     const token = useAppSelector(state => state.user.token)
-    const userId = useAppSelector(state => state.user?.user?.id)
+    const userId = useAppSelector(state => state.user?.user?._id)
     const dispatch = useAppDispatch()
 
 
     const likePost = (token: string | null, postId: string | null | undefined, e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
         console.log('like post clicked')
+
         socket().emit('likePost', ({token, postId}))
         socket().on('updatedPost', (data) => {
             console.log('updatedPost', data)
             dispatch(updateSinglePost(data))
+            dispatch(setSelectedPost(data))
         })
         return () => {
             socket().off('updatedPost')

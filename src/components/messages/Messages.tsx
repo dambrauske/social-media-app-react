@@ -1,7 +1,7 @@
 import SingleMessage from "./SingleMessage.tsx";
 import SendMessageField from "./SendMessageField.tsx";
 import {useAppSelector} from "../../hooks.tsx";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import socket from "../../socket.tsx";
 import {useDispatch} from "react-redux";
 import {setSelectedChat} from "../../features/chatSlice.tsx";
@@ -20,16 +20,19 @@ const Messages = ({selectedUserId}: Props) => {
     const chatParticipant = selectedChat?.participants.filter(participant => participant.username !== user?.username)[0]
     const selectedChatMessages = selectedChat?.messages
     const dispatch = useDispatch()
+    const [isLoading, setIsLoading] = useState(true)
 
     console.log('selectedChat', selectedChat)
+    console.log('selectedUser', selectedUser)
+    console.log('chatParticipant', chatParticipant)
 
     // if no selected chat, find chat by recipientId
     // else use selected chat
 
     let messagesSortedByDate
     if (selectedChatMessages) {
-        messagesSortedByDate =  [...selectedChatMessages].sort((objA, objB) => {
-            return new Date(objB.createdAt!).getTime() - new Date(objA.createdAt!).getTime()
+        messagesSortedByDate = [...selectedChatMessages].sort((objA, objB) => {
+            return new Date(objA.createdAt!).getTime() - new Date(objB.createdAt!).getTime()
         })
     }
 
@@ -38,32 +41,36 @@ const Messages = ({selectedUserId}: Props) => {
             throw new Error('Token not available')
         }
 
-        dispatch(setSelectedChat(undefined))
-
         socket().emit('getSelectedChat', ({token, selectedUserId}))
         socket().on('selectedChat', (data) => {
             console.log('selectedChat', data)
             dispatch(setSelectedChat(data))
+            setIsLoading(false)
         })
 
         return () => {
-            socket().off('getSelectedChat');
-            socket().off('selectedChat');
+            socket().off('getSelectedChat')
+            socket().off('selectedChat')
+            dispatch(setSelectedChat(undefined))
         }
     }, [])
 
+    if (isLoading) return null
 
     return (
-        <div className="w-3/4 p-2">
+        <div className="w-3/4 p-2 bg-slate-100 h-full">
             <div className="font-semibold">{chatParticipant?.username || selectedUser?.username}</div>
-            {messagesSortedByDate && messagesSortedByDate.map((message, i) => (
-                <SingleMessage
-                key={i}
-                message={message}
-                />
-            ))}
+            <div className="flex flex-col justify-between h-full">
+                {messagesSortedByDate && messagesSortedByDate.map((message) => (
+                    <SingleMessage
+                        key={message._id}
+                        message={message}
+                    />
+                ))}
 
-            <SendMessageField/>
+                <SendMessageField/>
+            </div>
+
         </div>
     );
 };

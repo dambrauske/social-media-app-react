@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar.tsx";
 import {useParams} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {setSelectedUser} from "../features/allUsersSlice.tsx";
 import socket from "../socket.tsx";
@@ -18,8 +18,7 @@ const ProfilePage = () => {
     const token = useAppSelector(state => state.user.token)
     const selectedUser = useAppSelector(state => state.users.selectedUser)
     const selectedUserPosts = useAppSelector(state => state.posts.selectedUserPosts)
-
-    console.log('selectedUser', selectedUser)
+    const [isLoading, setIsLoading] = useState(true)
 
     let selectedUserPostsSortedByDate
     if (selectedUserPosts) {
@@ -29,21 +28,22 @@ const ProfilePage = () => {
     }
 
     useEffect(() => {
-
+        dispatch(setSelectedUser(undefined))
         socket().emit('getUserAndPosts', ({token, userId}))
         socket().on('UserAndPosts', (data) => {
             dispatch(setSelectedUser(data.user))
             dispatch(setSelectedUserPosts(data.posts))
-            console.log('User', data)
+            setIsLoading(false)
         })
 
         return () => {
             socket().off('getUserAndPosts')
             socket().off('UserAndPosts')
-            dispatch(setSelectedUser(undefined))
         }
 
     }, [])
+
+    if (isLoading) return null
 
     return (
         <div>

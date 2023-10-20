@@ -18,12 +18,12 @@ const ProfilePage = () => {
     const token = useAppSelector(state => state.user.token)
     const selectedUser = useAppSelector(state => state.users.selectedUser)
     const selectedUserPosts = useAppSelector(state => state.posts.selectedUserPosts)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     let selectedUserPostsSortedByDate
     if (selectedUserPosts) {
         selectedUserPostsSortedByDate =  [...selectedUserPosts].sort((objA, objB) => {
-            return new Date(objB.date!).getTime() - new Date(objA.date!).getTime()
+            return new Date(objB.createdAt!).getTime() - new Date(objA.createdAt!).getTime()
         })
     }
 

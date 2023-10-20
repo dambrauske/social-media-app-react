@@ -36,9 +36,9 @@ const SortingPosts = () => {
 
             const sortedPosts = [...posts].sort((objA, objB) => {
                 if (order === 'ascending') {
-                    return new Date(objA.date).getTime() - new Date(objB.date).getTime();
+                    return new Date(objA.createdAt).getTime() - new Date(objB.createdAt).getTime();
                 } else {
-                    return new Date(objB.date).getTime() - new Date(objA.date).getTime();
+                    return new Date(objB.createdAt).getTime() - new Date(objA.createdAt).getTime();
                 }
             })
             dispatch(setAllPosts(sortedPosts))

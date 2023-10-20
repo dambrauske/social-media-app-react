@@ -38,8 +38,6 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
     }
 
     return (
-
-
             <div
                 className="w-28 h-min bg-slate-100 rounded border flex flex-col border-slate-200 absolute top-5 right-5 text-xs z-50">
 

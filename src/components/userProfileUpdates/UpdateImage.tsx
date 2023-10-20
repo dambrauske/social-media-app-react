@@ -3,6 +3,7 @@ import {RefObject, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import {updateUserImage} from "../../features/userSlice.tsx";
 
+
 const UpdateImage = () => {
 
     const imageRef: RefObject<HTMLInputElement> = useRef(null)
@@ -10,6 +11,7 @@ const UpdateImage = () => {
     const [imageSuccessMessage, setImageSuccessMessage] = useState<string | null>(null)
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
+    const user = useAppSelector(state => state.user.user)
 
     const updateImage = async (token: string | null, newImage: string | null) => {
         setImageSuccessMessage(null)
@@ -29,10 +31,11 @@ const UpdateImage = () => {
         <div className="flex flex-col gap-2">
             <input
                 onBlur={() => validateImage(imageRef.current?.value, setImageError)}
-                className="border-2 border-slate-400"
+                className="rounded bg-slate-50 border border-slate-400 p-2 text-xs"
+                value={user?.image}
                 ref={imageRef}
-                type="url" placeholder="image url"/>
-            <div className="h-5">
+                type="url"/>
+            <div className="h-4">
                 {imageError &&
                     <div className="text-xs text-red-600">{imageError}</div>
                 }
@@ -43,7 +46,7 @@ const UpdateImage = () => {
             </div>
             <div
                 onClick={() => updateImage(token, imageRef.current?.value ?? null)}
-                className="cursor-pointer bg-slate-400">change picture
+                className="cursor-pointer bg-slate-400 text-center">update
             </div>
         </div>
     );

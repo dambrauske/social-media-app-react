@@ -27,6 +27,12 @@ export const postsSlice: Slice<PostsInitialState> = createSlice({
                         state.posts[postIndex] = updatedPost
                     }
                 }
+                if (state.userPosts) {
+                    const postIndex = state.userPosts.findIndex(post => post._id === postId)
+                    if (postIndex !== -1) {
+                        state.userPosts[postIndex] = updatedPost
+                    }
+                }
             },
             setSelectedPost: (state, action: PayloadAction<Post>) => {
                 state.selectedPost = action.payload
@@ -36,8 +42,8 @@ export const postsSlice: Slice<PostsInitialState> = createSlice({
             },
             setComments: (state, action: PayloadAction<Comment[]>) => {
                 state.comments = [...action.payload].sort((objA, objB) => {
-                    const dateA = objA.date ? new Date(objA.date) : new Date(0); // Provide a default date or handle the case where date is undefined
-                    const dateB = objB.date ? new Date(objB.date) : new Date(0);
+                    const dateA = objA.createdAt ? new Date(objA.createdAt) : new Date(0); // Provide a default date or handle the case where date is undefined
+                    const dateB = objB.createdAt ? new Date(objB.createdAt) : new Date(0);
                     return dateB.getTime() - dateA.getTime();
                 });
             },

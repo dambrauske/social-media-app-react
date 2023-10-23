@@ -42,7 +42,9 @@ const UserPage = () => {
                 </div>
 
                 <div className="flex flex-grow justify-center">
-                    <UserPosts/>
+                    { user &&
+                        <UserPosts/>
+                    }
                 </div>
             </div>
         </div>

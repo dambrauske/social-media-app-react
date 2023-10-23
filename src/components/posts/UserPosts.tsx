@@ -9,10 +9,12 @@ const UserPosts = () => {
 
     const userPosts = useAppSelector(state => state.posts.userPosts)
     const dispatch = useAppDispatch()
-    const username = useAppSelector(state => state.user?.user?.username)
+    const user = useAppSelector(state => state.user.user)
+    const username = useAppSelector(state => state.user.user?.username)
     const token = useAppSelector(state => state.user.token)
     const [isLoading, setIsLoading] = useState(true)
 
+    console.log('user', user)
 
     useEffect(() => {
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 const isValidEmail = (email: string): boolean => {
     return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)
@@ -62,15 +62,15 @@ export const validatePassword2 = (password: string | undefined, password2: strin
     setterFunction(null)
 }
 
-export const validateBio = (bio: string | undefined, setterFunction: React.Dispatch<React.SetStateAction<string | null>>) => {
-    if (bio && bio.length > 150) return setterFunction('Bio cannot be longer than 150 characters')
-
-    setterFunction(null)
-}
+// export const validateBio = (bio: string | undefined, setterFunction: React.Dispatch<React.SetStateAction<string | null>>) => {
+//     if (bio && bio.length > 150) return setterFunction('Bio cannot be longer than 150 characters')
+//
+//     setterFunction(null)
+// }
 
 export const validateTitle = (title: string | undefined, setterFunction: React.Dispatch<React.SetStateAction<string | null>>) => {
     if (title?.length === 0) return setterFunction('Title cannot be blank')
-    if (title && title.length > 50) return setterFunction('Title cannot be longer than 50 characters')
+    if (title && title.length > 100) return setterFunction('Title cannot be longer than 100 characters')
 
     setterFunction(null)
 }
@@ -97,6 +97,30 @@ export const formatDateFromTimestamp = (originalTimestamp: string | undefined) =
     const minutes = parsedTimestamp.getMinutes().toString().padStart(2, '0')
 
     return `${year}-${month}-${day} ${hours}:${minutes}`
+}
+
+type CallbackFunction = () => void;
+
+
+export const useOutsideClick = (callback: CallbackFunction, ref:React.RefObject<HTMLElement>) => {
+    const handleClickOutside = (event: MouseEvent) => {
+        if (ref.current && !ref.current.contains(event.target as Node)) {
+            callback()
+        }
+    }
+
+    useEffect(() => {
+        const clickHandler = (event: MouseEvent) => {
+            handleClickOutside(event)
+            event.stopPropagation()
+        }
+
+        document.addEventListener("click", clickHandler)
+
+        return () => {
+            document.removeEventListener("click", clickHandler)
+        }
+    },[])
 }
 
 

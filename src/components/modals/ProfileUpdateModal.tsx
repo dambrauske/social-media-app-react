@@ -1,10 +1,10 @@
-import UpdateImage from "../userProfileUpdates/UpdateImage.tsx";
-import UpdatePassword from "../userProfileUpdates/UpdatePassword.tsx";
-import UpdateBio from "../userProfileUpdates/UpdateBio.tsx";
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
-import {validateBio, validateImage, validatePassword} from "../../helperFunctions.tsx";
-import {RefObject, useRef, useState} from "react";
-import {updateUserBio, updateUserImage} from "../../features/userSlice.tsx";
+import {useState} from "react";
+
+import {useForm} from 'react-hook-form';
+import {UpdateProfileForm} from "../../interfaces.tsx";
+import {setUser, updateUserPublicProfile} from "../../features/userSlice.tsx";
+
 
 interface Props {
     setShowProfileSettingsModal: (value: (((prevState: boolean) => boolean) | boolean)) => void
@@ -12,62 +12,65 @@ interface Props {
 
 const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
 
-    const user = useAppSelector(state => state.user.user)
-    const dispatch = useAppDispatch()
+        const user = useAppSelector(state => state.user.user)
+        const [successMessage, setSuccessMessage] = useState<string | null>(null)
+        const dispatch = useAppDispatch()
 
-    const imageRef: RefObject<HTMLInputElement> = useRef(null)
-    const bioRef: RefObject<HTMLInputElement> = useRef(null)
-    const passwordRef: RefObject<HTMLInputElement> = useRef(null)
-    const newPasswordRef: RefObject<HTMLInputElement> = useRef(null)
+    console.log('user', user)
 
-    const [imageError, setImageError] = useState<string | null>(null)
-    const [passwordError, setPasswordError] = useState<string | null>(null)
-    const [newPasswordError, setNewPasswordError] = useState<string | null>(null)
-    const [bioError, setBioError] = useState<string | null>(null)
-    const [successMessage, setSuccessMessage] = useState<string | null>(null)
-
-
-    const updateProfile = async () => {
-        const token = localStorage.getItem('token')
-
-        const newImage = imageRef.current?.value || null
-        const updatedBio = bioRef.current?.value || null
-        const password = newPasswordRef.current?.value || null
-        const newPassword = newPasswordRef.current?.value || null
-
-        setSuccessMessage(null)
-
-        if (imageError === null &&
-            bioError === null &&
-            passwordError === null &&
-            newPasswordError === null) {
-
-            dispatch(updateUserImage({token, newImage}))
-            dispatch(updateUserBio({token, updatedBio}))
-
-
-            const options: RequestInit = {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json",
-                },
-                body: JSON.stringify({password, newPassword}),
+        const {
+            register,
+            handleSubmit,
+            formState: {errors}
+        } = useForm({
+            mode: "onChange",
+            defaultValues: {
+                image: user?.image,
+                bio: user?.bio || '',
+                password: '',
+                newPassword: '',
             }
+        })
 
+        console.log('errors', errors)
 
-            if (token !== null) {
-                options.headers = {
-                    ...options.headers,
-                    "authorization": token,
+        const onSubmit = async (data: UpdateProfileForm) => {
+            setSuccessMessage(null)
+
+            const token = localStorage.getItem('token')
+            const image = data.image
+            const bio = data.bio
+            const password = data.password
+            const newPassword = data.newPassword
+
+            console.log('bio', bio)
+
+            dispatch(updateUserPublicProfile({token, image, bio}))
+
+            if (password !== '' && newPassword !== '') {
+                const options: RequestInit = {
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify({password, newPassword}),
                 }
-            }
 
-            try {
-                const response = await fetch('http://localhost:8000/updatePassword', options)
-                const data = await response.json()
-                console.log(data)
-            } catch (error) {
-                console.log(error)
+                if (token !== null) {
+                    options.headers = {
+                        ...options.headers,
+                        "authorization": token,
+                    }
+                }
+
+                try {
+                    const response = await fetch('http://localhost:8000/updatePassword', options)
+                    const data = await response.json()
+                    console.log(data)
+
+                } catch (error) {
+                    console.log(error)
+                }
             }
 
             setSuccessMessage('Profile updated successfully')
@@ -79,105 +82,145 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
             setTimeout(() => {
                 setShowProfileSettingsModal(false)
             }, 1000)
-
-
         }
 
-    }
 
-    return (
-        <div className={"relative flex justify-center items-center"}>
-            <div
-                className={"fixed top-0 left-0 right-0 w-screen h-screen backdrop-blur-sm bg-black bg-opacity-50 z-20"}></div>
+        return (
+            <div className={"relative flex justify-center items-center"}>
 
-            <div className={"bg-slate-50 w-[35rem] p-4 flex flex-col gap-2 absolute top-0 z-30 rounded"}>
+                <div
+                    className={"fixed top-0 left-0 right-0 w-screen h-screen backdrop-blur-sm bg-black bg-opacity-50 z-20"}></div>
 
-                <div className="font-bold">Edit profile</div>
-
-                <div className="flex flex-col gap-4">
-                    <div className="flex flex-grow justify-center items-center ">
-                        <div className="flex flex-grow justify-center">
-                            <img className="w-28 h-28 rounded-full" src={user?.image} alt=""/>
-                        </div>
-                        <div className="flex flex-grow items-end">
-                            <div className="flex flex-col gap-2">
-                                <div>Profile picture</div>
-                                <input
-                                    onBlur={() => validateImage(imageRef.current?.value, setImageError)}
-                                    className="rounded bg-slate-50 border border-slate-400 p-2 text-xs w-64 outline-0"
-                                    defaultValue={user?.image}
-                                    ref={imageRef}
-                                    type="url"/>
-                                <div className="h-4">
-                                    {imageError &&
-                                        <div className="text-xs text-red-600">{imageError}</div>
-                                    }
-                                </div>
-                                <div>Bio</div>
-                                <input
-                                    onBlur={() => validateBio(bioRef.current?.value, setBioError)}
-                                    className="rounded bg-slate-50 border border-slate-400 p-2 text-xs w-64 outline-0"
-                                    ref={bioRef}
-                                    defaultValue={user?.bio || ''}
-                                    type="text"/>
-                                <div className="h-5">
-                                    {bioError &&
-                                        <div className="text-xs text-red-600">{bioError}</div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
+                <div className={"bg-slate-50 w-[30rem] p-4 flex flex-col gap-2 absolute top-0 z-30 rounded"}>
+                    <div
+                        onClick={() => setShowProfileSettingsModal(false)}
+                        className={"absolute top-0 right-0 w-8 h-8 flex justify-center items-center rounded hover:bg-slate-200 cursor-pointer hover:border-0"}>
+                        <i className="fas fa-times text-xl"></i>
                     </div>
 
+                    <div className="font-bold">Edit profile</div>
 
-                    <div className="text-center">Change password</div>
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="flex flex-col gap-4">
+                        <div className="flex justify-center items-center">
+                            <div className="flex flex-1 justify-center">
+                                <img className="w-32 h-32 rounded-full" src={user?.image} alt=""/>
+                            </div>
+                            <div className="flex">
+                                <div className="flex flex-col gap-2 flex-grow">
+                                    <label>Profile picture</label>
+                                    <input
+                                        className="rounded bg-slate-50 border border-slate-400 p-2 text-xs w-64 outline-0"
+                                        id="image"
+                                        {...register("image")}
+                                        type="url"/>
+                                    <div className="h-4">
 
-
-                    <div className="flex flex-col gap-2">
-                        <div className="flex gap-8">
-                            <div className="flex-1 text-right">Current password</div>
-                            <input
-                                onBlur={() => validatePassword(passwordRef.current?.value, setPasswordError)}
-                                className="rounded flex-1 bg-slate-50 border border-slate-400 p-2 text-xs w-64 outline-0"
-                                ref={passwordRef}
-                                type="password"/>
-                            <div className="h-5">
-                                {passwordError &&
-                                    <div className="text-xs text-red-600">{passwordError}</div>
-                                }
+                                    </div>
+                                    <label>Bio</label>
+                                    <textarea
+                                        className="rounded bg-slate-50 border border-slate-400 p-2 text-xs outline-0 w-full"
+                                        id="bio"
+                                        {...register("bio", {
+                                            // maxLength: {
+                                            //     value: 150,
+                                            //     message: "Bio cannot be longer than 150 characters"
+                                            // }
+                                        })}
+                                        maxLength={150}
+                                    />
+                                    <div className="h-5">
+                                        {errors.bio && (
+                                            <div className="text-xs text-red-600">{errors.bio.message as string}</div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="flex gap-8">
-                            <div className="flex-1 text-right">New password</div>
-                            <input
-                                onBlur={() => validatePassword(newPasswordRef.current?.value, setNewPasswordError)}
-                                className="rounded flex-1 bg-slate-50 border border-slate-400 p-2 text-xs w-64 outline-0"
-                                ref={newPasswordRef}
-                                type="password"/>
-                            <div className="h-5">
-                                {newPasswordError &&
-                                    <div className="text-xs text-red-600">{newPasswordError}</div>
-                                }
+                        <div className="text-center">Change password</div>
+
+                        <div className="flex flex-col gap-2">
+                            <div className="flex gap-8">
+                                <label className="flex-1 text-right">Current password</label>
+                                <div className="flex flex-1 flex-col">
+                                    <input
+                                        className="rounded flex-1 bg-slate-50 border border-slate-400 p-2 text-xs w-64 outline-0"
+                                        id="password"
+                                        {...register("password", {
+                                            validate: (value) => {
+                                                if (value) {
+                                                    if (value.length < 4 || value.length > 20) {
+                                                        return "Password should be between 4 and 20 characters";
+                                                    }
+                                                    if (!/[A-Z]/.test(value)) {
+                                                        return "Password should include at least one uppercase letter"
+                                                    } else return true
+                                                }
+                                            },
+                                        })}
+                                        type="password"/>
+                                    <div className="h-6">
+                                        {errors.password && (
+                                            <div className="text-xs text-red-600">{errors.password.message as string}</div>
+                                        )}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div className="flex gap-8">
+                                <label className="flex-1  text-right">New password</label>
+                                <div className="flex-1 flex-col">
+                                    <input
+                                        className="rounded  bg-slate-50 border border-slate-400 p-2 text-xs w-64 outline-0"
+                                        id="newPassword"
+                                        {...register("newPassword", {
+                                            validate: (value, allValues) => {
+                                                const password = allValues.password
+
+                                                if ((!value && !password) || (value && password)) {
+                                                    if (value) {
+                                                        if (value.length < 4 || value.length > 20) {
+                                                            return "Password should be between 4 and 20 characters";
+                                                        }
+                                                        if (!/[A-Z]/.test(value)) {
+                                                            return "Password should include at least one uppercase letter"
+                                                        } else return true
+                                                    }
+                                                }
+                                            },
+                                        })}
+                                        type="password"/>
+                                    <div className="h-6">
+                                        {errors.newPassword && (
+                                            <div
+                                                className="text-xs text-red-600">{errors.newPassword.message as string}</div>
+                                        )}
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-                    </div>
+
+                        <div className="h-5">
+                            {successMessage &&
+                                <div className="text-xs text-green-600">{successMessage}</div>
+                            }
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="bg-slate-200 px-3 py-1 rounded hover:bg-slate-300 flex justify-center items-center gap-2">Save
+                            changes
+                        </button>
+                    </form>
 
                 </div>
-                <div className="h-5">
-                    {successMessage &&
-                        <div className="text-xs text-green-600">{successMessage}</div>
-                    }
-                </div>
-                <button
-                    onClick={updateProfile}
-                    className="bg-slate-200 px-3 py-1 rounded hover:bg-slate-300 flex justify-center items-center gap-2">Save
-                    changes
-                </button>
-
             </div>
-        </div>
-    );
-};
+        );
+    }
+;
 
 export default ProfileUpdateModal;

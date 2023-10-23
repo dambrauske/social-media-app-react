@@ -1,8 +1,9 @@
-import {Post} from "../../features/userSlice.tsx";
-import { MouseEvent } from "react";
+import {MouseEvent, RefObject, useRef} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import socket from "../../socket.tsx";
 import {setAllPosts, setUserPosts} from "../../features/postsSlice.tsx";
+import {useOutsideClick} from "../../helperFunctions.tsx";
+import {Post} from "../../interfaces.tsx";
 
 type PostSettingsModalProps = {
     post: Post,
@@ -11,16 +12,26 @@ type PostSettingsModalProps = {
 
 const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModalProps) => {
 
+    console.log('post', post)
+
     const username = useAppSelector(state => state.user?.user?.username)
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
+    const modalRef: RefObject<HTMLDivElement> = useRef(null)
 
     const cancel = (e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
         setShowPostSettingsModal(false)
     }
+
+    const closeModal = () => {
+        setShowPostSettingsModal(false)
+    }
+
+    useOutsideClick(closeModal, modalRef)
     const deletePost = async (token: string | null, postId: string | null, e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
+        console.log('delete post', postId)
         socket().emit('deletePost', ({token, postId}))
         socket().on('PostsUpdated', (data: Post[]) => {
             dispatch(setAllPosts(data))
@@ -31,18 +42,20 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
         setShowPostSettingsModal(false)
     }
 
-    const update = () => {
-        console.log('update clicked')
-        // dispatch(setShowPostSettingsModal(true))
-        setShowPostSettingsModal(false)
-    }
+    // const update = () => {
+    //     console.log('update clicked')
+    //     // dispatch(setShowPostSettingsModal(true))
+    //     setShowPostSettingsModal(false)
+    // }
+
 
     return (
             <div
+                ref={modalRef}
                 className="w-28 h-min bg-slate-100 rounded border flex flex-col border-slate-200 absolute top-5 right-5 text-xs z-50">
 
                 <button
-                    onClick={(e) => deletePost(token, post.id, e)}
+                    onClick={(e) => deletePost(token, post._id, e)}
                     className="hover:bg-slate-200 p-1">delete
                 </button>
 
@@ -56,7 +69,6 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
                     className="hover:bg-slate-200 p-1">cancel
                 </button>
             </div>
-
     );
 };
 

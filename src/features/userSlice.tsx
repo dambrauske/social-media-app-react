@@ -1,12 +1,12 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
 import {User, UserInitialState} from "../interfaces.tsx";
-
 const token: string | null = localStorage.getItem('token')
 const autoLogin: boolean = Boolean(localStorage.getItem('autoLogin'))
 
-export const updateUserImage = createAsyncThunk('posts/updateUserImage', async ({token, newImage}: {
+export const updateUserPublicProfile = createAsyncThunk('posts/updateUserImage', async ({token, image, bio}: {
     token: string | null,
-    newImage: string | null
+    image: string | null,
+    bio: string | null,
 }) => {
 
     if (token === null) {
@@ -19,38 +19,15 @@ export const updateUserImage = createAsyncThunk('posts/updateUserImage', async (
             "content-type": "application/json",
             "authorization": token,
         },
-        body: JSON.stringify({newImage}),
-    };
-
-    const response = await fetch('http://localhost:8000/updateImage', options)
-        .then(res => res.json())
-
-    console.log('user image:', response.data)
-    return response?.data
-})
-
-export const updateUserBio = createAsyncThunk('posts/updateBio', async ({token, updatedBio}: {
-    token: string | null,
-    updatedBio: string | null
-}) => {
-
-    if (token === null) {
-        throw new Error('Token not available')
+        body: JSON.stringify({image, bio}),
     }
 
-    const options: RequestInit = {
-        method: "POST",
-        headers: {
-            "content-type": "application/json",
-            "authorization": token,
-        },
-        body: JSON.stringify({updatedBio}),
-    };
+    console.log('data', image, bio)
 
-    const response = await fetch('http://localhost:8000/updateBio', options)
+    const response = await fetch('http://localhost:8000/updatePublicProfile', options)
         .then(res => res.json())
 
-    console.log('user bio:', response.data)
+    console.log('user', response.data)
     return response?.data
 })
 
@@ -65,7 +42,7 @@ export const userSlice = createSlice({
             loadingMessage: ''
         } as UserInitialState,
         reducers: {
-            setToken: (state, action: PayloadAction<string | null>) => {
+            setToken: (state, action: PayloadAction<string>) => {
                 state.token = action.payload
                 localStorage.setItem('token', state.token);
             },
@@ -78,42 +55,20 @@ export const userSlice = createSlice({
             },
         }, extraReducers: (builder) => {
 
-            // IMAGE
-
-            builder.addCase(updateUserImage.pending, (state) => {
+            builder.addCase(updateUserPublicProfile.pending, (state) => {
                 state.loadingState = 'loading'
             })
-            builder.addCase(updateUserImage.fulfilled, (state, action: PayloadAction<string>) => {
+            builder.addCase(updateUserPublicProfile.fulfilled, (state, action: PayloadAction<User>) => {
                 state.loadingState = 'idle';
                 if (state.user) {
-                    state.user.image = action.payload;
+                    state.user = action.payload;
                 }
                 state.loadingMessage = ''
             })
-            builder.addCase(updateUserImage.rejected, (state, action) => {
+            builder.addCase(updateUserPublicProfile.rejected, (state, action) => {
                 state.loadingState = 'error'
                 if (state.user) {
-                    state.user.image = '';
-                }
-                state.loadingMessage = action.error.message
-            })
-
-            // BIO
-
-            builder.addCase(updateUserBio.pending, (state) => {
-                state.loadingState = 'loading'
-            })
-            builder.addCase(updateUserBio.fulfilled, (state, action: PayloadAction<string>) => {
-                state.loadingState = 'idle';
-                if (state.user) {
-                    state.user.bio = action.payload
-                }
-                state.loadingMessage = ''
-            })
-            builder.addCase(updateUserBio.rejected, (state, action) => {
-                state.loadingState = 'error'
-                if (state.user) {
-                    state.user.bio = ''
+                    state.user = undefined;
                 }
                 state.loadingMessage = action.error.message
             })

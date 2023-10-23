@@ -47,6 +47,13 @@ export interface Message {
     createdAt: string,
 }
 
+export interface UpdateProfileForm {
+    image: string | null,
+    bio: string | null,
+    password: string | null,
+    newPassword: string | null,
+}
+
 export interface UserInitialState {
     user: undefined | User,
     token: string | null,

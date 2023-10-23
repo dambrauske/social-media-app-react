@@ -7,7 +7,7 @@ import {Post} from "../../interfaces.tsx";
 
 const AddNewPost = () => {
 
-    const titleRef: RefObject<HTMLInputElement> = useRef(null)
+    const titleRef: RefObject<HTMLTextAreaElement> = useRef(null)
     const imageRef: RefObject<HTMLInputElement> = useRef(null)
     const [imageError, setImageError] = useState<string | null>(null);
     const [titleError, setTitleError] = useState<string | null>(null);
@@ -49,18 +49,20 @@ const AddNewPost = () => {
     return (
         <div className="bg-slate-200 p-2 rounded flex flex-col w-1/3 gap-2">
             <div>Create post</div>
-            <input
+            <textarea
+                className="outline-none rounded resize-none	custom-scrollbar p-1"
                 ref={titleRef}
+                maxLength={100}
                 onBlur={() => validateTitle(titleRef.current?.value, setTitleError)}
-                type="text" placeholder="title"/>
+                placeholder="title"/>
 
             <div className="h-4">
                 {titleError &&
                     <div className="text-xs text-red-600">{titleError}</div>
                 }
-
             </div>
             <input
+                className="outline-none rounded p-1"
                 ref={imageRef}
                 onBlur={() => validateImage(imageRef.current?.value, setImageError)}
                 type="url" placeholder="image"/>
@@ -72,7 +74,6 @@ const AddNewPost = () => {
                 {postSuccessMessage &&
                     <div className="text-xs text-green-600">{postSuccessMessage}</div>
                 }
-
             </div>
             <button
                 onClick={() => createPost(token, imageRef.current?.value ?? null, titleRef.current?.value ?? null)}

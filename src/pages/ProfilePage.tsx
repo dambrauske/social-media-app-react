@@ -50,7 +50,8 @@ const ProfilePage = () => {
             <Navbar/>
 
             <div className="flex flex-col md:flex-row gap-4 p-4 bg-slate-50">
-                <div className="p-2 gap-4 flex flex-col items-start w-1/4">
+
+                <div className="p-2 gap-4 flex flex-col items-start">
 
                     <div className="flex flex-col items-center gap-2">
                         <div className="w-52 h-52">
@@ -74,8 +75,9 @@ const ProfilePage = () => {
                         <div>Posts: {selectedUser?.posts.length}</div>
                     </div>
                 </div>
-                <div className="flex justify-center w-full mt-4">
-                    <div className="grid gap-2 grid-cols-2 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
+
+                <div className="flex flex-grow justify-center">
+                    <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                         {selectedUserPostsSortedByDate && selectedUserPostsSortedByDate.map((post: Post, i: number) => (
                             <PostCard
                                 key={i}

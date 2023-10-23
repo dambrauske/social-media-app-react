@@ -8,7 +8,6 @@ import {Post} from "../../interfaces.tsx";
 type Props = {
     post: Post
 }
-
 const PostCard = ({post}: Props) => {
 
     const username = useAppSelector(state => state.user?.user?.username)
@@ -24,7 +23,7 @@ const PostCard = ({post}: Props) => {
 
         <div
             onClick={() => navigate(`/post/${post._id}`)}
-            className="flex flex-col p-2 rounded bg-white gap-2 relative lg:w-72shadow">
+            className="flex flex-col p-2 rounded bg-white gap-2 relative lg:w-72 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
             <div className="w-full h-60">
                 <img className="w-full h-full object-cover rounded" src={post.image} alt=""/>
             </div>

@@ -58,6 +58,11 @@ export interface LoginForm {
     password: string | undefined,
 }
 
+export interface PostForm {
+    title: string | undefined,
+    image: string | undefined,
+}
+
 export interface RegisterForm {
     username: string | undefined,
     email: string | undefined,

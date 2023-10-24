@@ -12,11 +12,11 @@ const UserCard = ({user}: Props) => {
     return (
         <div
             onClick={() => navigate(`/user/${user._id}`)}
-            className="w-36 h-28 gap-2 bg-white rounded-xl flex justify-center items-center shadow">
-            <div className="w-12 h-12">
-                <img className="w-12 h-12 object-cover rounded-full" src={user.image} alt=""/>
+            className="gap-2 p-4 bg-white rounded-xl flex justify-center items-center shadow">
+            <div className="w-16 h-16">
+                <img className="w-full h-full object-cover rounded-full" src={user.image} alt=""/>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
                 <div>{user.username}</div>
                 <SendMessageToThisUserButton
                     user={user}/>

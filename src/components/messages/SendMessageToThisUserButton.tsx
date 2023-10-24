@@ -25,8 +25,9 @@ const SendMessageToThisUserButton = ({user}: Props) => {
     return (
         <button
             onClick={(e) => goToMessages(e)}
-            className="bg-slate-200 rounded p-1">
-            Send Message
+            className="bg-slate-200 rounded p-1 flex gap-2 justify-center items-center hover:bg-blue-200">
+            <i className="fas fa-paper-plane"></i>
+            <div className="md:block hidden">Message</div>
         </button>
     );
 };

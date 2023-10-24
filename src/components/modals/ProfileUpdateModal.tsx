@@ -1,15 +1,12 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import {useState} from "react";
-
 import {useForm} from 'react-hook-form';
 import {UpdateProfileForm} from "../../interfaces.tsx";
-import {setUser, updateUserPublicProfile} from "../../features/userSlice.tsx";
-
+import {updateUserPublicProfile} from "../../features/userSlice.tsx";
 
 interface Props {
     setShowProfileSettingsModal: (value: (((prevState: boolean) => boolean) | boolean)) => void
 }
-
 const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
 
         const user = useAppSelector(state => state.user.user)
@@ -123,10 +120,10 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                         className="rounded bg-slate-50 border border-slate-400 p-2 text-xs outline-0 w-full"
                                         id="bio"
                                         {...register("bio", {
-                                            // maxLength: {
-                                            //     value: 150,
-                                            //     message: "Bio cannot be longer than 150 characters"
-                                            // }
+                                            maxLength: {
+                                                value: 150,
+                                                message: "Bio cannot be longer than 150 characters"
+                                            }
                                         })}
                                         maxLength={150}
                                     />
@@ -152,7 +149,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                             validate: (value) => {
                                                 if (value) {
                                                     if (value.length < 4 || value.length > 20) {
-                                                        return "Password should be between 4 and 20 characters";
+                                                        return "Password should be between 4 and 20 characters"
                                                     }
                                                     if (!/[A-Z]/.test(value)) {
                                                         return "Password should include at least one uppercase letter"

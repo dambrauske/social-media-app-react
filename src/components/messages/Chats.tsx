@@ -12,9 +12,9 @@ const Chats = () => {
 
 
     useEffect(() => {
-        dispatch(setChats(undefined))
         socket().emit('getChats', {token});
         socket().on('chats', (data) => {
+            console.log('chats', data)
             dispatch(setChats(data))
             setIsLoading(false)
         })
@@ -22,6 +22,7 @@ const Chats = () => {
         return () => {
             socket().off('getChats')
             socket().off('chats')
+            dispatch(setChats(undefined))
         }
     }, [])
 

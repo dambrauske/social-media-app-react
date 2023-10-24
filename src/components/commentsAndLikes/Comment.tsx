@@ -1,73 +1,75 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
-import {RefObject,  useRef} from "react";
 import {setSelectedPost} from "../../features/postsSlice.tsx";
 import socket from "../../socket.tsx";
+import {useForm} from 'react-hook-form';
+import {CommentForm} from "../../interfaces.tsx";
 
 const Comment = () => {
 
-    const token = useAppSelector(state => state.user.token)
     const user = useAppSelector(state => state.user.user)
     const postId = useAppSelector(state => state.posts?.selectedPost?._id)
-    const commentRef: RefObject<HTMLTextAreaElement> = useRef(null)
     const dispatch = useAppDispatch()
 
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: {errors}
+    } = useForm()
 
-    const comment = () => {
+    const onSubmit = async (data: CommentForm) => {
         console.log('comment clicked')
+        console.log('data', data)
 
-        const text: string | undefined = commentRef.current?.value
-        if (text && text.length > 0) {
+        const token = localStorage.getItem('token')
+        const comment = data.comment
 
-            if (token === null) {
-                throw new Error('Token not available')
-            }
-            socket().emit('addComment', ({token, postId, text}))
+        if (token === null) {
+            throw new Error('Token not available')
+        }
 
+        if (comment !== '') {
+            socket().emit('addComment', ({token, postId, comment}))
             socket().on('post', (data) => {
                 console.log('post', data)
                 dispatch(setSelectedPost(data))
             })
-
+            reset()
         }
-
-        if (commentRef.current) {
-            commentRef.current.value = ''
-        }
-
-        return () => {
-            socket().off('postComments')
-            socket().off('fetchedSinglePost')
-        }
-
-
     }
 
+    console.log(errors)
 
 
     return (
-        <div className="p-2 flex gap-2 rounded bg-slate-100">
-            <div className="w-10 h-10">
-                <img className="w-full h-full rounded-full" src={user?.image} alt=""/>
-            </div>
-
-            <div className="flex">
-                <textarea
-                    ref={commentRef}
-                    className="w-full p-2 border rounded-lg focus:outline-none resize-none custom-scrollbar"
-                    placeholder="Write a comment..."
-                    rows={2}
-                />
-                <div
-                    onClick={comment}
-                    className="flex items-end justify-end cursor-pointer">
-                    <div
-                        className="flex p-1 w-6 h-6 justify-center items-center rounded-full hover:bg-slate-100 hover:text-slate-50">
-                        <i className="far fa-paper-plane text-slate-400"></i>
-                    </div>
+        <div className="px-2 py-6 flex flex-col justify-center items-center rounded bg-slate-100">
+            <div className="flex gap-2">
+                <div className="w-10 h-10">
+                    <img className="w-full h-full object-cover rounded-full" src={user?.image} alt=""/>
                 </div>
 
-            </div>
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex">
+                <textarea
+                    id="comment"
+                    {...register("comment")}
+                    className="w-full p-2 border rounded-lg focus:outline-none resize-none custom-scrollbar"
+                    placeholder="Write a comment..."
+                    maxLength={600}
+                    rows={2}
+                />
+                    <button
+                        type="submit"
+                        className="flex items-end justify-end cursor-pointer">
+                        <div
+                            className="flex p-1 w-6 h-6 justify-center items-center rounded-full hover:bg-slate-100 hover:text-slate-50">
+                            <i className="far fa-paper-plane text-slate-400"></i>
+                        </div>
+                    </button>
 
+                </form>
+            </div>
         </div>
     );
 };

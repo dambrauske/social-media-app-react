@@ -18,6 +18,7 @@ const SinglePostPage = () => {
 
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
+    const user = useAppSelector(state => state.user.user)
     const post = useAppSelector(state => state.posts.selectedPost)
     const [isLoading, setIsLoading] = useState(true)
 
@@ -63,9 +64,16 @@ const SinglePostPage = () => {
                     <div className="flex flex-col p-2 w-80 gap-4">
                         <div className="flex flex-col items-start gap-2">
                             <div className="font-bold text-xl">{post?.user.username}</div>
-                            <SendMessageToThisUserButton
-                            user={post?.user}
-                            />
+                            {
+                                post?.user.username !== user?.username ?
+                                    <SendMessageToThisUserButton
+                                        user={post?.user}
+                                    />
+                                    :
+                                     null
+
+                            }
+
                             <div className="w-full overflow-hidden">
                                 <div className="p-2 break-words">{post?.title}</div>
                             </div>

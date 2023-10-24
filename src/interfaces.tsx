@@ -11,7 +11,6 @@ export interface Post {
 export interface User {
     _id: string,
     username: string,
-    email: string,
     image: string,
     bio: string,
     posts: Post[],
@@ -52,6 +51,22 @@ export interface UpdateProfileForm {
     bio: string | null,
     password: string | null,
     newPassword: string | null,
+}
+
+export interface LoginForm {
+    username: string | undefined,
+    password: string | undefined,
+}
+
+export interface RegisterForm {
+    username: string | undefined,
+    email: string | undefined,
+    password: string | undefined,
+    password2: string | undefined,
+}
+
+export interface CommentForm {
+    comment: string | null
 }
 
 export interface UserInitialState {

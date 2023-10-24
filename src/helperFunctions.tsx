@@ -84,6 +84,7 @@ export const validateImage = (image: string | undefined, setterFunction: React.D
     setterFunction(null)
 }
 
+
 export const formatDateFromTimestamp = (originalTimestamp: string | undefined) => {
     if (!originalTimestamp) {
         return ''

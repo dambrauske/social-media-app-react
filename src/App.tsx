@@ -42,7 +42,8 @@ function App() {
             fetch('http://localhost:8000/user', options)
                 .then(res => res.json())
                 .then(data => {
-                    dispatch(setUser(data.data.user))
+                    console.log(data)
+                    dispatch(setUser(data.data))
                 })
 
         } else {

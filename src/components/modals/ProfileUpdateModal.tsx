@@ -86,8 +86,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
         return (
             <div className={"relative flex justify-center items-center"}>
 
-                <div
-                    className={"fixed top-0 left-0 right-0 w-screen h-screen backdrop-blur-sm bg-black bg-opacity-50 z-20"}></div>
+                <div className={"fixed top-0 left-0 right-0 w-screen h-screen backdrop-blur-sm bg-black bg-opacity-50 z-20"}></div>
 
                 <div className={"bg-slate-50 w-[30rem] p-4 flex flex-col gap-2 absolute top-0 z-30 rounded"}>
                     <div

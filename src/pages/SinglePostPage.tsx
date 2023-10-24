@@ -13,15 +13,13 @@ import SendMessageToThisUserButton from "../components/messages/SendMessageToThi
 const SinglePostPage = () => {
 
     const {postId} = useParams()
-
     console.log('postId', postId)
 
-    const dispatch = useAppDispatch()
-    const token = useAppSelector(state => state.user.token)
     const user = useAppSelector(state => state.user.user)
     const post = useAppSelector(state => state.posts.selectedPost)
+    const token = useAppSelector(state => state.user.token)
+    const dispatch = useAppDispatch()
     const [isLoading, setIsLoading] = useState(true)
-
 
     console.log('selectedPost', post)
 

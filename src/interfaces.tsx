@@ -63,6 +63,10 @@ export interface PostForm {
     image: string | undefined,
 }
 
+export interface MessageForm {
+    message: string | undefined,
+}
+
 export interface RegisterForm {
     username: string | undefined,
     email: string | undefined,

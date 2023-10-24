@@ -8,6 +8,7 @@ const Comment = () => {
 
     const user = useAppSelector(state => state.user.user)
     const postId = useAppSelector(state => state.posts?.selectedPost?._id)
+    const token = useAppSelector(state => state.user.token)
     const dispatch = useAppDispatch()
 
     const {
@@ -21,7 +22,6 @@ const Comment = () => {
         console.log('comment clicked')
         console.log('data', data)
 
-        const token = localStorage.getItem('token')
         const comment = data.comment
 
         if (token === null) {
@@ -35,6 +35,11 @@ const Comment = () => {
                 dispatch(setSelectedPost(data))
             })
             reset()
+        }
+
+        return () => {
+            socket().off('addComment')
+            socket().off('post')
         }
     }
 
@@ -57,6 +62,7 @@ const Comment = () => {
                     className="w-full p-2 border rounded-lg focus:outline-none resize-none custom-scrollbar"
                     placeholder="Write a comment..."
                     maxLength={600}
+                    minLength={3}
                     rows={2}
                 />
                     <button

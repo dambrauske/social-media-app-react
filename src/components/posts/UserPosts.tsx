@@ -35,6 +35,7 @@ const UserPosts = () => {
 
         return () => {
             socket().off('Posts')
+            socket().off('getPosts')
         }
 
     }, [])

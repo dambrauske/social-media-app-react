@@ -9,8 +9,10 @@ import {useForm} from "react-hook-form";
 const AddNewPost = () => {
 
     const [postSuccessMessage, setPostSuccessMessage] = useState<string | null>(null)
-    const dispatch = useAppDispatch()
     const currentUserUsername = useAppSelector(state => state.user?.user?.username)
+    const token = useAppSelector(state => state.user.token)
+    const dispatch = useAppDispatch()
+
 
     const {
         register,
@@ -25,7 +27,6 @@ const AddNewPost = () => {
 
         setPostSuccessMessage(null)
 
-        const token = localStorage.getItem("token")
         const image = data.image
         const title = data.title
 
@@ -47,6 +48,11 @@ const AddNewPost = () => {
         }, 1000)
 
         reset()
+
+        return () => {
+            socket().off('addPost')
+            socket().off('sendAllPosts')
+        }
     }
 
     return (

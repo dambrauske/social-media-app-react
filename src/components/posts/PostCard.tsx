@@ -4,6 +4,7 @@ import LikesAndComments from "../commentsAndLikes/LikesAndComments.tsx";
 import PostSettingsModal from "../modals/PostSettingsModal.tsx";
 import {useNavigate} from "react-router-dom";
 import {Post} from "../../interfaces.tsx";
+import {formatDateFromTimestamp} from "../../helperFunctions.tsx";
 
 type Props = {
     post: Post
@@ -31,11 +32,11 @@ const PostCard = ({post}: Props) => {
             <div className="flex justify-between p-2">
                 <div className="flex items-center gap-2">
                     <div className="w-12 h-12">
-                        <img className="w-full h-full rounded-full" src={post.user.image} alt=""/>
+                        <img className="w-full h-full object-cover rounded-full" src={post.user.image} alt=""/>
                     </div>
                     <div>
                         <div className="font-bold text-xl">{post.user.username}:</div>
-                        <div className="text-xs text-slate-400">{post.createdAt}</div>
+                        <div className="text-xs text-slate-400">{formatDateFromTimestamp(post.createdAt)}</div>
                     </div>
                 </div>
                 <LikesAndComments

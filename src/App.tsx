@@ -17,6 +17,8 @@ function App() {
     const autoLogin = useAppSelector(state => state.user.autoLogin)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+    const token = useAppSelector(state => state.user.token)
+
 
     useEffect(() => {
 
@@ -29,8 +31,6 @@ function App() {
                 },
                 body: null,
             }
-
-            const token = localStorage.getItem('token')
 
             if (token !== null) {
                 options.headers = {

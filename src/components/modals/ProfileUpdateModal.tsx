@@ -7,13 +7,15 @@ import {updateUserPublicProfile} from "../../features/userSlice.tsx";
 interface Props {
     setShowProfileSettingsModal: (value: (((prevState: boolean) => boolean) | boolean)) => void
 }
+
 const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
 
         const user = useAppSelector(state => state.user.user)
         const [successMessage, setSuccessMessage] = useState<string | null>(null)
+        const token = useAppSelector(state => state.user.token)
         const dispatch = useAppDispatch()
 
-    console.log('user', user)
+        console.log('user', user)
 
         const {
             register,
@@ -22,7 +24,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
         } = useForm({
             mode: "onChange",
             defaultValues: {
-                image: user?.image,
+                image: user?.image === 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' ? '' : user?.image,
                 bio: user?.bio || '',
                 password: '',
                 newPassword: '',
@@ -34,7 +36,6 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
         const onSubmit = async (data: UpdateProfileForm) => {
             setSuccessMessage(null)
 
-            const token = localStorage.getItem('token')
             const image = data.image
             const bio = data.bio
             const password = data.password
@@ -102,7 +103,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                         className="flex flex-col gap-4">
                         <div className="flex justify-center items-center">
                             <div className="flex flex-1 justify-center">
-                                <img className="w-32 h-32 rounded-full" src={user?.image} alt=""/>
+                                <img className="w-32 h-32 rounded-full object-cover" src={user?.image} alt=""/>
                             </div>
                             <div className="flex">
                                 <div className="flex flex-col gap-2 flex-grow">
@@ -110,10 +111,23 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                     <input
                                         className="rounded bg-slate-50 border border-slate-400 p-2 text-xs w-64 outline-0"
                                         id="image"
-                                        {...register("image")}
+                                        {...register("image", {
+                                            validate: (value) => {
+                                                if (value) {
+                                                    try {
+                                                        new URL(value)
+                                                        return true
+                                                    } catch (err) {
+                                                        return "Image url is not valid"
+                                                    }
+                                                }
+                                            }
+                                        })}
                                         type="url"/>
                                     <div className="h-4">
-
+                                        {errors.image && (
+                                            <div className="text-xs text-red-600">{errors.image.message as string}</div>
+                                        )}
                                     </div>
                                     <label>Bio</label>
                                     <textarea
@@ -127,7 +141,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                         })}
                                         maxLength={150}
                                     />
-                                    <div className="h-5">
+                                    <div className="h-4">
                                         {errors.bio && (
                                             <div className="text-xs text-red-600">{errors.bio.message as string}</div>
                                         )}

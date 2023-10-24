@@ -10,12 +10,13 @@ const AllPosts = () => {
 
     const dispatch = useAppDispatch()
     const allPosts = useAppSelector(state => state.posts.posts)
-    const username = useAppSelector(state => state.user?.user?.username)
     const token = useAppSelector(state => state.user.token)
+    const username = useAppSelector(state => state.user?.user?.username)
     const [isLoading, setIsLoading] = useState(true)
 
 
     useEffect(() => {
+
         if (token === null) {
             throw new Error('Token not available')
         }
@@ -30,6 +31,7 @@ const AllPosts = () => {
         })
 
         return () => {
+            socket().off('getPosts')
             socket().off('Posts')
         }
 

@@ -1,7 +1,8 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
-import {RefObject, useRef} from "react";
 import socket from "../../socket.tsx";
 import {setChats, setSelectedChat} from "../../features/chatSlice.tsx";
+import {useForm} from 'react-hook-form';
+import {MessageForm} from "../../interfaces.tsx";
 
 const SendMessageField = () => {
 
@@ -10,13 +11,19 @@ const SendMessageField = () => {
     const selectedChat = useAppSelector(state => state.chats.selectedChat)
     const selectedUser = useAppSelector(state => state.users.selectedUser)
     const existingChatParticipant = selectedChat?.participants.filter(participant => participant.username !== user?.username)[0]
-    const messageRef: RefObject<HTMLTextAreaElement> = useRef(null)
 
     const dispatch = useAppDispatch()
 
-    const sendMessage = () => {
+    const {
+        register,
+        handleSubmit,
+        reset,
+    } = useForm()
+
+    const onSubmit = (data: MessageForm) => {
         console.log('sendMessage clicked')
-        const message: string | undefined = messageRef.current?.value
+        const message = data.message
+
         if (message && message.length > 0) {
 
             if (token === null) {
@@ -38,9 +45,7 @@ const SendMessageField = () => {
             })
         }
 
-        if (messageRef.current) {
-            messageRef.current.value = ''
-        }
+        reset()
 
         return () => {
             socket().off('addMessage')
@@ -52,24 +57,27 @@ const SendMessageField = () => {
     return (
         <div className="p-2 flex gap-2 rounded bg-slate-100 w-full">
 
-            <div className="flex w-full gap-4">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex w-full gap-4">
                 <textarea
-                    ref={messageRef}
+                    id="message"
+                    {...register("message",)}
                     className="w-full p-2 border rounded-lg focus:outline-none resize-none custom-scrollbar"
                     placeholder="Write a message..."
                     rows={3}
+                    minLength={3}
+                    maxLength={1000}
                 />
-                <div
-                    onClick={sendMessage}
+                <button
+                    type="submit"
                     className="flex items-end justify-end cursor-pointer">
                     <div
                         className="flex p-1 w-6 h-6 justify-center items-center rounded-full hover:bg-slate-100 hover:text-slate-50">
                         <i className="far fa-paper-plane text-slate-400"></i>
                     </div>
-                </div>
-
-            </div>
-
+                </button>
+            </form>
         </div>
     );
 };

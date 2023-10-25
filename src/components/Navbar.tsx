@@ -21,7 +21,7 @@ const Navbar = () => {
                     <div className="w-6 h-6">
                         <img className="w-full h-full object-cover rounded-full" src={user?.image} alt=""/>
                     </div>
-                    <div className="flex flex-col items-start">
+                    <div className="md:flex flex-col items-start hidden">
                         <div>{user?.username}</div>
                     </div>
                 </div>
@@ -29,19 +29,19 @@ const Navbar = () => {
                     onClick={() => navigate('/messages')}
                     className="cursor-pointer px-3 py-1 rounded hover:bg-slate-300 flex justify-center items-center gap-2">
                     <i className="fas fa-envelope text-slate-700"></i>
-                    <div>messages</div>
+                    <div className="md:block hidden">messages</div>
                 </div>
                 <div
                     onClick={() => navigate('/posts')}
                     className="cursor-pointer px-3 py-1 rounded hover:bg-slate-300 flex justify-center items-center gap-2">
                     <i className="fas fa-images text-slate-700"></i>
-                    <div>posts</div>
+                    <div className="md:block hidden">posts</div>
                 </div>
                 <div
                     onClick={() => navigate('/users')}
                     className="cursor-pointer px-3 py-1 rounded hover:bg-slate-300 flex justify-center items-center gap-2">
                     <i className="fas fa-users text-slate-700"></i>
-                    <div>users</div>
+                    <div className="md:block hidden">users</div>
                 </div>
 
             </div>
@@ -49,7 +49,7 @@ const Navbar = () => {
             <div className="bg-slate-200 px-3 py-1 rounded hover:bg-slate-300 flex justify-center items-center gap-2 cursor-pointer"
                 onClick={logout}>
                 <i className="fas fa-sign-out-alt text-slate-700"></i>
-                <div>Logout</div>
+                <div className="md:block hidden">Logout</div>
             </div>
         </div>
     );

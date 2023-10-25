@@ -64,6 +64,12 @@ const Comment = () => {
                     maxLength={600}
                     minLength={3}
                     rows={2}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault()
+                            handleSubmit(onSubmit)()
+                        }
+                    }}
                 />
                     <button
                         type="submit"

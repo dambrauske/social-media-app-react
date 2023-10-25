@@ -23,7 +23,6 @@ const SendMessageField = () => {
     const onSubmit = (data: MessageForm) => {
         console.log('sendMessage clicked')
         const message = data.message
-
         if (message && message.length > 0) {
 
             if (token === null) {
@@ -63,11 +62,17 @@ const SendMessageField = () => {
                 <textarea
                     id="message"
                     {...register("message",)}
-                    className="w-full p-2 border rounded-lg focus:outline-none resize-none custom-scrollbar"
+                    className="w-full p-2 border rounded-lg focus:outline-none resize-none custom-scrollbar custom-scrollbar overflow-y-auto"
                     placeholder="Write a message..."
-                    rows={3}
+                    rows={4}
                     minLength={3}
-                    maxLength={1000}
+                    maxLength={3000}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault()
+                            handleSubmit(onSubmit)()
+                        }
+                    }}
                 />
                 <button
                     type="submit"

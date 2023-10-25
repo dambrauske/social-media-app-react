@@ -104,7 +104,14 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
                         className="outline-none border rounded resize-none	custom-scrollbar p-1"
                         maxLength={100}
                         minLength={3}
-                        placeholder="title"/>
+                        placeholder="title"
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault()
+                                handleSubmit(onSubmit)()
+                            }
+                        }}
+                    />
 
                     <div className="h-4">
                         {postSuccessMessage &&

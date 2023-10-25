@@ -81,7 +81,7 @@ const SortingPosts = () => {
 
 
         return (
-            <div className="flex gap-4 w-full justify-end rounded p-2">
+            <div className="flex gap-4 w-full justify-end rounded p-2 text-sm">
 
                 <div className="p-1 text-slate-400 mr-4">
                     sort by:

@@ -58,11 +58,12 @@ const Messages = ({selectedUserId}: Props) => {
     if (isLoading) return null
 
     return (
-        <div className="p-2 bg-slate-100 w-3/4 flex flex-col h-full">
-            <div className="font-semibold">{chatParticipant?.username || selectedUser?.username}</div>
+        <div className="bg-slate-50 md:w-3/4 grow flex flex-col h-full">
+            <div className="font-semibold p-1">{chatParticipant?.username || selectedUser?.username}</div>
             <hr/>
             <div className="flex flex-col justify-between h-full overflow-auto">
-                <div className="overflow-y-auto custom-scrollbar flex grow overflow-x-hidden flex-col-reverse">
+                <div
+                    className="overflow-y-auto custom-scrollbar flex grow overflow-x-hidden flex-col-reverse bg-slate-100 ">
                     {messagesSortedByDate && messagesSortedByDate.map((message) => (
                         <SingleMessage
                             key={message._id}
@@ -70,7 +71,7 @@ const Messages = ({selectedUserId}: Props) => {
                         />
                     ))}
                 </div>
-
+                <hr/>
                 <SendMessageField/>
             </div>
 

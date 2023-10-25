@@ -73,7 +73,7 @@ const SendMessageField = () => {
                     type="submit"
                     className="flex items-end justify-end cursor-pointer">
                     <div
-                        className="flex p-1 w-6 h-6 justify-center items-center rounded-full hover:bg-slate-100 hover:text-slate-50">
+                        className="flex p-1 w-8 h-8 justify-center items-center rounded-full hover:bg-slate-200 hover:text-slate-50">
                         <i className="far fa-paper-plane text-slate-400"></i>
                     </div>
                 </button>

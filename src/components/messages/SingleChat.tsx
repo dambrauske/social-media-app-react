@@ -35,10 +35,12 @@ const SingleChat = ({chat}: Props) => {
         <div
             onClick={selectChat}
             className="flex gap-2 items-center p-2 cursor-pointer">
-            <div className="w-1/6 flex justify-center items-center">
-                <img className="w-10 h-10 rounded-full object-cover" src={chatParticipant?.image} alt=""/>
+            <div className="flex justify-center items-center">
+                <div className="w-10 h-10">
+                    <img className="w-full h-full rounded-full object-cover" src={chatParticipant?.image} alt=""/>
+                </div>
             </div>
-            <div className="flex flex-col w-5/6">
+            <div className="hidden md:flex md:flex-col w-5/6">
                 <div className="font-semibold">{chatParticipant?.username}</div>
                 <div>
                     <div className="text-sm whitespace-nowrap overflow-ellipsis overflow-hidden">{lastMessage?.message}</div>

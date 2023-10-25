@@ -21,7 +21,7 @@ const RegisterPage = () => {
             handleSubmit,
             watch,
             formState: {errors}
-        } = useForm({
+        } = useForm<RegisterForm>({
             mode: "onChange"
         })
 

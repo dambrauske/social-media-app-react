@@ -21,7 +21,7 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
         handleSubmit,
         reset,
         formState: {errors}
-    } = useForm({
+    } = useForm<PostForm>({
         mode: "onChange"
     })
 

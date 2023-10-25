@@ -23,7 +23,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
             register,
             handleSubmit,
             formState: {errors}
-        } = useForm({
+        } = useForm<UpdateProfileForm>({
             mode: "onChange",
             defaultValues: {
                 image: user?.image === 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' ? '' : user?.image,

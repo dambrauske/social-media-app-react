@@ -1,8 +1,6 @@
 import Navbar from "../components/Navbar.tsx";
 import AllPosts from "../components/posts/AllPosts.tsx";
-import AddNewPost from "../components/posts/AddNewPost.tsx";
 import {useState, MouseEvent} from "react";
-import PostSettingsModal from "../components/modals/PostSettingsModal.tsx";
 import CreatePostModal from "../components/modals/CreatePostModal.tsx";
 
 const PostsPage = () => {

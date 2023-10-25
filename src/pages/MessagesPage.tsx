@@ -13,11 +13,10 @@ const MessagesPage = () => {
     console.log('selectedChat', selectedChat)
 
     return (
-        <div className="min-h-screen bg-slate-300">
+        <div className="h-screen flex flex-col bg-slate-300">
             <Navbar/>
-            <div className="flex h-full">
+            <div className="grow flex overflow-hidden">
                 <Chats/>
-
                 {selectedChat || selectedUserId ?
                     <Messages
                         selectedUserId={selectedUserId}

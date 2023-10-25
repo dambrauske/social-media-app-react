@@ -29,14 +29,18 @@ const Chats = () => {
     if (isLoading) return null
 
     return (
-        <div className="bg-slate-50 w-1/4">
+        <div className="bg-slate-50 w-1/4 flex flex-col h-full">
             <div>Chats</div>
-            {chats && chats.map((chat) => (
-                <SingleChat
-                    key={chat._id}
-                    chat={chat}
-                />
-            ))}
+            <div className="overflow-y-auto custom-scrollbar flex flex-col">
+                {chats && chats.map((chat) => (
+                    <SingleChat
+                        key={chat._id}
+                        chat={chat}
+                    />
+                ))}
+            </div>
+
+
         </div>
     );
 };

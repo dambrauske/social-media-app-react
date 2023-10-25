@@ -65,7 +65,7 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
 
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="bg-slate-200 top-0 p-2 rounded flex flex-col gap-4 absolute z-30 w-1/3">
+                className="bg-slate-50 top-0 p-4 rounded flex flex-col gap-4 absolute z-30 w-1/3">
                 <div
                     onClick={() => setShowCreatePostModal(false)}
                     className={"absolute top-0 right-0 w-8 h-8 flex justify-center items-center rounded hover:bg-slate-300 cursor-pointer"}>
@@ -84,10 +84,11 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
                                     } catch (err) {
                                         return "Image url is not valid"
                                     }
-                                }
+                                } else return "Image url cannot be blank"
                             },
                         })}
-                        className="outline-none rounded p-1"
+
+                        className="outline-none border rounded p-1"
                         type="url"
                         placeholder="image url"/>
 
@@ -100,7 +101,7 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
                     <textarea
                         id="title"
                         {...register("title")}
-                        className="outline-none rounded resize-none	custom-scrollbar p-1"
+                        className="outline-none border rounded resize-none	custom-scrollbar p-1"
                         maxLength={100}
                         minLength={3}
                         placeholder="title"/>
@@ -114,7 +115,7 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
 
                 <button
                     type="submit"
-                    className="bg-slate-300 p-1 rounded">create post
+                    className="bg-slate-200 hover:bg-slate-300 p-1 rounded">create post
                 </button>
             </form>
 

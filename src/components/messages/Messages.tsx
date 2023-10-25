@@ -32,7 +32,7 @@ const Messages = ({selectedUserId}: Props) => {
     let messagesSortedByDate
     if (selectedChatMessages) {
         messagesSortedByDate = [...selectedChatMessages].sort((objA, objB) => {
-            return new Date(objA.createdAt!).getTime() - new Date(objB.createdAt!).getTime()
+            return new Date(objB.createdAt!).getTime() - new Date(objA.createdAt!).getTime()
         })
     }
 
@@ -58,15 +58,18 @@ const Messages = ({selectedUserId}: Props) => {
     if (isLoading) return null
 
     return (
-        <div className="w-3/4 p-2 bg-slate-100 h-full">
+        <div className="p-2 bg-slate-100 w-3/4 flex flex-col h-full">
             <div className="font-semibold">{chatParticipant?.username || selectedUser?.username}</div>
-            <div className="flex flex-col justify-between h-full">
-                {messagesSortedByDate && messagesSortedByDate.map((message) => (
-                    <SingleMessage
-                        key={message._id}
-                        message={message}
-                    />
-                ))}
+            <hr/>
+            <div className="flex flex-col justify-between h-full overflow-auto">
+                <div className="overflow-y-auto custom-scrollbar flex grow overflow-x-hidden flex-col-reverse">
+                    {messagesSortedByDate && messagesSortedByDate.map((message) => (
+                        <SingleMessage
+                            key={message._id}
+                            message={message}
+                        />
+                    ))}
+                </div>
 
                 <SendMessageField/>
             </div>

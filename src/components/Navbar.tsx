@@ -13,7 +13,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className="flex items-center justify-between px-4 py-2 bg-slate-200 gap-10">
+        <div className="flex shrink-0 items-center justify-between px-4 py-2 bg-slate-200 gap-10">
             <div className="flex items-center justify-center gap-10">
                 <div
                     onClick={() => navigate('/profile')}

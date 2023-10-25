@@ -55,7 +55,7 @@ const SendMessageField = () => {
 
 
     return (
-        <div className="p-2 flex gap-2 rounded bg-slate-100 w-full">
+        <div className="p-4 flex gap-2 rounded bg-slate-100 w-full">
 
             <form
                 onSubmit={handleSubmit(onSubmit)}

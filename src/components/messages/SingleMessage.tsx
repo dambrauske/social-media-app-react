@@ -10,7 +10,7 @@ const SingleMessage = ({message}: Props) => {
     const userId = useAppSelector(state => state.user.user?._id)
 
     return (
-        <div className={`flex content-start gap-1 mb-2 p-2 ${message.sentBy._id === userId ? 'flex-row-reverse' : 'flex-row'}`}>
+        <div className={`flex content-start gap-1 mb-2 p-3 ${message.sentBy._id === userId ? 'flex-row-reverse' : 'flex-row'}`}>
             <div className="shrink-0 basis-10">
                 <img className="w-10 h-10 rounded-full object-cover" src={message.sentBy.image} alt=""/>
             </div>

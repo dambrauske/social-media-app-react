@@ -1,8 +1,10 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import {useState} from "react";
 import {useForm} from 'react-hook-form';
-import {UpdateProfileForm} from "../../interfaces.tsx";
+import {Post, UpdateProfileForm} from "../../interfaces.tsx";
 import {updateUserPublicProfile} from "../../features/userSlice.tsx";
+import {setUserPosts} from "../../features/postsSlice.tsx";
+import socket from "../../socket.tsx";
 
 interface Props {
     setShowProfileSettingsModal: (value: (((prevState: boolean) => boolean) | boolean)) => void
@@ -13,9 +15,9 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
         const user = useAppSelector(state => state.user.user)
         const [successMessage, setSuccessMessage] = useState<string | null>(null)
         const token = useAppSelector(state => state.user.token)
+        const username = useAppSelector(state => state.user.user?.username)
         const dispatch = useAppDispatch()
 
-        console.log('user', user)
 
         const {
             register,
@@ -71,6 +73,14 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                 }
             }
 
+            socket().emit('getPosts', ({token}))
+            socket().on('Posts', (data: Post[]) => {
+                const userPosts = data.filter(post => post.user.username === username)
+                dispatch(setUserPosts(userPosts))
+            })
+
+
+
             setSuccessMessage('Profile updated successfully')
 
             setTimeout(() => {
@@ -80,13 +90,19 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
             setTimeout(() => {
                 setShowProfileSettingsModal(false)
             }, 1000)
+
+            return () => {
+                socket().off('Posts')
+                socket().off('getPosts')
+            }
         }
 
 
         return (
             <div className={"relative flex justify-center items-center"}>
 
-                <div className={"fixed top-0 left-0 right-0 w-screen h-screen backdrop-blur-sm bg-black bg-opacity-50 z-20"}></div>
+                <div
+                    className={"fixed top-0 left-0 right-0 w-screen h-screen backdrop-blur-sm bg-black bg-opacity-50 z-20"}></div>
 
                 <div className={"bg-slate-50 w-[30rem] p-4 flex flex-col gap-2 absolute top-0 z-30 rounded"}>
                     <div

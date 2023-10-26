@@ -18,7 +18,7 @@ const SendMessageField = () => {
         register,
         handleSubmit,
         reset,
-    } = useForm()
+    } = useForm<MessageForm>()
 
     const onSubmit = (data: MessageForm) => {
         console.log('sendMessage clicked')

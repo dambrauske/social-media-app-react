@@ -16,7 +16,7 @@ const Comment = () => {
         handleSubmit,
         reset,
         formState: {errors}
-    } = useForm()
+    } = useForm<CommentForm>()
 
     const onSubmit = async (data: CommentForm) => {
         console.log('comment clicked')
@@ -61,8 +61,8 @@ const Comment = () => {
                     {...register("comment")}
                     className="w-full p-2 border rounded-lg focus:outline-none resize-none custom-scrollbar"
                     placeholder="Write a comment..."
-                    maxLength={600}
                     minLength={3}
+                    maxLength={600}
                     rows={2}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {

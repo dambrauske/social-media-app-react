@@ -21,7 +21,6 @@ function App() {
 
 
     useEffect(() => {
-
         if (autoLogin) {
 
             const options: RequestInit = {

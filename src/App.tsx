@@ -13,13 +13,14 @@ import SinglePostPage from "./pages/SinglePostPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 
 function App() {
-
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
+    const autoLoginValue = localStorage.getItem('autoLogin')
+    const autoLogin = autoLoginValue ? JSON.parse(autoLoginValue) : null
+    const token = localStorage.getItem('token')
 
     useEffect(() => {
-        const autoLogin: boolean = Boolean(localStorage.getItem('autoLogin'))
-        const token = localStorage.getItem('token')
+
 
         if (autoLogin) {
             const options: RequestInit = {
@@ -41,17 +42,26 @@ function App() {
                 .then(res => res.json())
                 .then(data => {
                     dispatch(setUser(data.data))
-                    navigate('/profile')
+
+                    setTimeout(() => {
+
+                        navigate('/profile')
+                    }, 2_000)
                 })
         } else {
-            navigate('/')
+            setTimeout(() => {
+
+                navigate('/login')
+            }, 2_000)
+
         }
     }, [])
 
     return (
         <div className="font-poppins">
             <Routes>
-                <Route path='/' element={<LoginPage/>}/>
+                <Route path='/' element={autoLogin ?<h1>Authenticating ...</h1> : <p>Redirecting to login...</p>}/>
+                <Route path='/login' element={<LoginPage/>}/>
                 <Route path='/profile' element={<UserPage/>}/>
                 <Route path='/register' element={<RegisterPage/>}/>
                 <Route path='/posts' element={<PostsPage/>}/>

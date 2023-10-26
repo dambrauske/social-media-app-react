@@ -25,7 +25,7 @@ const UserPosts = () => {
         dispatch(setUserPosts(undefined))
 
         socket().emit('getPosts', ({token}))
-        socket().on('Posts', (data: Post[])  => {
+        socket().on('allPosts', (data: Post[])  => {
             console.log('data', data)
             const userPosts  =  data.filter(post => post.user.username === username)
             console.log('userPosts',userPosts)
@@ -34,7 +34,7 @@ const UserPosts = () => {
         })
 
         return () => {
-            socket().off('Posts')
+            socket().off('allPosts')
             socket().off('getPosts')
         }
 

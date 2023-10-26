@@ -74,7 +74,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
             }
 
             socket().emit('getPosts', ({token}))
-            socket().on('Posts', (data: Post[]) => {
+            socket().on('allPosts', (data: Post[]) => {
                 const userPosts = data.filter(post => post.user.username === username)
                 dispatch(setUserPosts(userPosts))
             })
@@ -92,7 +92,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
             }, 1000)
 
             return () => {
-                socket().off('Posts')
+                socket().off('allPosts')
                 socket().off('getPosts')
             }
         }

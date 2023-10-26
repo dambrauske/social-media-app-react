@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
-import {setSelectedPost} from "../../features/postsSlice.tsx";
+import {setSelectedPost, updateSinglePost} from "../../features/postsSlice.tsx";
 import socket from "../../socket.tsx";
 import {useForm} from 'react-hook-form';
 import {CommentForm} from "../../interfaces.tsx";
@@ -33,6 +33,7 @@ const Comment = () => {
             socket().on('post', (data) => {
                 console.log('post', data)
                 dispatch(setSelectedPost(data))
+                dispatch(updateSinglePost(data))
             })
             reset()
         }

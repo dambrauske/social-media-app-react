@@ -1,9 +1,8 @@
 import {useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
+import {useAppSelector} from "../../hooks.tsx";
 import {useForm} from "react-hook-form";
-import {Post, PostForm} from "../../interfaces.tsx";
+import {PostForm} from "../../interfaces.tsx";
 import socket from "../../socket.tsx";
-import {setAllPosts, setUserPosts} from "../../features/postsSlice.tsx";
 
 type Props = {
     setShowCreatePostModal: (value: boolean) => void
@@ -11,9 +10,7 @@ type Props = {
 const CreatePostModal = ({setShowCreatePostModal}: Props) => {
 
     const [postSuccessMessage, setPostSuccessMessage] = useState<string | null>(null)
-    const currentUserUsername = useAppSelector(state => state.user?.user?.username)
     const token = useAppSelector(state => state.user.token)
-    const dispatch = useAppDispatch()
 
 
     const {
@@ -37,12 +34,6 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
         }
 
         socket().emit('addPost', ({token, image, title}))
-        socket().on('sendAllPosts', (data: Post[]) => {
-            console.log('sendAllPosts', data)
-            dispatch(setAllPosts(data))
-            const userPosts = data.filter(post => post.user.username === currentUserUsername)
-            dispatch(setUserPosts(userPosts))
-        })
 
         setPostSuccessMessage('Post added successfully')
         setTimeout(() => {
@@ -55,9 +46,9 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
 
         return () => {
             socket().off('addPost')
-            socket().off('sendAllPosts')
         }
     }
+
 
     return (
         <div className={"relative flex justify-center"}>

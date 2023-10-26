@@ -13,39 +13,47 @@ const LikesAndComments = ({post}: Props) => {
 
     const navigate = useNavigate()
     const token = useAppSelector(state => state.user.token)
+    const selectedPost = useAppSelector(state => state.posts.selectedPost)
     const userId = useAppSelector(state => state.user?.user?._id)
     const dispatch = useAppDispatch()
-
 
     const likePost = (token: string | null, postId: string | null | undefined, e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
         console.log('like post clicked')
 
         socket().emit('likePost', ({token, postId}))
-        socket().on('updatedPost', (data) => {
-            console.log('updatedPost', data)
+        socket().on('updatedPostAfterLike', (data) => {
+            console.log('updatedPostAfterLike', data)
             dispatch(updateSinglePost(data))
             dispatch(setSelectedPost(data))
         })
         return () => {
-            socket().off('updatedPost')
+            socket().off('updatedPostAfterLike')
             socket().off('likePost')
         }
-
     }
-
-    useEffect(() => {
-
-    }, [])
-
-
 
     const isPostLikedByUser = () => {
         return post?.likes.some(like => like.user === userId);
     }
 
+    useEffect(() => {
+        console.warn('usefect from comments and likes')
+        socket().on('updatedPostAfterLike', (data) => {
+            console.warn('updatedPostAfterLike')
+            dispatch(updateSinglePost(data))
+            if (selectedPost && selectedPost?._id === data._id) {
+                dispatch(setSelectedPost(data))
+            }
+        })
+
+        return () => {
+            socket().off('updatedPostAfterLike')
+        }
+    }, [])
+
     return (
-        <div className="flex items-center gap-3 text-slate-500">
+        <div className="flex items-end gap-3 text-slate-500">
 
             <div
                 onClick={(e) => likePost(token, post?._id, e)}

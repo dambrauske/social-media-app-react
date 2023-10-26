@@ -1,14 +1,11 @@
 import {Comment} from "../../interfaces.tsx";
 import {formatDateFromTimestamp} from "../../helperFunctions.tsx";
 
-
 type Props = {
     comment: Comment,
 }
 
 const SingleComment = ({comment} : Props ) => {
-
-    console.log('comment', comment)
 
     return (
             <div className="gap-1 p-1 flex border w-full">

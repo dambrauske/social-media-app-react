@@ -22,7 +22,7 @@ const AllPosts = () => {
         }
 
         socket().emit('getPosts', ({token}))
-        socket().on('Posts', (data: Post[]) => {
+        socket().on('allPosts', (data: Post[]) => {
             dispatch(setAllPosts(data))
             console.log('data from get posts', data)
             const userPosts = data.filter(post => post.user.username === username)
@@ -32,7 +32,7 @@ const AllPosts = () => {
 
         return () => {
             socket().off('getPosts')
-            socket().off('Posts')
+            socket().off('allPosts')
         }
 
     }, [])

@@ -15,8 +15,6 @@ const Comments = () => {
         })
     }
 
-    console.log('post', post)
-
     return (
         <div className="flex flex-col bg-slate-200 rounded h-[25rem]">
             <Comment/>

@@ -8,6 +8,7 @@ import Navbar from "../components/Navbar.tsx";
 import socket from "../socket.tsx";
 import {setSelectedUser} from "../features/allUsersSlice.tsx";
 import SendMessageToThisUserButton from "../components/messages/SendMessageToThisUserButton.tsx";
+import {Post} from "../interfaces.tsx";
 
 
 const SinglePostPage = () => {
@@ -28,11 +29,9 @@ const SinglePostPage = () => {
         if (token === null) {
             throw new Error('Token not available')
         }
-        dispatch(setSelectedPost(undefined))
-        dispatch(setSelectedUser(undefined))
 
         socket().emit('getSinglePost', ({token, postId}))
-        socket().on('singlePost', (data) => {
+        socket().on('singlePost', (data: Post) => {
             console.log('singlePost', data)
             dispatch(setSelectedPost(data))
             dispatch(setSelectedUser(post?.user))

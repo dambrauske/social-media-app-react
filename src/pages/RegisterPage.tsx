@@ -58,7 +58,7 @@ const RegisterPage = () => {
         }
 
         const navigateToLogin = () => {
-            navigate('/')
+            navigate('/login')
             localStorage.clear()
         }
 

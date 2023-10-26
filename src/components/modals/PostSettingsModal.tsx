@@ -33,7 +33,7 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
         e.stopPropagation()
         console.log('delete post', postId)
         socket().emit('deletePost', ({token, postId}))
-        socket().on('PostsUpdated', (data: Post[]) => {
+        socket().on('postsUpdatedAfterPostDeleted', (data: Post[]) => {
             dispatch(setAllPosts(data))
             const userPosts = data.filter(post => post.user.username === username)
             console.log('userPosts',userPosts)

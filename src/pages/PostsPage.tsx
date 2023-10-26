@@ -6,7 +6,6 @@ import CreatePostModal from "../components/modals/CreatePostModal.tsx";
 const PostsPage = () => {
 
     const [showCreatePostModal, setShowCreatePostModal] = useState<boolean>(false)
-
     const showCreatePost = (e: MouseEvent<HTMLButtonElement>) => {
         setShowCreatePostModal(!showCreatePostModal)
         e.stopPropagation()

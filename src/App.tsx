@@ -3,7 +3,7 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import {useEffect} from "react";
-import {useAppDispatch, useAppSelector} from "./hooks.tsx";
+import {useAppDispatch} from "./hooks.tsx";
 import {setUser} from "./features/userSlice.tsx";
 import PostsPage from "./pages/PostsPage.tsx";
 import UsersPage from "./pages/UsersPage.tsx";
@@ -14,15 +14,14 @@ import ProfilePage from "./pages/ProfilePage.tsx";
 
 function App() {
 
-    const autoLogin = useAppSelector(state => state.user.autoLogin)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const token = useAppSelector(state => state.user.token)
-
 
     useEffect(() => {
-        if (autoLogin) {
+        const autoLogin: boolean = Boolean(localStorage.getItem('autoLogin'))
+        const token = localStorage.getItem('token')
 
+        if (autoLogin) {
             const options: RequestInit = {
                 method: "POST",
                 headers: {
@@ -41,15 +40,12 @@ function App() {
             fetch('http://localhost:8000/user', options)
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data)
                     dispatch(setUser(data.data))
+                    navigate('/profile')
                 })
-
         } else {
             navigate('/')
         }
-
-
     }, [])
 
     return (

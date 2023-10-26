@@ -4,14 +4,11 @@ import {useAppDispatch} from "../hooks.tsx";
 import {setToken, setUser} from "../features/userSlice.tsx";
 import {useForm} from 'react-hook-form';
 import {LoginForm} from "../interfaces.tsx";
-import {useEffect, useState} from "react";
 
 const LoginPage = () => {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const [isLoading, setIsLoading] = useState(true)
-
 
     const {
         register,
@@ -21,36 +18,6 @@ const LoginPage = () => {
         mode: "onChange"
     })
 
-    useEffect(() => {
-        const autoLogin: boolean = Boolean(localStorage.getItem('autoLogin'))
-        const token = localStorage.getItem('token')
-
-        if (autoLogin) {
-            const options: RequestInit = {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json",
-                },
-                body: null,
-            }
-
-            if (token !== null) {
-                options.headers = {
-                    ...options.headers,
-                    "authorization": token,
-                }
-            }
-
-            fetch('http://localhost:8000/user', options)
-                .then(res => res.json())
-                .then(data => {
-                    dispatch(setUser(data.data))
-                    navigate('/profile')
-                    setIsLoading(false)
-                })
-        }
-
-    }, [])
     const onSubmit = async (data: LoginForm) => {
 
                 const username = data.username
@@ -81,14 +48,10 @@ const LoginPage = () => {
                 }
             }
 
-
     const navigateToRegister = () => {
         navigate('/register')
         localStorage.clear()
     }
-
-
-if (isLoading) return null
 
     return (
         <div className="bg-cover bg-slate-50 h-screen flex justify-center items-center">

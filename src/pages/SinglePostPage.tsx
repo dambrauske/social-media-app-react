@@ -1,28 +1,24 @@
 import LikesAndComments from "../components/commentsAndLikes/LikesAndComments.tsx";
 import {useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
-import {useEffect, useState} from "react";
-import {setSelectedPost} from "../features/postsSlice.tsx";
 import Comments from "../components/commentsAndLikes/Comments.tsx";
 import Navbar from "../components/Navbar.tsx";
-import socket from "../socket.tsx";
-import {setSelectedUser} from "../features/allUsersSlice.tsx";
 import SendMessageToThisUserButton from "../components/messages/SendMessageToThisUserButton.tsx";
+import {useEffect, useState} from "react";
+import socket from "../socket.tsx";
 import {Post} from "../interfaces.tsx";
+import {setAllPosts, setUserPosts} from "../features/postsSlice.tsx";
 
 
 const SinglePostPage = () => {
-
     const {postId} = useParams()
-    console.log('postId', postId)
-
     const user = useAppSelector(state => state.user.user)
-    const post = useAppSelector(state => state.posts.selectedPost)
+    const posts = useAppSelector(state => state.posts.posts)
+    const selectedPost = posts?.find(p => p._id === postId)
     const token = useAppSelector(state => state.user.token)
+    const username = useAppSelector(state => state.user?.user?.username)
     const dispatch = useAppDispatch()
-    const [isLoading, setIsLoading] = useState(true)
-
-    console.log('selectedPost', post)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
 
@@ -30,18 +26,19 @@ const SinglePostPage = () => {
             throw new Error('Token not available')
         }
 
-        socket().emit('getSinglePost', ({token, postId}))
-        socket().on('singlePost', (data: Post) => {
-            console.log('singlePost', data)
-            dispatch(setSelectedPost(data))
-            dispatch(setSelectedUser(post?.user))
+        socket().emit('getPosts', ({token}))
+        socket().on('allPosts', (data: Post[]) => {
+            dispatch(setAllPosts(data))
+            const userPosts = data.filter(post => post.user.username === username)
+            dispatch(setUserPosts(userPosts))
             setIsLoading(false)
         })
 
         return () => {
-            socket().off('getSinglePost')
-            socket().off('singlePost')
+            socket().off('getPosts')
+            socket().off('allPosts')
         }
+
     }, [])
 
     if (isLoading) return null
@@ -54,17 +51,17 @@ const SinglePostPage = () => {
                 <div className="flex p-2 rounded bg-white gap-2 relative">
                     <div>
                         <div className="w-[32rem] h-[32rem]">
-                            <img className="w-full h-full object-cover rounded" src={post?.image} alt=""/>
+                            <img className="w-full h-full object-cover rounded" src={selectedPost?.image} alt=""/>
                         </div>
                     </div>
 
                     <div className="flex flex-col p-2 w-80 gap-4">
                         <div className="flex flex-col items-start gap-2">
-                            <div className="font-bold text-xl">{post?.user.username}</div>
+                            <div className="font-bold text-xl">{selectedPost?.user.username}</div>
                             {
-                                post?.user.username !== user?.username ?
+                                selectedPost?.user.username !== user?.username ?
                                     <SendMessageToThisUserButton
-                                        user={post?.user}
+                                        user={selectedPost?.user}
                                     />
                                     :
                                      null
@@ -72,15 +69,17 @@ const SinglePostPage = () => {
                             }
 
                             <div className="w-full overflow-hidden">
-                                <div className="p-2 break-words">{post?.title}</div>
+                                <div className="p-2 break-words">{selectedPost?.title}</div>
                             </div>
                         </div>
                         <div className="self-end">
                             <LikesAndComments
-                                post={post}/>
+                                post={selectedPost}/>
                         </div>
                         <hr/>
-                        <Comments/>
+                        <Comments
+                            post={selectedPost}
+                        />
                     </div>
 
 

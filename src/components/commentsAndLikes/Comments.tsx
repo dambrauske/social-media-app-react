@@ -1,10 +1,12 @@
 import SingleComment from "./SingleComment.tsx";
 import Comment from "./Comment.tsx";
-import {useAppSelector} from "../../hooks.tsx";
+import {Post} from "../../interfaces.tsx";
 
-const Comments = () => {
+type Props = {
+    post?: Post
+}
+const Comments = ({post}: Props) => {
 
-    const post = useAppSelector(state => state.posts.selectedPost)
     const postComments = post?.comments
 
     let commentsSortedByDate
@@ -17,7 +19,8 @@ const Comments = () => {
 
     return (
         <div className="flex flex-col bg-slate-200 rounded h-[25rem]">
-            <Comment/>
+            <Comment
+                postId={post?._id}/>
             <div className="overflow-y-auto custom-scrollbar rounded">
                 {commentsSortedByDate && commentsSortedByDate.map((comment) => (
                     <SingleComment

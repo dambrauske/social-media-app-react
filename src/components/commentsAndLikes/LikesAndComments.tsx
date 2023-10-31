@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {MouseEvent, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import socket from "../../socket.tsx";
-import {setSelectedPost, updateSinglePost} from "../../features/postsSlice.tsx";
+import {updateSinglePost} from "../../features/postsSlice.tsx";
 
 type Props = {
     post?: Post
@@ -13,7 +13,6 @@ const LikesAndComments = ({post}: Props) => {
 
     const navigate = useNavigate()
     const token = useAppSelector(state => state.user.token)
-    const selectedPost = useAppSelector(state => state.posts.selectedPost)
     const userId = useAppSelector(state => state.user?.user?._id)
     const dispatch = useAppDispatch()
 
@@ -25,7 +24,6 @@ const LikesAndComments = ({post}: Props) => {
         socket().on('updatedPostAfterLike', (data) => {
             console.log('updatedPostAfterLike', data)
             dispatch(updateSinglePost(data))
-            dispatch(setSelectedPost(data))
         })
         return () => {
             socket().off('updatedPostAfterLike')
@@ -38,14 +36,8 @@ const LikesAndComments = ({post}: Props) => {
     }
 
     useEffect(() => {
-        console.warn('usefect from comments and likes')
         socket().on('updatedPostAfterLike', (data) => {
-            console.warn('updatedPostAfterLike')
-            console.log('updatedPostAfterLike', data)
             dispatch(updateSinglePost(data))
-            if (selectedPost && selectedPost?._id === data._id) {
-                dispatch(setSelectedPost(data))
-            }
         })
 
         return () => {

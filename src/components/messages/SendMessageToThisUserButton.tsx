@@ -10,16 +10,16 @@ interface Props {
 
 const SendMessageToThisUserButton = ({user}: Props) => {
     const dispatch = useDispatch()
-    const participantId = user?._id
+    const selectedUserId = user?._id
     const navigate = useNavigate()
 
-    console.log('participantId', participantId)
-    console.log('user', user)
 
     const goToMessages = (e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
+        console.log('user', user)
+
         dispatch(setSelectedUser(user))
-        navigate(`/messages/${participantId}`)
+        navigate(`/messages/${selectedUserId}`)
     }
 
     return (

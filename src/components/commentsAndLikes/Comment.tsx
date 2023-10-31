@@ -1,13 +1,15 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
-import {setSelectedPost, updateSinglePost} from "../../features/postsSlice.tsx";
+import {updateSinglePost} from "../../features/postsSlice.tsx";
 import socket from "../../socket.tsx";
 import {useForm} from 'react-hook-form';
 import {CommentForm} from "../../interfaces.tsx";
 
-const Comment = () => {
+type Props = {
+    postId: string | undefined
+}
+const Comment = ({postId}: Props) => {
 
     const user = useAppSelector(state => state.user.user)
-    const postId = useAppSelector(state => state.posts?.selectedPost?._id)
     const token = useAppSelector(state => state.user.token)
     const dispatch = useAppDispatch()
 
@@ -32,7 +34,6 @@ const Comment = () => {
             socket().emit('addComment', ({token, postId, comment}))
             socket().on('post', (data) => {
                 console.log('post', data)
-                dispatch(setSelectedPost(data))
                 dispatch(updateSinglePost(data))
             })
             reset()

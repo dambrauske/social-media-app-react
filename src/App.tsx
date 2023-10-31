@@ -86,17 +86,20 @@ function App() {
         socket().on('updatedPostAfterLike', (data) => {
             console.warn('updatedPostAfterLike')
             dispatch(updateSinglePost(data))
-            if (selectedPost && selectedPost?._id === data._id) {
-                dispatch(setSelectedPost(data))
-            }
+            // if (selectedPost && selectedPost?._id === data._id) {
+            //     dispatch(setSelectedPost(data))
+            // }
+            // console.log(selectedPost)
         })
 
         socket().on('postAfterNewComment', (data) => {
             console.warn('postAfterNewComment')
+            console.log('data', data)
+            console.log('selectedPost', selectedPost)
             dispatch(updateSinglePost(data))
-            if (selectedPost && selectedPost?._id === data._id) {
-                dispatch(setSelectedPost(data))
-            }
+            // if (selectedPost && selectedPost?._id === data._id) {
+            //     dispatch(setSelectedPost(data))
+            // }
         })
 
         socket().on('postsUpdatedAfterPostDeleted', (data: Post[]) => {

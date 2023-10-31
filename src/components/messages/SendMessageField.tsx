@@ -36,19 +36,22 @@ const SendMessageField = () => {
             } else {
                 otherUserId = existingChatParticipant?._id
             }
-            socket().emit('addMessage', ({token, otherUserId, message}))
-            socket().on('chatsAfterAddingMessage', (data) => {
-                dispatch(setChats(data.chats))
-                console.log('data chats', data)
+            socket().emit('sendMessage', ({token, otherUserId, message}))
+
+            socket().on('messageSenderChats', (data) => {
+                dispatch(setChats(data.senderChats))
+                console.warn('Set selected chat send message field.tsx 59', data)
                 dispatch(setSelectedChat(data.chat))
+                console.warn('messageSenderChats')
+                console.log(data)
             })
         }
 
         reset()
 
         return () => {
-            socket().off('addMessage')
-            socket().off('chatsAfterAddingMessage')
+            socket().off('sendMessage')
+            socket().off('messageSenderChats')
         }
     }
 

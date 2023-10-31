@@ -9,8 +9,6 @@ const MessagesPage = () => {
     const {selectedUserId} = useParams()
     const selectedChat = useAppSelector(state => state.chats.selectedChat)
 
-    console.log('selectedUserId', selectedUserId)
-    console.log('selectedChat', selectedChat)
 
     return (
         <div className="h-screen flex flex-col bg-slate-300">

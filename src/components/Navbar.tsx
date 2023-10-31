@@ -1,5 +1,6 @@
 import {useAppSelector} from "../hooks.tsx";
 import {useNavigate} from "react-router-dom";
+import socket from "../socket.tsx";
 
 const Navbar = () => {
 

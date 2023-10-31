@@ -27,6 +27,7 @@ const SingleChat = ({chat}: Props) => {
     }
 
     const selectChat = () => {
+        console.warn('Set selected chat singlechat.tsx 59', chat)
         dispatch(setSelectedChat(chat))
         navigate(`/messages/${recipientId}`)
     }

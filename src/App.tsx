@@ -14,6 +14,7 @@ import ProfilePage from "./pages/ProfilePage.tsx";
 import socket from "./socket.tsx";
 import {Post} from "./interfaces.tsx";
 import {setAllPosts, setSelectedPost, setUserPosts, updateSinglePost} from "./features/postsSlice.tsx";
+import {setChats, setSelectedChat} from "./features/chatSlice.tsx";
 
 function App() {
     const dispatch = useAppDispatch()
@@ -23,6 +24,7 @@ function App() {
     const token = localStorage.getItem('token')
     const user = useAppSelector(state => state.user.user)
     const selectedPost = useAppSelector(state => state.posts.selectedPost)
+    const selectedChat = useAppSelector(state => state.chats.selectedChat)
 
     useEffect(() => {
 
@@ -47,6 +49,7 @@ function App() {
                 .then(data => {
                     dispatch(setUser(data.data))
                 })
+            socket().emit('userLoggedIn', token)
         } else {
             setTimeout(() => {
 
@@ -63,6 +66,31 @@ function App() {
             const userPosts = data.filter(post => post.user.username === user?.username)
             dispatch(setUserPosts(userPosts))
         })
+
+        socket().on('messageReceiverChats', (data) => {
+            console.warn('messageReceiverChats')
+            console.log('data', data)
+            console.log('selectedChat', selectedChat)
+            dispatch(setChats(data.receiverChats))
+
+            if (selectedChat && selectedChat._id === data.chat._id) {
+                console.warn('Set selected chat app.tsx 77', data)
+                dispatch(setSelectedChat(data.chat))
+            }
+        })
+
+        socket().on('messageSenderChats', (data) => {
+            dispatch(setChats(data.senderChats))
+            console.warn('Set selected chat app.tsx 84', data)
+            dispatch(setSelectedChat(data.chat))
+
+        })
+
+        socket().on('onlineUsers', (data) => {
+            console.warn('ONLINE USERS UPDATED')
+            console.log('online users', data)
+        })
+
 
         socket().on('updatedPostAfterLike', (data) => {
             console.warn('updatedPostAfterLike')
@@ -99,6 +127,7 @@ function App() {
             socket().off('postsAfterNewComment')
             socket().off('postsUpdatedAfterPostDeleted')
             socket().off('allPostsWithNewPostAdded')
+            socket().off('roomChatAfterAddingMessage')
         }
     }, [])
 

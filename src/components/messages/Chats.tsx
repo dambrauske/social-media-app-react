@@ -12,25 +12,25 @@ const Chats = () => {
 
 
     useEffect(() => {
-        socket().emit('getChats', {token});
+        socket().emit('getChats', {token})
+
         socket().on('chats', (data) => {
             console.log('chats', data)
             dispatch(setChats(data))
             setIsLoading(false)
         })
 
-        console.warn('qq')
-        socket().on('chatsAfterAddingMessage', (data) => {
-            console.log('chats', data)
-            dispatch(setChats(data.chats))
+
+        socket().on('messageSenderChats', (data) => {
+            dispatch(setChats(data.senderChats))
+            console.warn('Set selected chat chats.tsx 26', data)
             dispatch(setSelectedChat(data.chat))
 
-            console.warn('SET CHATS AFTER MESSAGE SEND')
-            setIsLoading(false)
         })
 
         return () => {
             socket().off('getChats')
+            socket().off('messageSenderChats')
             socket().off('chats')
             dispatch(setChats(undefined))
         }

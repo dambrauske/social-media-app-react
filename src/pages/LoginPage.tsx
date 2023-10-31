@@ -4,6 +4,7 @@ import {useAppDispatch} from "../hooks.tsx";
 import {setToken, setUser} from "../features/userSlice.tsx";
 import {useForm} from 'react-hook-form';
 import {LoginForm} from "../interfaces.tsx";
+import socket from "../socket.tsx";
 
 const LoginPage = () => {
 
@@ -42,6 +43,10 @@ const LoginPage = () => {
                     console.log(data)
                     dispatch(setUser(data.data.user))
                     dispatch(setToken(data.data.token))
+                    socket().emit('userLoggedIn', data.data.token)
+                    socket().on('onlineUsers', (data) => {
+                        console.log('onlineUsers', data)
+                    })
                     navigate('/profile')
                 } catch (error) {
                     console.log(error)

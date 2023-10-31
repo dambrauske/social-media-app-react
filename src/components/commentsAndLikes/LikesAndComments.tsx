@@ -41,6 +41,7 @@ const LikesAndComments = ({post}: Props) => {
         console.warn('usefect from comments and likes')
         socket().on('updatedPostAfterLike', (data) => {
             console.warn('updatedPostAfterLike')
+            console.log('updatedPostAfterLike', data)
             dispatch(updateSinglePost(data))
             if (selectedPost && selectedPost?._id === data._id) {
                 dispatch(setSelectedPost(data))

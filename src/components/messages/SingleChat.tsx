@@ -3,7 +3,7 @@ import {useAppSelector} from "../../hooks.tsx";
 import {formatDateFromTimestamp} from "../../helperFunctions.tsx";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {setSelectedChat} from "../../features/chatSlice.tsx";
+import {setSelectedUser} from "../../features/allUsersSlice.tsx";
 
 type Props = {
     chat: Chat,
@@ -27,8 +27,7 @@ const SingleChat = ({chat}: Props) => {
     }
 
     const selectChat = () => {
-        console.warn('Set selected chat singlechat.tsx 59', chat)
-        dispatch(setSelectedChat(chat))
+        dispatch(setSelectedUser(chatParticipant))
         navigate(`/messages/${recipientId}`)
     }
 

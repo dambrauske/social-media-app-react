@@ -4,8 +4,7 @@ import {useAppSelector} from "../../hooks.tsx";
 import {useEffect, useState} from "react";
 import socket from "../../socket.tsx";
 import {useDispatch} from "react-redux";
-import {setChats, setSelectedChat} from "../../features/chatSlice.tsx";
-
+import {setChats} from "../../features/chatSlice.tsx";
 
 interface Props {
     selectedUserId: string | undefined
@@ -13,11 +12,10 @@ interface Props {
 
 const Messages = ({selectedUserId}: Props) => {
 
-    const chatsState = useAppSelector(state => state.chats)
+
     const user = useAppSelector(state => state.user.user)
-
-    const selectedChat = chatsState?.chats?.find(c => Boolean(c.participants.find(p => p._id === selectedUserId)))
-
+    const chats = useAppSelector(state => state.chats)
+    const selectedChat = chats?.chats?.find(c => Boolean(c.participants.find(p => p._id === selectedUserId)))
     const selectedUser = useAppSelector(state => state.users.selectedUser)
     const token = useAppSelector(state => state.user.token)
     const chatParticipant = selectedChat?.participants.filter(participant => participant.username !== user?.username)[0]
@@ -28,10 +26,6 @@ const Messages = ({selectedUserId}: Props) => {
     console.log('selectedChat', selectedChat)
     console.log('selectedUser', selectedUser)
     console.log('chatParticipant', chatParticipant)
-    console.warn('ALL CHAT STATE', chatsState)
-
-    // if no selected chat, find chat by recipientId
-    // else use selected chat
 
     let messagesSortedByDate
     if (selectedChatMessages) {
@@ -44,30 +38,16 @@ const Messages = ({selectedUserId}: Props) => {
         if (token === null) {
             throw new Error('Token not available')
         }
-
-        socket().emit('getSelectedChat', ({token, selectedUserId}))
-        socket().on('selectedChat', (data) => {
-            console.log('selectedChat', data)
-            console.warn('Set selected chat messages.tsx 47', data)
-            dispatch(setSelectedChat(data))
             setIsLoading(false)
-        })
 
         socket().on('messageReceiverChats', (data) => {
             console.warn('messageReceiverChats')
             console.log('data', data)
-            console.log('selectedChat', selectedChat)
             dispatch(setChats(data.receiverChats))
-
-            if (selectedChat && selectedChat._id === data.chat._id) {
-                console.warn('Set selected chat messages.tsx 59', data)
-                dispatch(setSelectedChat(data.chat))
-            }
         })
 
         return () => {
-            socket().off('getSelectedChat')
-            socket().off('selectedChat')
+            // socket().off('messageReceiverChats')
         }
     }, [])
 

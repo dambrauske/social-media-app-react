@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import socket from "../../socket.tsx";
-import {setChats, setSelectedChat} from "../../features/chatSlice.tsx";
+import {setChats} from "../../features/chatSlice.tsx";
 import {useForm} from 'react-hook-form';
 import {MessageForm} from "../../interfaces.tsx";
 
@@ -41,7 +41,6 @@ const SendMessageField = () => {
             socket().on('messageSenderChats', (data) => {
                 dispatch(setChats(data.senderChats))
                 console.warn('Set selected chat send message field.tsx 59', data)
-                dispatch(setSelectedChat(data.chat))
                 console.warn('messageSenderChats')
                 console.log(data)
             })

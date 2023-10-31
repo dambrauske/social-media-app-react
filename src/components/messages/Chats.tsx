@@ -2,7 +2,7 @@ import SingleChat from "./SingleChat.tsx";
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import {useEffect, useState} from "react";
 import socket from "../../socket.tsx";
-import {setChats, setSelectedChat} from "../../features/chatSlice.tsx";
+import {setChats} from "../../features/chatSlice.tsx";
 const Chats = () => {
 
     const chats = useAppSelector(state => state.chats.chats)
@@ -23,9 +23,6 @@ const Chats = () => {
 
         socket().on('messageSenderChats', (data) => {
             dispatch(setChats(data.senderChats))
-            console.warn('Set selected chat chats.tsx 26', data)
-            dispatch(setSelectedChat(data.chat))
-
         })
 
         return () => {

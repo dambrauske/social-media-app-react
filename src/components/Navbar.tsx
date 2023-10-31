@@ -5,8 +5,6 @@ const Navbar = () => {
 
     const user = useAppSelector(state => state.user.user)
     const navigate = useNavigate()
-
-
     const logout = () => {
         navigate('/login')
         localStorage.clear()

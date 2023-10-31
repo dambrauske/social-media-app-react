@@ -5,7 +5,7 @@ export const chatsSlice: Slice<ChatsInitialState> = createSlice({
         name: "chats",
         initialState: {
             chats: undefined,
-            selectedChat: undefined,
+            unreadMessages: undefined,
         } as ChatsInitialState,
         reducers: {
             setChats: (state, action: PayloadAction<Chat[]>) => {

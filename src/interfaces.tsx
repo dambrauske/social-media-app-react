@@ -88,7 +88,7 @@ export interface UserInitialState {
 
 export interface ChatsInitialState {
     chats: Chat[] | undefined,
-    selectedChat: Chat | undefined,
+    unreadMessages: Message[] | undefined,
 }
 
 export interface PostsInitialState {

@@ -17,7 +17,6 @@ const Comment = ({postId}: Props) => {
         register,
         handleSubmit,
         reset,
-        formState: {errors}
     } = useForm<CommentForm>()
 
     const onSubmit = async (data: CommentForm) => {
@@ -44,9 +43,6 @@ const Comment = ({postId}: Props) => {
             socket().off('post')
         }
     }
-
-    console.log(errors)
-
 
     return (
         <div className="px-2 py-6 flex flex-col justify-center items-center rounded bg-slate-100">

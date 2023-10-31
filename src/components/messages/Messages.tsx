@@ -12,20 +12,14 @@ interface Props {
 
 const Messages = ({selectedUserId}: Props) => {
 
-
-    const user = useAppSelector(state => state.user.user)
     const chats = useAppSelector(state => state.chats)
     const selectedChat = chats?.chats?.find(c => Boolean(c.participants.find(p => p._id === selectedUserId)))
     const selectedUser = useAppSelector(state => state.users.selectedUser)
     const token = useAppSelector(state => state.user.token)
-    const chatParticipant = selectedChat?.participants.filter(participant => participant.username !== user?.username)[0]
     const selectedChatMessages = selectedChat?.messages
     const dispatch = useDispatch()
     const [isLoading, setIsLoading] = useState(true)
 
-    console.log('selectedChat', selectedChat)
-    console.log('selectedUser', selectedUser)
-    console.log('chatParticipant', chatParticipant)
 
     let messagesSortedByDate
     if (selectedChatMessages) {
@@ -47,15 +41,16 @@ const Messages = ({selectedUserId}: Props) => {
         })
 
         return () => {
-            // socket().off('messageReceiverChats')
+            socket().off('messageReceiverChats')
         }
     }, [])
 
     if (isLoading) return null
 
+
     return (
         <div className="bg-slate-50 md:w-3/4 grow flex flex-col h-full">
-            <div className="font-semibold p-1">{chatParticipant?.username || selectedUser?.username}</div>
+            <div className="font-semibold p-1">{selectedUser?.username}</div>
             <hr/>
             <div className="flex flex-col justify-between h-full overflow-auto">
                 <div

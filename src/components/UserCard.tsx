@@ -12,7 +12,7 @@ const UserCard = ({user}: Props) => {
     return (
         <div
             onClick={() => navigate(`/user/${user._id}`)}
-            className="gap-2 p-4 bg-white rounded-xl flex justify-center items-center shadow">
+            className="gap-2 p-4 bg-white rounded-xl flex justify-center items-center shadow cursor-pointer">
             <div className="w-16 h-16">
                 <img className="w-full h-full object-cover rounded-full" src={user.image} alt=""/>
             </div>

@@ -41,6 +41,7 @@ const ProfilePage = () => {
             socket().off('UserAndPosts')
         }
 
+
     }, [])
 
     if (isLoading) return null

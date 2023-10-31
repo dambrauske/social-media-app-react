@@ -8,7 +8,6 @@ type Props = {
 const Comments = ({post}: Props) => {
 
     const postComments = post?.comments
-
     let commentsSortedByDate
 
     if (postComments) {

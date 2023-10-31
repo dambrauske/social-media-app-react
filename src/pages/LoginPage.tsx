@@ -44,9 +44,6 @@ const LoginPage = () => {
                     dispatch(setUser(data.data.user))
                     dispatch(setToken(data.data.token))
                     socket().emit('userLoggedIn', data.data.token)
-                    socket().on('onlineUsers', (data) => {
-                        console.log('onlineUsers', data)
-                    })
                     navigate('/profile')
                 } catch (error) {
                     console.log(error)

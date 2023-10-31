@@ -6,12 +6,8 @@ import {MessageForm} from "../../interfaces.tsx";
 
 const SendMessageField = () => {
 
-    const user = useAppSelector(state => state.user.user)
     const token = useAppSelector(state => state.user.token)
-    const selectedChat = useAppSelector(state => state.chats.selectedChat)
     const selectedUser = useAppSelector(state => state.users.selectedUser)
-    const existingChatParticipant = selectedChat?.participants.filter(participant => participant.username !== user?.username)[0]
-
     const dispatch = useAppDispatch()
 
     const {
@@ -29,13 +25,8 @@ const SendMessageField = () => {
                 throw new Error('Token not available')
             }
 
-            let otherUserId
+            let otherUserId = selectedUser?._id
 
-            if (!existingChatParticipant) {
-                otherUserId = selectedUser?._id
-            } else {
-                otherUserId = existingChatParticipant?._id
-            }
             socket().emit('sendMessage', ({token, otherUserId, message}))
 
             socket().on('messageSenderChats', (data) => {

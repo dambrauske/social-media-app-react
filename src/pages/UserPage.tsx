@@ -1,14 +1,26 @@
 import {useAppSelector} from "../hooks.tsx";
 import Navbar from "../components/Navbar.tsx";
 import UserPosts from "../components/posts/UserPosts.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ProfileUpdateModal from "../components/modals/ProfileUpdateModal.tsx";
+import socket from "../socket.tsx";
+
 
 const UserPage = () => {
 
     const user = useAppSelector(state => state.user.user)
     const bio = useAppSelector(state => state.user.user?.bio)
     const [showProfileSettingsModal, setShowProfileSettingsModal] = useState<boolean>(false)
+    const token = useAppSelector(state => state.user.token)
+
+    useEffect(() => {
+
+        if (token === null) {
+            throw new Error('Token not available')
+        }
+        socket().emit('getPosts', ({token}))
+
+    }, [])
 
     return (
         <div className="min-h-screen bg-slate-50 ">

@@ -13,7 +13,7 @@ import SinglePostPage from "./pages/SinglePostPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import socket from "./socket.tsx";
 import {Post} from "./interfaces.tsx";
-import {setAllPosts, setSelectedPost, setUserPosts, updateSinglePost} from "./features/postsSlice.tsx";
+import {setAllPosts, setUserPosts, updateSinglePost} from "./features/postsSlice.tsx";
 import {setChats} from "./features/chatSlice.tsx";
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
     const token = localStorage.getItem('token')
     const user = useAppSelector(state => state.user.user)
     const selectedPost = useAppSelector(state => state.posts.selectedPost)
+    const username = useAppSelector(state => state.user?.user?.username)
 
     useEffect(() => {
 
@@ -59,6 +60,14 @@ function App() {
     }, [])
 
     useEffect(() => {
+
+        socket().on('allPosts', (data: Post[]) => {
+            dispatch(setAllPosts(data))
+            console.log('data from get posts', data)
+            const userPosts = data.filter(post => post.user.username === username)
+            dispatch(setUserPosts(userPosts))
+        })
+
         socket().on('allPostsWithNewPostAdded', (data: Post[]) => {
             console.warn('allPostsWithNewPostAdded')
             dispatch(setAllPosts(data))
@@ -86,10 +95,6 @@ function App() {
         socket().on('updatedPostAfterLike', (data) => {
             console.warn('updatedPostAfterLike')
             dispatch(updateSinglePost(data))
-            // if (selectedPost && selectedPost?._id === data._id) {
-            //     dispatch(setSelectedPost(data))
-            // }
-            // console.log(selectedPost)
         })
 
         socket().on('postAfterNewComment', (data) => {
@@ -97,9 +102,6 @@ function App() {
             console.log('data', data)
             console.log('selectedPost', selectedPost)
             dispatch(updateSinglePost(data))
-            // if (selectedPost && selectedPost?._id === data._id) {
-            //     dispatch(setSelectedPost(data))
-            // }
         })
 
         socket().on('postsUpdatedAfterPostDeleted', (data: Post[]) => {
@@ -121,6 +123,7 @@ function App() {
             socket().off('postsAfterNewComment')
             socket().off('postsUpdatedAfterPostDeleted')
             socket().off('allPostsWithNewPostAdded')
+            socket().off('allPosts')
         }
     }, [])
 

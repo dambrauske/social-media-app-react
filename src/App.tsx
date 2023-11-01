@@ -14,7 +14,6 @@ import ProfilePage from "./pages/ProfilePage.tsx";
 import socket from "./socket.tsx";
 import {Post} from "./interfaces.tsx";
 import {setAllPosts, setUserPosts, updateSinglePost} from "./features/postsSlice.tsx";
-import {setChats} from "./features/chatSlice.tsx";
 
 function App() {
     const dispatch = useAppDispatch()
@@ -50,6 +49,7 @@ function App() {
                     dispatch(setUser(data.data))
                 })
             socket().emit('userLoggedIn', token)
+
         } else {
             setTimeout(() => {
 
@@ -64,7 +64,7 @@ function App() {
         socket().on('allPosts', (data: Post[]) => {
             dispatch(setAllPosts(data))
             console.log('data from get posts', data)
-            const userPosts = data.filter(post => post.user.username === username)
+            const userPosts = data.filter(p => p.user.username === username)
             dispatch(setUserPosts(userPosts))
         })
 
@@ -75,16 +75,6 @@ function App() {
             dispatch(setUserPosts(userPosts))
         })
 
-        socket().on('messageReceiverChats', (data) => {
-            console.warn('messageReceiverChats')
-            console.log('data', data)
-            dispatch(setChats(data.receiverChats))
-        })
-
-        socket().on('messageSenderChats', (data) => {
-            dispatch(setChats(data.senderChats))
-            console.warn('Set selected chat app.tsx 84', data)
-        })
 
         socket().on('onlineUsers', (data) => {
             console.warn('ONLINE USERS UPDATED')
@@ -119,11 +109,13 @@ function App() {
 
         return () => {
             socket().off('allPostsWithNewPostAdded')
+            socket().off('onlineUsers')
             socket().off('updatedPostAfterLike')
             socket().off('postsAfterNewComment')
             socket().off('postsUpdatedAfterPostDeleted')
             socket().off('allPostsWithNewPostAdded')
             socket().off('allPosts')
+            socket().off('messageSenderChats')
         }
     }, [])
 

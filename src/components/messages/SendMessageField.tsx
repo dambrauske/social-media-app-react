@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import socket from "../../socket.tsx";
-import {setChats} from "../../features/chatSlice.tsx";
+import {removeFromUnreadMessages, setChats} from "../../features/chatSlice.tsx";
 import {useForm} from 'react-hook-form';
 import {MessageForm} from "../../interfaces.tsx";
 
@@ -8,6 +8,9 @@ const SendMessageField = () => {
 
     const token = useAppSelector(state => state.user.token)
     const selectedUser = useAppSelector(state => state.users.selectedUser)
+    const chats = useAppSelector(state => state.chats.chats)
+    const selectedChat = chats?.find(c => Boolean(c.participants.find(p => p._id === selectedUser?._id)))
+
     const dispatch = useAppDispatch()
 
     const {
@@ -45,6 +48,10 @@ const SendMessageField = () => {
         }
     }
 
+    const handleTextareaClick = () => {
+        dispatch(removeFromUnreadMessages(selectedChat))
+    }
+
 
     return (
         <div className="p-4 flex gap-2 rounded bg-slate-100 w-full">
@@ -60,6 +67,7 @@ const SendMessageField = () => {
                     rows={4}
                     minLength={3}
                     maxLength={3000}
+                    onClick={handleTextareaClick}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             e.preventDefault()

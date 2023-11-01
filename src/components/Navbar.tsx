@@ -1,14 +1,33 @@
-import {useAppSelector} from "../hooks.tsx";
+import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
+import socket from "../socket.tsx";
+import {addToUnreadMessages, setChats} from "../features/chatSlice.tsx";
 
 const Navbar = () => {
 
     const user = useAppSelector(state => state.user.user)
+    const unreadMessages = useAppSelector(state => state.chats.unreadMessages)
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
     const logout = () => {
         navigate('/login')
         localStorage.clear()
     }
+
+    useEffect(() => {
+
+        socket().on('messageReceiverChats', (data) => {
+            console.warn('messageReceiverChats')
+            console.log('data', data)
+            dispatch(setChats(data.receiverChats))
+            dispatch(addToUnreadMessages(data.newMessage))
+        })
+
+        return () => {
+            socket().off('messageReceiverChats')
+        }
+    })
 
     return (
         <div className="flex shrink-0 items-center justify-between px-4 py-2 bg-slate-200 gap-10">
@@ -25,9 +44,13 @@ const Navbar = () => {
                 </div>
                 <div
                     onClick={() => navigate('/messages')}
-                    className="cursor-pointer px-3 py-1 rounded hover:bg-slate-300 flex justify-center items-center gap-2">
+                    className="cursor-pointer px-3 py-1 rounded hover:bg-slate-300 flex justify-center items-center gap-2 relative">
                     <i className="fas fa-envelope text-slate-700"></i>
                     <div className="md:block hidden">messages</div>
+                    {
+                        unreadMessages.length > 0 &&
+                        <div className="bg-red-500 text-slate-50 text-xs w-4 h-4 rounded-full flex justify-center items-center absolute -right-1 top-0">{unreadMessages.length}</div>
+                    }
                 </div>
                 <div
                     onClick={() => navigate('/posts')}

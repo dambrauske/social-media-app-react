@@ -1,5 +1,5 @@
 import LikesAndComments from "../components/commentsAndLikes/LikesAndComments.tsx";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import Comments from "../components/commentsAndLikes/Comments.tsx";
 import Navbar from "../components/Navbar.tsx";
@@ -7,7 +7,7 @@ import SendMessageToThisUserButton from "../components/messages/SendMessageToThi
 import {useEffect, useState} from "react";
 import socket from "../socket.tsx";
 import {Post} from "../interfaces.tsx";
-import {setAllPosts, setUserPosts} from "../features/postsSlice.tsx";
+import {setAllPosts, setSelectedPost, setUserPosts} from "../features/postsSlice.tsx";
 
 
 const SinglePostPage = () => {
@@ -18,6 +18,7 @@ const SinglePostPage = () => {
     const token = useAppSelector(state => state.user.token)
     const username = useAppSelector(state => state.user?.user?.username)
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
@@ -40,6 +41,16 @@ const SinglePostPage = () => {
         }
 
     }, [])
+
+    const isPostAvailable = () => {
+        const postAvailable = posts?.find(p => p._id === postId)
+        if (!postAvailable) {
+            setSelectedPost(undefined)
+            navigate('/posts')
+        }
+    }
+
+    isPostAvailable()
 
     if (isLoading) return null
 

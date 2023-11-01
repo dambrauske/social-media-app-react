@@ -39,7 +39,7 @@ export interface Chat {
 
 export interface Message {
     _id: string,
-    chat: Chat,
+    chat: string,
     participants: User[]
     sentBy: User,
     message: string,
@@ -88,7 +88,7 @@ export interface UserInitialState {
 
 export interface ChatsInitialState {
     chats: Chat[] | undefined,
-    unreadMessages: Message[] | undefined,
+    unreadMessages: Message[],
 }
 
 export interface PostsInitialState {

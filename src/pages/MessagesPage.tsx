@@ -2,8 +2,34 @@ import Navbar from "../components/Navbar.tsx";
 import Chats from "../components/messages/Chats.tsx";
 import Messages from "../components/messages/Messages.tsx";
 import {useParams} from "react-router-dom";
+import {useEffect} from "react";
+import socket from "../socket.tsx";
+import {addToUnreadMessages, setChats} from "../features/chatSlice.tsx";
+import {useAppDispatch} from "../hooks.tsx";
 
 const MessagesPage = () => {
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+
+        socket().on('messageReceiverChats', (data) => {
+            console.warn('messageReceiverChats')
+            console.log('data', data)
+            dispatch(setChats(data.receiverChats))
+            dispatch(addToUnreadMessages(data.newMessage))
+        })
+
+        socket().on('messageSenderChats', (data) => {
+            dispatch(setChats(data.senderChats))
+            console.warn('Set selected chat app.tsx 84', data)
+        })
+
+        return () => {
+            socket().off('messageReceiverChats')
+            socket().off('messageSenderChats')
+        }
+    })
 
     const {selectedUserId} = useParams()
 

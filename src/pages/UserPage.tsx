@@ -1,9 +1,11 @@
-import {useAppSelector} from "../hooks.tsx";
+import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import Navbar from "../components/Navbar.tsx";
 import UserPosts from "../components/posts/UserPosts.tsx";
 import {useEffect, useState} from "react";
 import ProfileUpdateModal from "../components/modals/ProfileUpdateModal.tsx";
 import socket from "../socket.tsx";
+import {Post} from "../interfaces.tsx";
+import {setAllPosts, setUserPosts} from "../features/postsSlice.tsx";
 
 
 const UserPage = () => {
@@ -12,6 +14,7 @@ const UserPage = () => {
     const bio = useAppSelector(state => state.user.user?.bio)
     const [showProfileSettingsModal, setShowProfileSettingsModal] = useState<boolean>(false)
     const token = useAppSelector(state => state.user.token)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
 
@@ -19,6 +22,18 @@ const UserPage = () => {
             throw new Error('Token not available')
         }
         socket().emit('getPosts', ({token}))
+        socket().on('allPosts', (data: Post[]) => {
+            dispatch(setAllPosts(data))
+            console.log('data from get posts', data)
+            const userPosts = data.filter(p => p.user.username === user?.username)
+            dispatch(setUserPosts(userPosts))
+        })
+
+        return () => {
+            socket().off('getPosts')
+            socket().off('allPosts')
+        }
+
 
     }, [])
 

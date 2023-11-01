@@ -2,7 +2,7 @@ import './App.css'
 import {Route, Routes, useNavigate} from "react-router-dom";
 import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "./hooks.tsx";
 import {setUser} from "./features/userSlice.tsx";
 import PostsPage from "./pages/PostsPage.tsx";
@@ -24,39 +24,45 @@ function App() {
     const user = useAppSelector(state => state.user.user)
     const selectedPost = useAppSelector(state => state.posts.selectedPost)
     const username = useAppSelector(state => state.user?.user?.username)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
-    useEffect(() => {
-
-        if (autoLogin) {
-            const options: RequestInit = {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json",
-                },
-                body: null,
-            }
-
-            if (token !== null) {
-                options.headers = {
-                    ...options.headers,
-                    "authorization": token,
+    useEffect( () => {
+            if (autoLogin && token) {
+                const options: RequestInit = {
+                    method: "POST",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    body: null,
                 }
+
+                if (token) {
+                    options.headers = {
+                        ...options.headers,
+                        "authorization": token,
+                    }
+                }
+
+                fetch('http://localhost:8000/user', options)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                        dispatch(setUser(data.data))
+                        setIsLoading(false)
+                        setTimeout(() => {
+                            navigate('/profile')
+                        }, 2_000)
+                    })
+                socket().emit('userLoggedIn', token)
+
+            } else {
+                setIsLoading(false)
+                setTimeout(() => {
+                    navigate('/login')
+                }, 2_000)
+
             }
 
-            fetch('http://localhost:8000/user', options)
-                .then(res => res.json())
-                .then(data => {
-                    dispatch(setUser(data.data))
-                })
-            socket().emit('userLoggedIn', token)
-
-        } else {
-            setTimeout(() => {
-
-                navigate('/login')
-            }, 2_000)
-
-        }
     }, [])
 
     useEffect(() => {
@@ -124,7 +130,7 @@ function App() {
     return (
         <div className="font-poppins">
             <Routes>
-                <Route path='/' element={autoLogin ?<h1>Authenticating ...</h1> : <p>Redirecting to login...</p>}/>
+                <Route path='/' element={isLoading  && <h1>Loading ...</h1>}/>
                 <Route path='/login' element={<LoginPage/>}/>
                 <Route path='/profile' element={<UserPage/>}/>
                 <Route path='/register' element={<RegisterPage/>}/>

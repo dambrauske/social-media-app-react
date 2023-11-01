@@ -16,6 +16,8 @@ const UserPage = () => {
     const token = useAppSelector(state => state.user.token)
     const dispatch = useAppDispatch()
 
+    console.log('user', user)
+
     useEffect(() => {
 
         if (token === null) {

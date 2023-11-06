@@ -190,7 +190,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                                 }
                                             },
                                         })}
-                                        type="text"/>
+                                        type="password"/>
                                     <div className="h-6">
                                         {errors.password && (
                                             <div className="text-xs text-red-600">{errors.password.message as string}</div>
@@ -228,7 +228,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                                 }
                                             },
                                         })}
-                                        type="text"/>
+                                        type="password"/>
                                     <div className="h-6">
                                         {errors.newPassword && (
                                             <div

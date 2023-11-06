@@ -138,7 +138,7 @@ const RegisterPage = () => {
                                 },
                             })}
                             className="border border-slate-400 bg-slate-50 placeholder-slate-300 p-1 rounded-l outline-none"
-                            type="text"
+                            type="password"
                             placeholder="password"/>
                         <div className="h-5 text-center">
                             {errors.password &&
@@ -163,7 +163,8 @@ const RegisterPage = () => {
                                 },
                             })}
                             className="border border-slate-400 bg-slate-50 placeholder-slate-300 p-1 rounded-l outline-none"
-                            type="text" placeholder="repeat password"/>
+                            type="password"
+                            placeholder="repeat password"/>
                         <div className="h-5 text-center mb-2">
                             {errors.password2 &&
                                 <div className="text-xs text-red-600">{errors.password2.message as string}</div>

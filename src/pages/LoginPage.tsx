@@ -109,7 +109,7 @@ const LoginPage = () => {
                             },
                         })}
                         className="border border-slate-400 bg-slate-50 placeholder-slate-300 p-1 rounded outline-none"
-                        type="text"
+                        type="password"
                         placeholder="password"/>
                     <div className="h-5 text-center mb-2">
                         {errors.password &&

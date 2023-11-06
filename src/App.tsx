@@ -22,7 +22,6 @@ function App() {
     const autoLogin = autoLoginValue ? JSON.parse(autoLoginValue) : null
     const token = localStorage.getItem('token')
     const user = useAppSelector(state => state.user.user)
-    const selectedUser = useAppSelector(state => state.users.selectedUser)
     const selectedPost = useAppSelector(state => state.posts.selectedPost)
     const username = useAppSelector(state => state.user?.user?.username)
     const [isLoading, setIsLoading] = useState<boolean>(true)

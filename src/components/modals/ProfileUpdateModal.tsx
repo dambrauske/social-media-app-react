@@ -13,7 +13,9 @@ interface Props {
 const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
 
         const user = useAppSelector(state => state.user.user)
-        const [successMessage, setSuccessMessage] = useState<string | null>(null)
+        const [profileSuccessMessage, setProfileSuccessMessage] = useState<string | null>(null)
+        const [passwordSuccessMessage, setPasswordSuccessMessage] = useState<string | null>(null)
+        const [errorMessage, setErrorMessage] = useState<string | null>(null)
         const token = useAppSelector(state => state.user.token)
         const username = useAppSelector(state => state.user.user?.username)
         const dispatch = useAppDispatch()
@@ -33,17 +35,29 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
             }
         })
 
-        console.log('errors', errors)
-
         const onSubmit = async (data: UpdateProfileForm) => {
-            setSuccessMessage(null)
+            setProfileSuccessMessage(null)
+            setPasswordSuccessMessage(null)
+            setErrorMessage(null)
 
             const image = data.image
             const bio = data.bio
             const password = data.password
             const newPassword = data.newPassword
 
-            dispatch(updateUserPublicProfile({token, image, bio}))
+            if (image !== '' || bio !== '') {
+                dispatch(updateUserPublicProfile({token, image, bio}))
+                socket().emit('getPosts', ({token}))
+                socket().on('allPosts', (data: Post[]) => {
+                    const userPosts = data.filter(post => post.user.username === username)
+                    dispatch(setUserPosts(userPosts))
+                })
+                setProfileSuccessMessage('Public profile updated successfully')
+                setTimeout(() => {
+                    setProfileSuccessMessage(null)
+                }, 3000)
+            }
+
 
             if (password !== '' && newPassword !== '') {
                 const options: RequestInit = {
@@ -64,28 +78,22 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                 try {
                     const response = await fetch('http://localhost:8000/updatePassword', options)
                     const data = await response.json()
-                    console.log(data)
+                    console.log('CHANGED PASSWORD DATA', data)
+                    if (data.error === true) {
+                        setErrorMessage(data.message)
+                        setTimeout(() => {
+                            setPasswordSuccessMessage(null)
+                        }, 3000)
+                    }
+                    if (data.error === false) {
+                        console.log(data)
+                        setPasswordSuccessMessage('Password updated successfully')
+                    }
 
                 } catch (error) {
                     console.log(error)
                 }
             }
-
-            socket().emit('getPosts', ({token}))
-            socket().on('allPosts', (data: Post[]) => {
-                const userPosts = data.filter(post => post.user.username === username)
-                dispatch(setUserPosts(userPosts))
-            })
-
-            setSuccessMessage('Profile updated successfully')
-
-            setTimeout(() => {
-                setSuccessMessage(null)
-            }, 1000)
-
-            setTimeout(() => {
-                setShowProfileSettingsModal(false)
-            }, 1000)
 
             return () => {
                 socket().off('allPosts')
@@ -96,7 +104,6 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
 
         return (
             <div className={"relative flex justify-center items-center"}>
-
                 <div
                     className={"fixed top-0 left-0 right-0 w-screen h-screen backdrop-blur-sm bg-black bg-opacity-50 z-20"}></div>
 
@@ -156,6 +163,9 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                         {errors.bio && (
                                             <div className="text-xs text-red-600">{errors.bio.message as string}</div>
                                         )}
+                                        {profileSuccessMessage &&
+                                            <div className="text-xs text-green-600">{profileSuccessMessage}</div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +192,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                                 }
                                             },
                                         })}
-                                        type="password"/>
+                                        type="text"/>
                                     <div className="h-6">
                                         {errors.password && (
                                             <div className="text-xs text-red-600">{errors.password.message as string}</div>
@@ -201,8 +211,11 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                         {...register("newPassword", {
                                             validate: (value, allValues) => {
                                                 const password = allValues.password
-
+                                                if ((!value && !password) || !value && password) {
+                                                    setErrorMessage(null)
+                                                }
                                                 if ((!value && !password) || (value && password)) {
+
                                                     if (value) {
                                                         if (value.length < 4 || value.length > 20) {
                                                             return "Password should be between 4 and 20 characters";
@@ -212,9 +225,12 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                                         }
                                                     }
                                                 }
+                                                if ((value && !password) || (!value && password)) {
+                                                    return "Both passwords fields should be filled"
+                                                }
                                             },
                                         })}
-                                        type="password"/>
+                                        type="text"/>
                                     <div className="h-6">
                                         {errors.newPassword && (
                                             <div
@@ -224,13 +240,17 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                 </div>
 
                             </div>
+                            <div className="h-2 mb-2">
+                                {passwordSuccessMessage &&
+                                    <div className="text-xs text-center text-green-600">{passwordSuccessMessage}</div>
+                                }
+                                {errorMessage &&
+                                    <div className="text-xs text-center text-red-600">{errorMessage}</div>
+                                }
+                            </div>
+
                         </div>
 
-                        <div className="h-5">
-                            {successMessage &&
-                                <div className="text-xs text-green-600">{successMessage}</div>
-                            }
-                        </div>
 
                         <button
                             type="submit"

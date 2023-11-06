@@ -2,17 +2,23 @@ import {useAppDispatch, useAppSelector} from "../../hooks.tsx";
 import socket from "../../socket.tsx";
 import {removeFromUnreadMessages, setChats} from "../../features/chatSlice.tsx";
 import {useForm} from 'react-hook-form';
-import {MessageForm} from "../../interfaces.tsx";
+import {Chat, MessageForm} from "../../interfaces.tsx";
 
-const SendMessageField = () => {
+type Props = {
+    chat?: Chat
+}
 
+const SendMessageField = ({chat}: Props) => {
+    const user = useAppSelector(state => state.user.user)
     const token = useAppSelector(state => state.user.token)
+    const chatParticipant = chat?.participants.filter(participant => participant.username !== user?.username)[0]
     const selectedUser = useAppSelector(state => state.users.selectedUser)
-    const chats = useAppSelector(state => state.chats.chats)
-    const selectedChat = chats?.find(c => Boolean(c.participants.find(p => p._id === selectedUser?._id)))
+
+    const recipient = selectedUser ?? chatParticipant
 
     const dispatch = useAppDispatch()
-    console.log('selectedUser', selectedUser)
+
+
     const {
         register,
         handleSubmit,
@@ -22,8 +28,7 @@ const SendMessageField = () => {
 
     const onSubmit = (data: MessageForm) => {
         const message = data.message
-        let otherUserId = selectedUser?._id
-        console.log('otherUserId', otherUserId)
+        let otherUserId = recipient?._id
         if (message && message.trim() !== '') {
 
             if (token === null) {
@@ -47,7 +52,7 @@ const SendMessageField = () => {
     }
 
     const handleTextareaClick = () => {
-        dispatch(removeFromUnreadMessages(selectedChat))
+        dispatch(removeFromUnreadMessages(chat))
     }
 
 

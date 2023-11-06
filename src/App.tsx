@@ -76,12 +76,8 @@ function App() {
             dispatch(setAllPosts(data))
         })
 
-        socket().on('onlineUsers', (data) => {
-            console.log(data)
-        })
 
         socket().on('messageReceiverChats', (data) => {
-            console.warn('messageReceiverChats', data)
             dispatch(setChats(data.receiverChats))
             dispatch(addToUnreadMessages(data.newMessage))
         })

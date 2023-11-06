@@ -9,10 +9,12 @@ interface Props {
 const Messages = ({selectedUserId}: Props) => {
 
     const chats = useAppSelector(state => state.chats)
+    const user = useAppSelector(state => state.user.user)
     const selectedChat = chats?.chats?.find(c => Boolean(c.participants.find(p => p._id === selectedUserId)))
     const selectedUser = useAppSelector(state => state.users.selectedUser)
     const selectedChatMessages = selectedChat?.messages
-
+    const chatParticipant = selectedChat?.participants.filter(participant => participant.username !== user?.username)[0]
+    const recipient = selectedUser ?? chatParticipant
 
     let messagesSortedByDate
     if (selectedChatMessages) {
@@ -23,7 +25,7 @@ const Messages = ({selectedUserId}: Props) => {
 
     return (
         <div className="bg-slate-50 md:w-3/4 grow flex flex-col h-full">
-            <div className="font-semibold p-1">{selectedUser?.username}</div>
+            <div className="font-semibold p-1">{recipient?.username}</div>
             <hr/>
             <div className="flex flex-col justify-between h-full overflow-auto">
                 <div
@@ -36,7 +38,7 @@ const Messages = ({selectedUserId}: Props) => {
                     ))}
                 </div>
                 <hr/>
-                <SendMessageField/>
+                <SendMessageField chat={selectedChat}/>
             </div>
 
         </div>

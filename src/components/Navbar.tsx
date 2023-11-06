@@ -2,7 +2,7 @@ import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import socket from "../socket.tsx";
-import {addToUnreadMessages, setChats} from "../features/chatSlice.tsx";
+import {addToUnreadMessages, clearUnreadMessages, setChats} from "../features/chatSlice.tsx";
 
 const Navbar = () => {
 
@@ -13,6 +13,7 @@ const Navbar = () => {
     const logout = () => {
         navigate('/login')
         localStorage.clear()
+        dispatch(clearUnreadMessages([]))
     }
 
     useEffect(() => {

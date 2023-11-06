@@ -14,6 +14,7 @@ const MessagesPage = () => {
     useEffect(() => {
 
         socket().on('messageReceiverChats', (data) => {
+            console.warn('messageReceiverChats', data)
             dispatch(setChats(data.receiverChats))
             dispatch(addToUnreadMessages(data.newMessage))
         })
@@ -23,7 +24,7 @@ const MessagesPage = () => {
         })
 
         return () => {
-            socket().off('messageReceiverChats')
+            // socket().off('messageReceiverChats')
             socket().off('messageSenderChats')
         }
     })

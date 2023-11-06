@@ -39,9 +39,9 @@ const Chats = () => {
             <div className="p-1">Chats</div>
             <hr/>
             <div className="overflow-y-auto custom-scrollbar flex flex-col">
-                {chats && chats.map((chat) => (
+                {chats && chats.map((chat, i) => (
                     <SingleChat
-                        key={chat._id}
+                        key={i}
                         chat={chat}
                     />
                 ))}

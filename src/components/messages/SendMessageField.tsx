@@ -12,7 +12,7 @@ const SendMessageField = () => {
     const selectedChat = chats?.find(c => Boolean(c.participants.find(p => p._id === selectedUser?._id)))
 
     const dispatch = useAppDispatch()
-
+    console.log('selectedUser', selectedUser)
     const {
         register,
         handleSubmit,
@@ -22,13 +22,14 @@ const SendMessageField = () => {
 
     const onSubmit = (data: MessageForm) => {
         const message = data.message
+        let otherUserId = selectedUser?._id
+        console.log('otherUserId', otherUserId)
         if (message && message.trim() !== '') {
 
             if (token === null) {
                 throw new Error('Token not available')
             }
 
-            let otherUserId = selectedUser?._id
 
             socket().emit('sendMessage', ({token, otherUserId, message}))
 

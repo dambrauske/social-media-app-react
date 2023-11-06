@@ -28,9 +28,9 @@ const Messages = ({selectedUserId}: Props) => {
             <div className="flex flex-col justify-between h-full overflow-auto">
                 <div
                     className="overflow-y-auto custom-scrollbar flex grow overflow-x-hidden flex-col-reverse bg-slate-100 ">
-                    {messagesSortedByDate && messagesSortedByDate.map((message) => (
+                    {messagesSortedByDate && messagesSortedByDate.map((message, i) => (
                         <SingleMessage
-                            key={message._id}
+                            key={i}
                             message={message}
                         />
                     ))}

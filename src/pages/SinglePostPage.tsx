@@ -21,7 +21,6 @@ const SinglePostPage = () => {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
-
     useEffect(() => {
 
         if (token === null) {
@@ -35,7 +34,6 @@ const SinglePostPage = () => {
             dispatch(setUserPosts(userPosts))
             setIsLoading(false)
         })
-
 
 
         return () => {

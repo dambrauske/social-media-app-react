@@ -8,9 +8,9 @@ const UserPosts = () => {
     return (
 
         <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-            {userPosts && userPosts.map((post: Post) => (
+            {userPosts && userPosts.map((post: Post, i) => (
                 <PostCard
-                key={post._id}
+                key={i}
                 post={post}
                 />
             ))}

@@ -23,9 +23,9 @@ useEffect(() => {
         <div className="min-h-screen bg-slate-50">
             <Navbar/>
             <div className="p-4 gap-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-                {users && usersExceptCurrent?.map((user) => (
+                {users && usersExceptCurrent?.map((user, i) => (
                     <UserCard
-                        key={user._id}
+                        key={i}
                         user={user}
                     />
                 ))}

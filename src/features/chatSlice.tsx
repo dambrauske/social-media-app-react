@@ -27,6 +27,9 @@ export const chatsSlice: Slice<ChatsInitialState> = createSlice({
                     state.unreadMessages = state.unreadMessages.filter(m => m.chat !== chat._id)
                 }
             },
+            clearUnreadMessages: (state, action: PayloadAction<[]>) => {
+                state.unreadMessages = action.payload
+            }
         },
     }
 )
@@ -34,6 +37,7 @@ export const {
     setChats,
     addToUnreadMessages,
     removeFromUnreadMessages,
+    clearUnreadMessages,
 } = chatsSlice.actions
 
 export default chatsSlice.reducer

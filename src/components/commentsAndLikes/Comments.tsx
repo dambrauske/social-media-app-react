@@ -21,9 +21,9 @@ const Comments = ({post}: Props) => {
             <Comment
                 postId={post?._id}/>
             <div className="overflow-y-auto custom-scrollbar rounded">
-                {commentsSortedByDate && commentsSortedByDate.map((comment) => (
+                {commentsSortedByDate && commentsSortedByDate.map((comment, i) => (
                     <SingleComment
-                        key={comment._id}
+                        key={i}
                         comment={comment}
                     />
                 ))}

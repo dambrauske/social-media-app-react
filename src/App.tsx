@@ -14,6 +14,7 @@ import ProfilePage from "./pages/ProfilePage.tsx";
 import socket from "./socket.tsx";
 import {Post} from "./interfaces.tsx";
 import {setAllPosts, setUserPosts, updateSinglePost} from "./features/postsSlice.tsx";
+import {addToUnreadMessages, setChats} from "./features/chatSlice.tsx";
 
 function App() {
     const dispatch = useAppDispatch()
@@ -73,6 +74,16 @@ function App() {
 
         socket().on('allPostsWithNewPostAdded', (data: Post[]) => {
             dispatch(setAllPosts(data))
+        })
+
+        socket().on('onlineUsers', (data) => {
+            console.log(data)
+        })
+
+        socket().on('messageReceiverChats', (data) => {
+            console.warn('messageReceiverChats', data)
+            dispatch(setChats(data.receiverChats))
+            dispatch(addToUnreadMessages(data.newMessage))
         })
 
         socket().on('updatedPostAfterLike', (data) => {

@@ -68,7 +68,10 @@ const LikesAndComments = ({post}: Props) => {
             </div>
 
             <div
-                onClick={() => navigate(`/post/${post?._id}`)}
+                onClick={(e) => {
+                    e.stopPropagation()
+                    navigate(`/post/${post?._id}`)
+                }}
                 className="flex items-center gap-1">
                 <i className="far fa-comment-dots"></i>
                 {post?.comments && post.comments.length > 0 ?

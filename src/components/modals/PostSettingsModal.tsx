@@ -42,12 +42,6 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
         setShowPostSettingsModal(false)
     }
 
-    // const update = () => {
-    //     console.log('update clicked')
-    //     // dispatch(setShowPostSettingsModal(true))
-    //     setShowPostSettingsModal(false)
-    // }
-
 
     return (
             <div
@@ -58,11 +52,6 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
                     onClick={(e) => deletePost(token, post._id, e)}
                     className="hover:bg-slate-200 p-1">delete
                 </button>
-
-                {/*<button*/}
-                {/*    onClick={update}*/}
-                {/*    className="hover:bg-slate-200 p-1">edit*/}
-                {/*</button>*/}
 
                 <button
                     onClick={(e) => cancel(e)}

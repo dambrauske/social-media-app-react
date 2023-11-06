@@ -43,8 +43,6 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
             const password = data.password
             const newPassword = data.newPassword
 
-            console.log('bio', bio)
-
             dispatch(updateUserPublicProfile({token, image, bio}))
 
             if (password !== '' && newPassword !== '') {
@@ -78,8 +76,6 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                 const userPosts = data.filter(post => post.user.username === username)
                 dispatch(setUserPosts(userPosts))
             })
-
-
 
             setSuccessMessage('Profile updated successfully')
 
@@ -182,7 +178,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                                     }
                                                     if (!/[A-Z]/.test(value)) {
                                                         return "Password should include at least one uppercase letter"
-                                                    } else return true
+                                                    }
                                                 }
                                             },
                                         })}
@@ -213,7 +209,7 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                                                         }
                                                         if (!/[A-Z]/.test(value)) {
                                                             return "Password should include at least one uppercase letter"
-                                                        } else return true
+                                                        }
                                                     }
                                                 }
                                             },

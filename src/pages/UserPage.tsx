@@ -20,6 +20,9 @@ const UserPage = () => {
 
     useEffect(() => {
 
+        dispatch(setUserPosts(undefined))
+
+
         if (token === null) {
             throw new Error('Token not available')
         }

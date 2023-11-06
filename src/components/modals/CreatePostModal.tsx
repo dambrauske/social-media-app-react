@@ -33,15 +33,16 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
             throw new Error('Token not available')
         }
 
-        socket().emit('addPost', ({token, image, title}))
 
-        setPostSuccessMessage('Post added successfully')
-        setTimeout(() => {
-            setPostSuccessMessage(null)
-            setShowCreatePostModal(false)
-        }, 1000)
+            socket().emit('addPost', ({token, image, title}))
+            setPostSuccessMessage('Post added successfully')
+            setTimeout(() => {
+                setPostSuccessMessage(null)
+                setShowCreatePostModal(false)
+            }, 1000)
+            reset()
 
-        reset()
+
 
 
         return () => {
@@ -89,9 +90,17 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
                         }
                     </div>
 
-                    <textarea
+                    <input
                         id="title"
-                        {...register("title")}
+                        {...register("title", {
+                            validate: (value) => {
+                                if (value) {
+                                    if (value.length < 3 || value.length > 100) {
+                                        return "Title should be between 3 and 100 characters"
+                                    }
+                                } else return "Title cannot be blank"
+                            },
+                        })}
                         className="outline-none border rounded resize-none	custom-scrollbar p-1"
                         maxLength={100}
                         minLength={3}
@@ -103,6 +112,12 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
                             }
                         }}
                     />
+                    <div className="h-4">
+                        {errors.title &&
+                            <div className="text-xs text-red-600">{errors.title.message as string}</div>
+                        }
+                    </div>
+
 
                     <div className="h-4">
                         {postSuccessMessage &&

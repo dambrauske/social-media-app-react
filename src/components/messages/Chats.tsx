@@ -15,7 +15,6 @@ const Chats = () => {
         socket().emit('getChats', {token})
 
         socket().on('chats', (data) => {
-            console.log('chats', data)
             dispatch(setChats(data))
             setIsLoading(false)
         })

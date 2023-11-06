@@ -1,8 +1,6 @@
 import {useAppSelector} from "../../hooks.tsx";
 import PostCard from "./PostCard.tsx";
 import {Post} from "../../interfaces.tsx";
-
-
 const UserPosts = () => {
 
     const userPosts = useAppSelector(state => state.posts.userPosts)

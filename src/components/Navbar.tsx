@@ -18,8 +18,6 @@ const Navbar = () => {
     useEffect(() => {
 
         socket().on('messageReceiverChats', (data) => {
-            console.warn('messageReceiverChats')
-            console.log('data', data)
             dispatch(setChats(data.receiverChats))
             dispatch(addToUnreadMessages(data.newMessage))
         })

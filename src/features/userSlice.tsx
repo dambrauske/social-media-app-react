@@ -25,7 +25,6 @@ export const updateUserPublicProfile = createAsyncThunk('posts/updateUserImage',
     const response = await fetch('http://localhost:8000/updatePublicProfile', options)
         .then(res => res.json())
 
-    console.log('user', response.data)
     return response?.data
 })
 

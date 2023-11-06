@@ -37,8 +37,6 @@ const SingleChat = ({chat}: Props) => {
        return unreadMessages.find(m => m.chat === currentChat._id)
     }
 
-    console.log('unreadMessages', unreadMessages)
-
     return (
         <div
             onClick={() => selectChat(chat)}

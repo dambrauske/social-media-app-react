@@ -22,7 +22,6 @@ function App() {
     const autoLogin = autoLoginValue ? JSON.parse(autoLoginValue) : null
     const token = localStorage.getItem('token')
     const user = useAppSelector(state => state.user.user)
-    const selectedPost = useAppSelector(state => state.posts.selectedPost)
     const username = useAppSelector(state => state.user?.user?.username)
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
@@ -68,50 +67,26 @@ function App() {
         socket().emit('getPosts', ({token}))
         socket().on('allPosts', (data: Post[]) => {
             dispatch(setAllPosts(data))
-            console.log('data from get posts', data)
             const userPosts = data.filter(p => p.user.username === username)
-            console.log('userPosts', userPosts)
             dispatch(setUserPosts(userPosts))
         })
 
         socket().on('allPostsWithNewPostAdded', (data: Post[]) => {
-            console.warn('allPostsWithNewPostAdded')
             dispatch(setAllPosts(data))
-            const userPosts = data.filter(post => post.user.username === user?.username)
-            dispatch(setUserPosts(userPosts))
         })
-
-
-        socket().on('onlineUsers', (data) => {
-            console.warn('ONLINE USERS UPDATED')
-            console.log('online users', data)
-        })
-
 
         socket().on('updatedPostAfterLike', (data) => {
-            console.warn('updatedPostAfterLike')
             dispatch(updateSinglePost(data))
         })
 
         socket().on('postAfterNewComment', (data) => {
-            console.warn('postAfterNewComment')
-            console.log('data', data)
-            console.log('selectedPost', selectedPost)
             dispatch(updateSinglePost(data))
         })
 
         socket().on('postsUpdatedAfterPostDeleted', (data: Post[]) => {
-            console.warn('postsUpdatedAfterPostDeleted')
-            console.log(data)
             dispatch(setAllPosts(data))
         })
 
-        socket().on('allPostsWithNewPostAdded', (data: Post[]) => {
-            console.warn('allPostsWithNewPostAdded')
-            dispatch(setAllPosts(data))
-            const userPosts = data.filter(post => post.user.username === user?.username)
-            dispatch(setUserPosts(userPosts))
-        })
 
 
         return () => {

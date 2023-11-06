@@ -33,16 +33,13 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
             throw new Error('Token not available')
         }
 
-
-            socket().emit('addPost', ({token, image, title}))
-            setPostSuccessMessage('Post added successfully')
-            setTimeout(() => {
-                setPostSuccessMessage(null)
-                setShowCreatePostModal(false)
-            }, 1000)
-            reset()
-
-
+        socket().emit('addPost', ({token, image, title}))
+        setPostSuccessMessage('Post added successfully')
+        setTimeout(() => {
+            setPostSuccessMessage(null)
+            setShowCreatePostModal(false)
+        }, 1000)
+        reset()
 
 
         return () => {
@@ -53,7 +50,8 @@ const CreatePostModal = ({setShowCreatePostModal}: Props) => {
 
     return (
         <div className={"relative flex justify-center"}>
-            <div className={"fixed top-0 left-0 right-0 w-screen h-screen backdrop-blur-sm bg-black bg-opacity-50 z-20"}></div>
+            <div
+                className={"fixed top-0 left-0 right-0 w-screen h-screen backdrop-blur-sm bg-black bg-opacity-50 z-20"}></div>
 
             <form
                 onSubmit={handleSubmit(onSubmit)}

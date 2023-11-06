@@ -78,7 +78,6 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                 try {
                     const response = await fetch('http://localhost:8000/updatePassword', options)
                     const data = await response.json()
-                    console.log('CHANGED PASSWORD DATA', data)
                     if (data.error === true) {
                         setErrorMessage(data.message)
                         setTimeout(() => {
@@ -86,12 +85,11 @@ const ProfileUpdateModal = ({setShowProfileSettingsModal}: Props) => {
                         }, 3000)
                     }
                     if (data.error === false) {
-                        console.log(data)
                         setPasswordSuccessMessage('Password updated successfully')
                     }
 
                 } catch (error) {
-                    console.log(error)
+                    console.error(error)
                 }
             }
 

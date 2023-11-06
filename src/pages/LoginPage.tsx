@@ -45,7 +45,6 @@ const LoginPage = () => {
         try {
             const response = await fetch('http://localhost:8000/login', options)
             const data = await response.json()
-            console.log(data)
             if (data.error === false) {
                 dispatch(setUser(data.data.user))
                 dispatch(setToken(data.data.token))
@@ -61,7 +60,7 @@ const LoginPage = () => {
             }
 
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
 

@@ -16,7 +16,6 @@ const ProfilePage = () => {
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
     const selectedUser = useAppSelector(state => state.users.selectedUser)
-    const selectedUserPosts = useAppSelector(state => state.posts.selectedUserPosts)
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
 
@@ -35,12 +34,6 @@ const ProfilePage = () => {
         }
 
     }, [])
-
-
-
-    useEffect(() => {
-        console.log('selectedUserPosts', selectedUserPosts)
-    }, [selectedUserPosts])
 
 
     if (isLoading) return null

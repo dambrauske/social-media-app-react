@@ -20,9 +20,6 @@ const Comment = ({postId}: Props) => {
     } = useForm<CommentForm>()
 
     const onSubmit = async (data: CommentForm) => {
-        console.log('comment clicked')
-        console.log('data', data)
-
         const comment = data.comment
 
         if (token === null) {
@@ -32,7 +29,6 @@ const Comment = ({postId}: Props) => {
         if (comment !== '') {
             socket().emit('addComment', ({token, postId, comment}))
             socket().on('post', (data) => {
-                console.log('post', data)
                 dispatch(updateSinglePost(data))
             })
             reset()

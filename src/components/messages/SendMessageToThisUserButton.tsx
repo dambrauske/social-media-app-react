@@ -16,7 +16,6 @@ const SendMessageToThisUserButton = ({user}: Props) => {
 
     const goToMessages = (e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
-        console.log('user', user)
 
         dispatch(setSelectedUser(user))
         navigate(`/messages/${selectedUserId}`)

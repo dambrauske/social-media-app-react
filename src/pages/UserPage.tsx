@@ -9,6 +9,7 @@ import {setAllPosts, setUserPosts} from "../features/postsSlice.tsx";
 const UserPage = () => {
 
     const user = useAppSelector(state => state.user.user)
+    const userPosts = useAppSelector(state => state.posts.userPosts)
     const bio = useAppSelector(state => state.user.user?.bio)
     const [showProfileSettingsModal, setShowProfileSettingsModal] = useState<boolean>(false)
     const token = useAppSelector(state => state.user.token)

@@ -21,7 +21,6 @@ const SendMessageField = () => {
     } = useForm<MessageForm>()
 
     const onSubmit = (data: MessageForm) => {
-        console.log('sendMessage clicked')
         const message = data.message
         if (message && message.trim() !== '') {
 
@@ -35,9 +34,6 @@ const SendMessageField = () => {
 
             socket().on('messageSenderChats', (data) => {
                 dispatch(setChats(data.senderChats))
-                console.warn('Set selected chat send message field.tsx 59', data)
-                console.warn('messageSenderChats')
-                console.log(data)
             })
         }
 

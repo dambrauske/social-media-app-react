@@ -42,7 +42,6 @@ const SortingPosts = () => {
                 }
             })
             dispatch(setAllPosts(sortedPosts))
-            console.log('sortedPosts', sortedPosts)
         }
 
 
@@ -59,7 +58,6 @@ const SortingPosts = () => {
                 }
             })
             dispatch(setAllPosts(sortedPosts))
-            console.log('sortedPosts', sortedPosts)
         }
 
 
@@ -76,7 +74,6 @@ const SortingPosts = () => {
                 }
             })
             dispatch(setAllPosts(sortedPosts))
-            console.log('sortedPosts', sortedPosts)
         }
 
 

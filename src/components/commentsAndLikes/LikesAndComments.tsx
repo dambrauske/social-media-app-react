@@ -18,11 +18,9 @@ const LikesAndComments = ({post}: Props) => {
 
     const likePost = (token: string | null, postId: string | null | undefined, e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
-        console.log('like post clicked')
 
         socket().emit('likePost', ({token, postId}))
         socket().on('updatedPostAfterLike', (data) => {
-            console.log('updatedPostAfterLike', data)
             dispatch(updateSinglePost(data))
         })
         return () => {

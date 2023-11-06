@@ -14,15 +14,12 @@ const MessagesPage = () => {
     useEffect(() => {
 
         socket().on('messageReceiverChats', (data) => {
-            console.warn('messageReceiverChats')
-            console.log('data', data)
             dispatch(setChats(data.receiverChats))
             dispatch(addToUnreadMessages(data.newMessage))
         })
 
         socket().on('messageSenderChats', (data) => {
             dispatch(setChats(data.senderChats))
-            console.warn('Set selected chat app.tsx 84', data)
         })
 
         return () => {

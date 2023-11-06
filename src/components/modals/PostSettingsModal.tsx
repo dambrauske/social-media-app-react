@@ -11,9 +11,6 @@ type PostSettingsModalProps = {
 };
 
 const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModalProps) => {
-
-    console.log('post', post)
-
     const username = useAppSelector(state => state.user?.user?.username)
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
@@ -31,12 +28,10 @@ const PostSettingsModal = ({ post, setShowPostSettingsModal }: PostSettingsModal
     useOutsideClick(closeModal, modalRef)
     const deletePost = async (token: string | null, postId: string | null, e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
-        console.log('delete post', postId)
         socket().emit('deletePost', ({token, postId}))
         socket().on('postsUpdatedAfterPostDeleted', (data: Post[]) => {
             dispatch(setAllPosts(data))
             const userPosts = data.filter(post => post.user.username === username)
-            console.log('userPosts',userPosts)
             dispatch(setUserPosts(userPosts))
         })
         setShowPostSettingsModal(false)

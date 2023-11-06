@@ -44,7 +44,7 @@ export const userSlice = createSlice({
                 state.token = action.payload
                 localStorage.setItem('token', state.token);
             },
-            setUser: (state, action: PayloadAction<User>) => {
+            setUser: (state, action: PayloadAction<User | undefined>) => {
                 state.user = action.payload
             },
             setAutoLogin: (state, action: PayloadAction<boolean>) => {

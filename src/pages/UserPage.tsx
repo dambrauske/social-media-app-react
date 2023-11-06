@@ -15,13 +15,16 @@ const UserPage = () => {
     const [showProfileSettingsModal, setShowProfileSettingsModal] = useState<boolean>(false)
     const token = useAppSelector(state => state.user.token)
     const dispatch = useAppDispatch()
+    const [postsLoaded, setPostsLoaded] = useState<boolean>(false)
 
     console.log('user', user)
 
     useEffect(() => {
 
-        dispatch(setUserPosts(undefined))
+        if(!user) return
+        if(postsLoaded) return
 
+        dispatch(setUserPosts(undefined))
 
         if (token === null) {
             throw new Error('Token not available')
@@ -32,6 +35,7 @@ const UserPage = () => {
             console.log('data from get posts', data)
             const userPosts = data.filter(p => p.user.username === user?.username)
             dispatch(setUserPosts(userPosts))
+            setPostsLoaded(true)
         })
 
         return () => {
@@ -40,7 +44,8 @@ const UserPage = () => {
         }
 
 
-    }, [])
+    }, [user])
+
 
     return (
         <div className="min-h-screen bg-slate-50 ">
@@ -75,7 +80,7 @@ const UserPage = () => {
 
                 <div className="flex flex-grow justify-center">
                     { user &&
-                        <UserPosts/>
+                        <UserPosts />
                     }
                 </div>
             </div>

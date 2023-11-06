@@ -2,7 +2,7 @@ import './App.css'
 import {Route, Routes, useNavigate} from "react-router-dom";
 import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "./hooks.tsx";
 import {setUser} from "./features/userSlice.tsx";
 import PostsPage from "./pages/PostsPage.tsx";
@@ -24,10 +24,10 @@ function App() {
     const user = useAppSelector(state => state.user.user)
     const selectedPost = useAppSelector(state => state.posts.selectedPost)
     const username = useAppSelector(state => state.user?.user?.username)
-    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect( () => {
             if (autoLogin && token) {
+
                 const options: RequestInit = {
                     method: "POST",
                     headers: {
@@ -46,21 +46,13 @@ function App() {
                 fetch('http://localhost:8000/user', options)
                     .then(res => res.json())
                     .then(data => {
-                        console.log(data)
                         dispatch(setUser(data.data))
-                        setIsLoading(false)
-                        setTimeout(() => {
-                            navigate('/profile')
-                        }, 2_000)
                     })
                 socket().emit('userLoggedIn', token)
-
             } else {
-                setIsLoading(false)
                 setTimeout(() => {
                     navigate('/login')
                 }, 2_000)
-
             }
 
     }, [])
@@ -71,6 +63,7 @@ function App() {
             dispatch(setAllPosts(data))
             console.log('data from get posts', data)
             const userPosts = data.filter(p => p.user.username === username)
+            console.log('userPosts', userPosts)
             dispatch(setUserPosts(userPosts))
         })
 
@@ -130,7 +123,6 @@ function App() {
     return (
         <div className="font-poppins">
             <Routes>
-                <Route path='/' element={isLoading  && <h1>Loading ...</h1>}/>
                 <Route path='/login' element={<LoginPage/>}/>
                 <Route path='/profile' element={<UserPage/>}/>
                 <Route path='/register' element={<RegisterPage/>}/>

@@ -24,6 +24,7 @@ const LoginPage = () => {
 
     const onSubmit = async (data: LoginForm) => {
         setLoginErrorMessage(null)
+        dispatch(setUser(undefined))
 
         const username = data.username
         const password = data.password

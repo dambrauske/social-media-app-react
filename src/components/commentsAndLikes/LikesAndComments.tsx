@@ -46,7 +46,7 @@ const LikesAndComments = ({post}: Props) => {
     }, [])
 
     return (
-        <div className="flex items-end gap-3 text-slate-500">
+        <div className="flex items-end gap-2 text-slate-500">
 
             <div
                 onClick={(e) => likePost(token, post?._id, e)}

@@ -1,8 +1,8 @@
 import './App.css'
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "./hooks.tsx";
 import {setUser} from "./features/userSlice.tsx";
 import PostsPage from "./pages/PostsPage.tsx";
@@ -22,8 +22,11 @@ function App() {
     const autoLogin = autoLoginValue ? JSON.parse(autoLoginValue) : null
     const token = localStorage.getItem('token')
     const user = useAppSelector(state => state.user.user)
+    const selectedUser = useAppSelector(state => state.users.selectedUser)
     const selectedPost = useAppSelector(state => state.posts.selectedPost)
     const username = useAppSelector(state => state.user?.user?.username)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+
 
     useEffect( () => {
             if (autoLogin && token) {
@@ -47,9 +50,14 @@ function App() {
                     .then(res => res.json())
                     .then(data => {
                         dispatch(setUser(data.data))
+                        setIsLoading(false)
+                        if (location.pathname === "/") {
+                            navigate('/profile')
+                        }
                     })
                 socket().emit('userLoggedIn', token)
             } else {
+                setIsLoading(false)
                 setTimeout(() => {
                     navigate('/login')
                 }, 2_000)
@@ -58,7 +66,7 @@ function App() {
     }, [])
 
     useEffect(() => {
-
+        socket().emit('getPosts', ({token}))
         socket().on('allPosts', (data: Post[]) => {
             dispatch(setAllPosts(data))
             console.log('data from get posts', data)
@@ -95,6 +103,7 @@ function App() {
 
         socket().on('postsUpdatedAfterPostDeleted', (data: Post[]) => {
             console.warn('postsUpdatedAfterPostDeleted')
+            console.log(data)
             dispatch(setAllPosts(data))
         })
 
@@ -119,10 +128,10 @@ function App() {
     }, [])
 
 
-
     return (
         <div className="font-poppins">
             <Routes>
+                <Route path='/' element={autoLogin && user && location.pathname === "/" ? <Navigate to="/profile" /> : (isLoading && <h1>Loading...</h1>)}/>
                 <Route path='/login' element={<LoginPage/>}/>
                 <Route path='/profile' element={<UserPage/>}/>
                 <Route path='/register' element={<RegisterPage/>}/>

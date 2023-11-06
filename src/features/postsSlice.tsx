@@ -33,6 +33,12 @@ export const postsSlice: Slice<PostsInitialState> = createSlice({
                         state.userPosts[postIndex] = updatedPost
                     }
                 }
+                if (state.selectedUserPosts) {
+                    const postIndex = state.selectedUserPosts.findIndex(post => post._id === postId)
+                    if (postIndex !== -1) {
+                        state.selectedUserPosts[postIndex] = updatedPost
+                    }
+                }
             },
             setSelectedPost: (state, action: PayloadAction<Post>) => {
                 state.selectedPost = action.payload

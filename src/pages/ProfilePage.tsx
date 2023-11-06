@@ -4,10 +4,9 @@ import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../hooks.tsx";
 import {setSelectedUser} from "../features/allUsersSlice.tsx";
 import socket from "../socket.tsx";
-import {Post} from "../interfaces.tsx";
 import {setSelectedUserPosts} from "../features/postsSlice.tsx";
-import PostCard from "../components/posts/PostCard.tsx";
 import SendMessageToThisUserButton from "../components/messages/SendMessageToThisUserButton.tsx";
+import SelectedUserPosts from "../components/posts/SelectedUserPosts.tsx";
 
 
 const ProfilePage = () => {
@@ -20,12 +19,6 @@ const ProfilePage = () => {
     const selectedUserPosts = useAppSelector(state => state.posts.selectedUserPosts)
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
-    let selectedUserPostsSortedByDate
-    if (selectedUserPosts) {
-        selectedUserPostsSortedByDate =  [...selectedUserPosts].sort((objA, objB) => {
-            return new Date(objB.createdAt!).getTime() - new Date(objA.createdAt!).getTime()
-        })
-    }
 
     useEffect(() => {
         dispatch(setSelectedUser(undefined))
@@ -41,8 +34,14 @@ const ProfilePage = () => {
             socket().off('UserAndPosts')
         }
 
-
     }, [])
+
+
+
+    useEffect(() => {
+        console.log('selectedUserPosts', selectedUserPosts)
+    }, [selectedUserPosts])
+
 
     if (isLoading) return null
 
@@ -78,15 +77,8 @@ const ProfilePage = () => {
                 </div>
 
                 <div className="flex flex-grow justify-center">
-                    <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                        {selectedUserPostsSortedByDate && selectedUserPostsSortedByDate.map((post: Post, i: number) => (
-                            <PostCard
-                                key={i}
-                                post={post}
-                            />
-                        ))}
+                        <SelectedUserPosts/>
 
-                    </div>
                 </div>
 
             </div>

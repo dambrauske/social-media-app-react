@@ -6,8 +6,6 @@ import ProfileUpdateModal from "../components/modals/ProfileUpdateModal.tsx";
 import socket from "../socket.tsx";
 import {Post} from "../interfaces.tsx";
 import {setAllPosts, setUserPosts} from "../features/postsSlice.tsx";
-
-
 const UserPage = () => {
 
     const user = useAppSelector(state => state.user.user)
@@ -16,8 +14,6 @@ const UserPage = () => {
     const token = useAppSelector(state => state.user.token)
     const dispatch = useAppDispatch()
     const [postsLoaded, setPostsLoaded] = useState<boolean>(false)
-
-    console.log('user', user)
 
     useEffect(() => {
 
@@ -32,7 +28,6 @@ const UserPage = () => {
         socket().emit('getPosts', ({token}))
         socket().on('allPosts', (data: Post[]) => {
             dispatch(setAllPosts(data))
-            console.log('data from get posts', data)
             const userPosts = data.filter(p => p.user.username === user?.username)
             dispatch(setUserPosts(userPosts))
             setPostsLoaded(true)
@@ -42,7 +37,6 @@ const UserPage = () => {
             socket().off('getPosts')
             socket().off('allPosts')
         }
-
 
     }, [user])
 

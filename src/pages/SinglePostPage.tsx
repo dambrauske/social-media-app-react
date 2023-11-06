@@ -7,7 +7,7 @@ import SendMessageToThisUserButton from "../components/messages/SendMessageToThi
 import {useEffect, useState} from "react";
 import socket from "../socket.tsx";
 import {Post} from "../interfaces.tsx";
-import {setAllPosts, setSelectedPost, setUserPosts} from "../features/postsSlice.tsx";
+import {setAllPosts, setUserPosts} from "../features/postsSlice.tsx";
 
 
 const SinglePostPage = () => {
@@ -20,6 +20,7 @@ const SinglePostPage = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState<boolean>(true)
+
 
     useEffect(() => {
 
@@ -35,6 +36,8 @@ const SinglePostPage = () => {
             setIsLoading(false)
         })
 
+
+
         return () => {
             socket().off('getPosts')
             socket().off('allPosts')
@@ -42,15 +45,12 @@ const SinglePostPage = () => {
 
     }, [])
 
-    const isPostAvailable = () => {
-        const postAvailable = posts?.find(p => p._id === postId)
-        if (!postAvailable) {
-            setSelectedPost(undefined)
+    useEffect(() => {
+        const isPostAvailable = posts?.some(p => p._id === postId)
+        if (!isPostAvailable) {
             navigate('/posts')
         }
-    }
-
-    isPostAvailable()
+    }, [posts])
 
     if (isLoading) return null
 
@@ -92,25 +92,6 @@ const SinglePostPage = () => {
                             post={selectedPost}
                         />
                     </div>
-
-
-                    {/*{post.username === username ?*/}
-                    {/*    <div*/}
-                    {/*        onClick={() => setShowPostSettingsModal(!showPostSettingsModal)}*/}
-                    {/*        className="absolute top-0 right-0 h-6 w-6 bg-slate-200  rounded-full flex justify-center items-center cursor-pointer">*/}
-                    {/*        <i className="fas fa-ellipsis-h"></i>*/}
-                    {/*    </div>*/}
-                    {/*    :*/}
-                    {/*    null*/}
-                    {/*}*/}
-
-                    {/*{*/}
-                    {/*    showPostSettingsModal &&*/}
-                    {/*    <PostSettingsModal*/}
-                    {/*        post={post}*/}
-                    {/*        setShowPostSettingsModal={setShowPostSettingsModal}*/}
-                    {/*    />*/}
-                    {/*}*/}
 
                 </div>
 

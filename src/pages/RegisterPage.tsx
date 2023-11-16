@@ -92,7 +92,7 @@ const RegisterPage = () => {
                                         if (value.length < 4 || value.length > 20) {
                                             return "Username should be between 4 and 20 characters"
                                         }
-                                    }
+                                    } else return "Username cannot be blank"
                                 },
                             })}
                             className="border bg-slate-50 border-slate-400 placeholder-slate-300 p-1 rounded-l outline-none"

@@ -17,10 +17,10 @@ const Comments = ({post}: Props) => {
     }
 
     return (
-        <div className="flex flex-col bg-slate-200 rounded h-[25rem]">
+        <div className="flex flex-col bg-slate-200 rounded h-[19.7rem]">
             <Comment
                 postId={post?._id}/>
-            <div className="overflow-y-auto custom-scrollbar rounded">
+            <div className="overflow-y-auto custom-scrollbar rounded m-2">
                 {commentsSortedByDate && commentsSortedByDate.map((comment, i) => (
                     <SingleComment
                         key={i}

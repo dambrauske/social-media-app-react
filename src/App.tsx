@@ -65,7 +65,9 @@ function App() {
     }, [])
 
     useEffect(() => {
-        socket().emit('getPosts', ({token}))
+        if (token) {
+            socket().emit('getPosts', ({token}))
+        }
         socket().on('allPosts', (data: Post[]) => {
             dispatch(setAllPosts(data))
             const userPosts = data.filter(p => p.user.username === username)
